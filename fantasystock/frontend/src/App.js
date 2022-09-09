@@ -1,5 +1,5 @@
-import '../App.css';
-import Stocks from './Stocks';
+import "./App.css";
+import Stocks from "../src/components/Stocks";
 
 function App() {
   return (
