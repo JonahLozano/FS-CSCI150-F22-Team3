@@ -4,7 +4,7 @@ import axios from "axios";
 function Stock(props) {
   const [price, setPrice] = useState(0);
 
-  const componentDidMount = () => {
+  const updatePrice = () => {
     axios
       .get("/getPrice")
       .then((response) => {
@@ -17,7 +17,7 @@ function Stock(props) {
 
   return (
     <div>
-      <button onClick={componentDidMount}>Update Price</button>
+      <button onClick={updatePrice}>Update Price</button>
       <h1> AMZN is: {price}</h1>
     </div>
   );
