@@ -11,7 +11,7 @@ You will need to create a '.env. file in the backend directory with all the envi
 Now just run 'npm start' in both the backend directory and frontend directory.
 
 ## Features
-* Creating users with a google login
+* Users with a google login
 * Leagues groups
 * Game logic
 * League shop
