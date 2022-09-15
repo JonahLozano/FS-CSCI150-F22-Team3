@@ -53,7 +53,18 @@ router.get("/auth/failure", (req, res) => {
 });
 
 router.get("/protected", isLoggedIn, (req, res) => {
-  res.send("hello!");
+  res.redirect("http://localhost:3000/loggedin");
+});
+
+router.get("/checkAuthentication", (req, res) => {
+  const authenticated = req.user !== undefined;
+
+  console.log(req.user);
+  console.log(authenticated);
+
+  res.status(200).json({
+    authenticated,
+  });
 });
 
 module.exports = router;
