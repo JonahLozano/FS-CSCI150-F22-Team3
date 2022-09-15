@@ -24,7 +24,7 @@ Now just run 'npm start' in both the backend directory and frontend directory.
 
 - Project Manager: Jonah Lozano
 - Frontend: Robert Mawhinney
-- Backend: Luis Valencia
+- Backend: Luis Valencia (Luis edited this)
 - Quality Assurance: Quan Nguyen
 - UI/UX: Dustin Vang
 - Tester: Jaspinder Singh
