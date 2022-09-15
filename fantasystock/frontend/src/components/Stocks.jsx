@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Stock(props) {
   const [price, setPrice] = useState(0);
 
-  const updatePrice = () => {
+  useEffect(() => {
     axios
       .get("/getPrice")
       .then((response) => {
@@ -13,11 +13,10 @@ function Stock(props) {
       .catch((error) => {
         console.log(error.response.data);
       });
-  };
+  }, []);
 
   return (
     <div>
-      <button onClick={updatePrice}>Update Price</button>
       <h1> AMZN is: {price}</h1>
     </div>
   );

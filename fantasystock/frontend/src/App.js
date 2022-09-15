@@ -31,12 +31,12 @@ function App() {
         <h2>{`Logged in with google: ${loggedIn}`}</h2>
         <Signup />
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />}>
-            Dashboard
-          </Route>
-          <Route path="/stocks" element={<Stocks />}>
-            Dashboard
-          </Route>
+          <Route path="/dashboard" element={<Dashboard />} />
+          {loggedIn ? (
+            <Route path="/stocks" element={<Stocks />} />
+          ) : (
+            <Route path="/" />
+          )}
         </Routes>
         <ul>
           <li>
