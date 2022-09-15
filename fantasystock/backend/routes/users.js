@@ -1,20 +1,59 @@
-const express = require("express");
 const bodyParser = require("body-parser");
-const router = express.Router();
 const User = require("../models/user");
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
-const jsonParser = bodyParser.json();
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401);
+}
 
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:5000/register/google/callback",
+    },
+    async function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  )
+);
 
-router.post("/", jsonParser, async (req, res) => {
-  try {
-    const { email, username, password } = req.body;
-    const user = new User({ email, username });
-    const registerUser = await User.register(user, password);
-  } catch (error) {
-    res.send(error);
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+router.get("/", (req, res) => {
+  res.send('<a href="/register/auth/google">authenticate with google</a>');
+});
+
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    res.redirect("/register/protected");
   }
+);
+
+router.get("/auth/failure", (req, res) => {
+  res.send("something went wrong..");
+});
+
+router.get("/protected", isLoggedIn, (req, res) => {
+  res.send("hello!");
 });
 
 module.exports = router;

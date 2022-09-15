@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 var request = require("request");
+require("dotenv").config();
 
 router.get("/", (req, res) => {
   request(
-    "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMZN&interval=5min&apikey=XZTQJ1SRNWG3A787",
+    `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMZN&interval=5min&apikey=${process.env.ALPHA_VANTAGE_KEY}`,
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         var parsedBody = JSON.parse(body);

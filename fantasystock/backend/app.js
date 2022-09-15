@@ -2,15 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const session = require("express-session");
-const port = 5000;
 const passport = require("passport");
-const LocalStrategy = require("passport-local");
 const User = require("./models/user");
+require("dotenv").config();
 
 const GetPrice = require("./routes/getPrice");
 const userRoutes = require("./routes/users");
 
-mongoose.connect("mongodb://localhost:27017/fantasystock", {
+mongoose.connect(process.env.DB_HOST, {
   useNewURLParser: true,
   useUnifiedTopology: true,
 });
@@ -22,7 +21,7 @@ db.once("open", () => {
 });
 
 const sessionConfig = {
-  secret: "thiswillnotbeusedinproduction",
+  secret: process.env.SESSION_SECERET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -37,22 +36,11 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-app.get("/fakeuser", async (req, res) => {
-  const user = new User({
-    email: "jonah@gmail.com",
-    username: "jonah",
-  });
-  const newUser = await User.register(user, "password1");
-  res.send(newUser);
-});
-
 app.use("/register", userRoutes);
 app.use("/getPrice", GetPrice);
 
 app.get("/", (req, res) => res.send("Hi"));
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(process.env.port, () =>
+  console.log(`Listening on port ${process.env.PORT}`)
+);
