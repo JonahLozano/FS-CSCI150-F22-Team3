@@ -63,7 +63,7 @@ function Navbar(props) {
           type="button"
           aria-label="Sign-Up or Sign-In"
         >
-          Sign in
+          <FontAwesomeIcon icon={faUser} /> Sign in
         </button>
 
         <button

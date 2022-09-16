@@ -24,7 +24,6 @@ function App() {
     <div className="App">
       <Navbar />
       <header className="App-header">
-        <h1>FantasyStock</h1>
         <h2>{`Logged in with google: ${loggedIn}`}</h2>
         <Signup />
         <ul>
