@@ -1,4 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCoffee,
+  faMagnifyingGlass,
+  faHouse,
+  faUser,
+  faUserGroup,
+  faCog,
+  faFootball,
+} from "@fortawesome/free-solid-svg-icons";
+
+// <i class="fa-solid fa-magnifying-glass"></i>
 
 function Navbar(props) {
   const [sideNav, setSideNav] = useState(false);
@@ -41,7 +53,9 @@ function Navbar(props) {
             placeholder="Search for a League"
             aria-label="Search"
           />
-          <button type="submit">Search</button>
+          <button type="submit">
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
         </form>
 
         <button
@@ -63,15 +77,39 @@ function Navbar(props) {
 
       {sideNav ? (
         <nav className="VerticalNavbarContainer1">
-          <div className="VerticalNavbarIcons">🏠 Home</div>
-          <div className="VerticalNavbarIcons">🏠 Home</div>
-          <div className="VerticalNavbarIcons">🙋 Friends</div>
+          <div className="VerticalNavbarIcons1">
+            <FontAwesomeIcon icon={faHouse} /> Home
+          </div>
+          <div className="VerticalNavbarIcons1">
+            <FontAwesomeIcon icon={faFootball} /> Leagues
+          </div>
+          <div className="VerticalNavbarIcons1">
+            <FontAwesomeIcon icon={faUser} /> Profile
+          </div>
+          <div className="VerticalNavbarIcons1">
+            <FontAwesomeIcon icon={faUserGroup} /> Friends
+          </div>
+          <div className="VerticalNavbarIcons1">
+            <FontAwesomeIcon icon={faCog} /> Settings
+          </div>
         </nav>
       ) : (
         <nav className="VerticalNavbarContainer2">
-          <div className="VerticalNavbarIcons">🏠</div>
-          <div className="VerticalNavbarIcons">🏠</div>
-          <div className="VerticalNavbarIcons">🙋</div>
+          <div className="VerticalNavbarIcons2">
+            <FontAwesomeIcon icon={faHouse} />
+          </div>
+          <div className="VerticalNavbarIcons2">
+            <FontAwesomeIcon icon={faFootball} />
+          </div>
+          <div className="VerticalNavbarIcons2">
+            <FontAwesomeIcon icon={faUser} />
+          </div>
+          <div className="VerticalNavbarIcons2">
+            <FontAwesomeIcon icon={faUserGroup} />
+          </div>
+          <div className="VerticalNavbarIcons2">
+            <FontAwesomeIcon icon={faCog} />
+          </div>
         </nav>
       )}
     </div>
