@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 function Stock(props) {
   const [price, setPrice] = useState(0);
 
-  useEffect(() => {
+  useMemo((event) => {
     axios
       .get("/getPrice")
       .then((response) => {
