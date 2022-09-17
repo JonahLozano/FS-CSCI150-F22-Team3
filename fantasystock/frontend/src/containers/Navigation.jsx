@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import SigninBtn from "../components/SigninBtn";
 import {
   faHouse,
@@ -13,31 +13,31 @@ import SearchBar from "../components/SearchBar";
 import SettingsBtn from "../components/SettingsBtn";
 import HamburgerToggle from "../components/HamburgerToggle";
 import ClickableIcons from "../components/ClickableIcons";
+import FloatingTab from "../components/FloatingTab";
+import { useSelector, useDispatch } from "react-redux";
+import { toggle as sidebarToggler } from "../redux/sidebarState";
+import { toggle as fTabToggler } from "../redux/fTabState";
 
 function Navigation(props) {
-  const [showSideNav, setShowSideNav] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const callback = (toggle) => setShowSideNav(toggle);
-  const handleClick = () => setShowSettings(!showSettings);
+  const sidebarToggle = useSelector((state) => state.sidebarState.value);
+  const fTabToggle = useSelector((state) => state.fTabState.value);
+  const dispatch = useDispatch();
 
   return (
     <nav className="NavbarContainerContainer">
       <div className="NavbarContainer">
-        <HamburgerToggle onClick={callback} />
+        <HamburgerToggle onClick={() => dispatch(sidebarToggler())} />
         <LogoBtn />
         <SearchBar />
-        <SigninBtn isLoggedin={props.isLoggedin} />
-        <button onClick={handleClick}>thing</button>
-        {showSettings && (
-          <div className="NavbarFloatingTab">
-            <div className="NavbarFloatingTabTab">Appearance: Dark</div>
-            <div className="NavbarFloatingTabTab">Sign out</div>
-          </div>
-        )}
+        <SigninBtn
+          isLoggedin={props.isLoggedin}
+          onClick={() => dispatch(fTabToggler())}
+        />
+        {fTabToggle && <FloatingTab />}
         {!props.isLoggedin && <SettingsBtn />}
       </div>
 
-      {showSideNav ? (
+      {sidebarToggle ? (
         <div className="VerticalNavbarContainer1">
           <ClickableIcons
             to="/"

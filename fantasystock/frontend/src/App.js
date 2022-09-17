@@ -1,7 +1,7 @@
 import "./App.css";
 import Stocks from "../src/components/Stocks";
 import Navigation from "./containers/Navigation";
-import Unauthorized from "./components/Unauthorized";
+import Unauthorized from "./components/UnAuthenticated";
 import React, { useState, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";

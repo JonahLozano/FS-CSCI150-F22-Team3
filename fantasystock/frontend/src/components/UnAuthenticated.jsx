@@ -3,7 +3,7 @@ import React from "react";
 function Stock(props) {
   return (
     <div>
-      <h1>Unauthorized!</h1>
+      <h1>Unauthenticated!</h1>
     </div>
   );
 }

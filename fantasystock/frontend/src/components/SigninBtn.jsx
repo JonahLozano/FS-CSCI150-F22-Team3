@@ -1,31 +1,14 @@
-import React, { useState, setState } from "react";
-import axios from "axios";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function SigninBtn(props) {
-  const [logged, setLogged] = useState(props.isLoggedin);
-
-  const handleClick = () => {
-    axios
-      .post("/register/logout", {})
-      .then(function (response) {
-        console.log(response);
-        setLogged(false);
-        window.location.replace("http://localhost:3000");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-  // <span className="NavbarLoggedInBtn">
-
   return (
-    <span onClick={handleClick}>
+    <span>
       {props.isLoggedin ? (
-        <span className="NavbarSignInUpBtn">
+        <span onClick={props.onClick} className="NavbarLoggedInBtn">
           <FontAwesomeIcon icon={faUser} />{" "}
-          <span className="NavbarSignInUpBtnText"> Sign out </span>
+          <span className="NavbarSignInUpBtnText" />
         </span>
       ) : (
         <a
