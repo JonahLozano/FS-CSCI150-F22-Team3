@@ -1,9 +1,9 @@
 import "./App.css";
 import Stocks from "../src/components/Stocks";
-import Navigation from "./components/Navigation";
+import Navigation from "./containers/Navigation";
 import Unauthorized from "./components/Unauthorized";
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import React, { useState, useMemo } from "react";
+import { Route, Routes } from "react-router-dom";
 import axios from "axios";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <Navigation isLoggedin={loggedIn} />
-      <header className="App-header">
+      <main className="App-header">
         <Routes>
           <Route path="/" element={null} />
           <Route path="/loggedin" element={null} />
@@ -33,7 +33,7 @@ function App() {
             <Route path="/stocks" element={<Unauthorized />} />
           )}
         </Routes>
-      </header>
+      </main>
     </div>
   );
 }

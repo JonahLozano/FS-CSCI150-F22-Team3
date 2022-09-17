@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SigninBtn from "./SigninBtn";
+import SigninBtn from "../components/SigninBtn";
 import {
   faHouse,
   faUser,
@@ -8,34 +8,37 @@ import {
   faFootball,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import LogoBtn from "./LogoBtn";
-import SearchBar from "./SearchBar";
-import SettingsBtn from "./SettingsBtn";
-import HamburgerToggle from "./HamburgerToggle";
-import ClickableIcons from "./ClickableIcons";
+import LogoBtn from "../components/LogoBtn";
+import SearchBar from "../components/SearchBar";
+import SettingsBtn from "../components/SettingsBtn";
+import HamburgerToggle from "../components/HamburgerToggle";
+import ClickableIcons from "../components/ClickableIcons";
 
 function Navigation(props) {
   const [showSideNav, setShowSideNav] = useState(false);
-  const callback = (toggle) => {
-    setShowSideNav(toggle);
-  };
+  const [showSettings, setShowSettings] = useState(false);
+  const callback = (toggle) => setShowSideNav(toggle);
+  const handleClick = () => setShowSettings(!showSettings);
 
   return (
-    <div className="NavbarContainerContainer">
-      <nav className="NavbarContainer">
+    <nav className="NavbarContainerContainer">
+      <div className="NavbarContainer">
         <HamburgerToggle onClick={callback} />
-
         <LogoBtn />
-
         <SearchBar />
-
         <SigninBtn isLoggedin={props.isLoggedin} />
-
-        <SettingsBtn />
-      </nav>
+        <button onClick={handleClick}>thing</button>
+        {showSettings && (
+          <div className="NavbarFloatingTab">
+            <div className="NavbarFloatingTabTab">Appearance: Dark</div>
+            <div className="NavbarFloatingTabTab">Sign out</div>
+          </div>
+        )}
+        {!props.isLoggedin && <SettingsBtn />}
+      </div>
 
       {showSideNav ? (
-        <nav className="VerticalNavbarContainer1">
+        <div className="VerticalNavbarContainer1">
           <ClickableIcons
             to="/"
             icon={faHouse}
@@ -72,9 +75,9 @@ function Navigation(props) {
             name="Settings"
             design="VerticalNavbarIcons1"
           />
-        </nav>
+        </div>
       ) : (
-        <nav className="VerticalNavbarContainer2">
+        <div className="VerticalNavbarContainer2">
           <ClickableIcons to="/" icon={faHouse} design="VerticalNavbarIcons2" />
           <ClickableIcons
             to="/stocks"
@@ -93,9 +96,9 @@ function Navigation(props) {
             design="VerticalNavbarIcons2"
           />
           <ClickableIcons to="/" icon={faCog} design="VerticalNavbarIcons2" />
-        </nav>
+        </div>
       )}
-    </div>
+    </nav>
   );
 }
 
