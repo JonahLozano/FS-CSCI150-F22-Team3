@@ -1,7 +1,7 @@
 import "./App.css";
 import Stocks from "../src/components/Stocks";
-import Signup from "../src/components/Signup";
-import Navbar from "./components/Navbar";
+import Navigation from "./components/Navigation";
+import Unauthorized from "./components/Unauthorized";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import axios from "axios";
@@ -22,22 +22,16 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      <Navigation isLoggedin={loggedIn} />
       <header className="App-header">
-        <h2>{`Logged in with google: ${loggedIn}`}</h2>
-        <Signup />
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/stocks">Stocks</Link>
-          </li>
-        </ul>
         <Routes>
           <Route path="/" element={null} />
           <Route path="/loggedin" element={null} />
-          {loggedIn && <Route path="/stocks" element={<Stocks />} />}
+          {loggedIn ? (
+            <Route path="/stocks" element={<Stocks />} />
+          ) : (
+            <Route path="/stocks" element={<Unauthorized />} />
+          )}
         </Routes>
       </header>
     </div>
