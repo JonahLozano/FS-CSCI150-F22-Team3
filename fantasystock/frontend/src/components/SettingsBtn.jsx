@@ -4,7 +4,12 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 function SettingsBtn(props) {
   return (
-    <button className="NavbarSettings" type="button" aria-label="Settings">
+    <button
+      onClick={props.onClick}
+      className="NavbarSettings"
+      type="button"
+      aria-label="Settings"
+    >
       <FontAwesomeIcon icon={faEllipsisVertical} />
     </button>
   );

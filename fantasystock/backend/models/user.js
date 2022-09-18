@@ -8,6 +8,11 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
+  username: String,
+  displayName: String,
+  familyName: String,
+  givenName: String,
+  photo: String,
 });
 
 UserSchema.plugin(findorCreate);

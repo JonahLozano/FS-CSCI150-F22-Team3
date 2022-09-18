@@ -6,10 +6,12 @@ function SigninBtn(props) {
   return (
     <span>
       {props.isLoggedin ? (
-        <span onClick={props.onClick} className="NavbarLoggedInBtn">
-          <FontAwesomeIcon icon={faUser} />{" "}
-          <span className="NavbarSignInUpBtnText" />
-        </span>
+        <img
+          onClick={props.onClick}
+          src={props.pic}
+          className="NavbarLoggedInBtn"
+          alt="profile"
+        />
       ) : (
         <a
           className="NavbarSignInUpBtn"

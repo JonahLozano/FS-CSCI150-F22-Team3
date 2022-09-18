@@ -18,9 +18,11 @@ function FloatingTab(props) {
     <OutsideAlerter>
       <div className="NavbarFloatingTab">
         <div className="NavbarFloatingTabTab">Appearance: Dark</div>
-        <div className="NavbarFloatingTabTab" onClick={handleClick}>
-          Sign out
-        </div>
+        {props.isLoggedin && (
+          <div className="NavbarFloatingTabTab" onClick={handleClick}>
+            Sign out
+          </div>
+        )}
       </div>
     </OutsideAlerter>
   );

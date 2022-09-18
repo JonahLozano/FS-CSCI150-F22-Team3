@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
+import axios from "axios";
 import SigninBtn from "../components/SigninBtn";
 import {
   faHouse,
@@ -19,9 +20,21 @@ import { toggle as sidebarToggler } from "../redux/sidebarState";
 import { toggle as fTabToggler } from "../redux/fTabState";
 
 function Navigation(props) {
+  const [pic, setPic] = useState("");
   const sidebarToggle = useSelector((state) => state.sidebarState.value);
   const fTabToggle = useSelector((state) => state.fTabState.value);
   const dispatch = useDispatch();
+
+  useMemo((event) => {
+    axios
+      .get("/register/profilepicture")
+      .then((response) => {
+        setPic(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }, []);
 
   return (
     <nav className="NavbarContainerContainer">
@@ -31,10 +44,13 @@ function Navigation(props) {
         <SearchBar />
         <SigninBtn
           isLoggedin={props.isLoggedin}
+          pic={pic}
           onClick={() => dispatch(fTabToggler())}
         />
-        {fTabToggle && <FloatingTab />}
-        {!props.isLoggedin && <SettingsBtn />}
+        {!props.isLoggedin && (
+          <SettingsBtn onClick={() => dispatch(fTabToggler())} />
+        )}
+        {fTabToggle && <FloatingTab isLoggedin={props.isLoggedin} />}
       </div>
 
       {sidebarToggle ? (
