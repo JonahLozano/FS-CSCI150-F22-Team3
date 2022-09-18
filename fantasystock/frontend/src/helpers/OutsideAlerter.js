@@ -1,14 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { toggle } from "../redux/fTabState";
+import { off } from "../redux/fTabState";
 
 function useOutsideAlerter(ref) {
   const dispatch = useDispatch();
   useEffect(() => {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
-        dispatch(toggle());
+        dispatch(off());
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -22,7 +22,7 @@ function OutsideAlerter(props) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  return <div ref={wrapperRef}>{props.children}</div>;
+  return <span ref={wrapperRef}>{props.children}</span>;
 }
 
 OutsideAlerter.propTypes = {

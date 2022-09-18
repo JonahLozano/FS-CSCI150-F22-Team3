@@ -1,0 +1,15 @@
+.NavbarLogoBtn {
+  width: auto;
+  height: 2rem;
+  float: left;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: #00000000;
+  color: white;
+  font-weight: bolder;
+  border-style: none;
+  border-radius: 1rem;
+  text-decoration: none;
+  padding: 0 0 0 0.5rem;
+  user-select: none;
+}

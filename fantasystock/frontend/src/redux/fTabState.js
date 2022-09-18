@@ -9,9 +9,15 @@ export const fTabStateSlice = createSlice({
     toggle: (state) => {
       state.value = !state.value;
     },
+    on: (state) => {
+      state.value = true;
+    },
+    off: (state) => {
+      state.value = false;
+    },
   },
 });
 
-export const { toggle } = fTabStateSlice.actions;
+export const { toggle, on, off } = fTabStateSlice.actions;
 
 export default fTabStateSlice.reducer;

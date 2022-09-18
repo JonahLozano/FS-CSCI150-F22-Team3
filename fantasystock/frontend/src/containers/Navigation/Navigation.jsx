@@ -1,6 +1,4 @@
-import React, { useState, useMemo } from "react";
-import axios from "axios";
-import SigninBtn from "../components/SigninBtn";
+import React from "react";
 import {
   faHouse,
   faUser,
@@ -9,32 +7,17 @@ import {
   faFootball,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import LogoBtn from "../components/LogoBtn";
-import SearchBar from "../components/SearchBar";
-import SettingsBtn from "../components/SettingsBtn";
-import HamburgerToggle from "../components/HamburgerToggle";
-import ClickableIcons from "../components/ClickableIcons";
-import FloatingTab from "../components/FloatingTab";
+import LogoBtn from "../../components/LogoBtn/LogoBtn";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import HamburgerToggle from "../../components/HamburgerToggle/HamburgerToggle";
+import ClickableIcons from "../../components/ClickableIcons/ClickableIcons";
+import LoginSet from "../../components/LoginSet/LoginSet";
 import { useSelector, useDispatch } from "react-redux";
-import { toggle as sidebarToggler } from "../redux/sidebarState";
-import { toggle as fTabToggler } from "../redux/fTabState";
+import { toggle as sidebarToggler } from "../../redux/sidebarState";
 
 function Navigation(props) {
-  const [pic, setPic] = useState("");
   const sidebarToggle = useSelector((state) => state.sidebarState.value);
-  const fTabToggle = useSelector((state) => state.fTabState.value);
   const dispatch = useDispatch();
-
-  useMemo((event) => {
-    axios
-      .get("/register/profilepicture")
-      .then((response) => {
-        setPic(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  }, []);
 
   return (
     <nav className="NavbarContainerContainer">
@@ -42,15 +25,7 @@ function Navigation(props) {
         <HamburgerToggle onClick={() => dispatch(sidebarToggler())} />
         <LogoBtn />
         <SearchBar />
-        <SigninBtn
-          isLoggedin={props.isLoggedin}
-          pic={pic}
-          onClick={() => dispatch(fTabToggler())}
-        />
-        {!props.isLoggedin && (
-          <SettingsBtn onClick={() => dispatch(fTabToggler())} />
-        )}
-        {fTabToggle && <FloatingTab isLoggedin={props.isLoggedin} />}
+        <LoginSet />
       </div>
 
       {sidebarToggle ? (
