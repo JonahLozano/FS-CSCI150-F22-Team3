@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import "./HamburgerToggle.css";
 
 function HamburgerToggle(props) {
-  const [sideNav, setSideNav] = useState(true);
-
-  const handleEvent = (event) => {
-    setSideNav(!sideNav);
-    props.onClick(sideNav);
-    console.log(sideNav);
-  };
-
   return (
     <div
       aria-label="Toggle navigation"
       className="NavbarHamburgerMenu"
-      onClick={handleEvent}
+      onClick={props.onClick}
     >
       <FontAwesomeIcon icon={faBars} />
     </div>

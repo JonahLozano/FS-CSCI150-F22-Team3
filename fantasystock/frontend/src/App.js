@@ -1,29 +1,32 @@
 import "./App.css";
-import Stocks from "../src/components/Stocks";
-import Navigation from "./components/Navigation";
-import Unauthorized from "./components/Unauthorized";
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import Stocks from "./containers/Stocks/Stocks";
+import Navigation from "./containers/Navigation/Navigation";
+import Unauthorized from "./containers/Unauthenticated/Unauthenticated";
+import React, { useMemo } from "react";
+import { Route, Routes } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login, logout } from "./redux/authState";
 import axios from "axios";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  const loggedIn = useSelector((state) => state.authState.value);
 
   useMemo(() => {
     axios
       .get("/register/checkAuthentication")
       .then((res) => {
-        setLoggedIn(res.data.authenticated);
+        res.data.authenticated ? dispatch(login()) : dispatch(logout());
       })
       .catch((error) => {
-        setLoggedIn(false);
+        dispatch(logout());
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <Navigation isLoggedin={loggedIn} />
-      <header className="App-header">
+      <Navigation />
+      <main className="App-header">
         <Routes>
           <Route path="/" element={null} />
           <Route path="/loggedin" element={null} />
@@ -33,7 +36,7 @@ function App() {
             <Route path="/stocks" element={<Unauthorized />} />
           )}
         </Routes>
-      </header>
+      </main>
     </div>
   );
 }
