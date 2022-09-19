@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import axios from "axios";
+import "./LoggedinBtn.css";
 
 function LoggedinBtn(props) {
   const [pic, setPic] = useState("");
@@ -20,7 +21,7 @@ function LoggedinBtn(props) {
       <img
         onClick={props.onClick}
         src={pic}
-        className="NavbarLoggedInBtn"
+        className="NavbarLoggedInBtn noBtn"
         alt="profile"
       />
     </span>
