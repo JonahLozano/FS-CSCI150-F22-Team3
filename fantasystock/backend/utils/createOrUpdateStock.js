@@ -27,13 +27,11 @@ const createOrUpdateStock = (stock) => {
                   name: stock.name,
                   sector: stock.sector,
                   price: aPrice,
-                  lastUpdated: date,
                 }
               )
                 .then((res) => {
                   Stock.findOneAndUpdate(res, {
                     price: aPrice,
-                    lastUpdated: date,
                   }).then((res) => res);
                 })
                 .catch((error) => console.log(`Mongo Error: ${error}`));
@@ -53,7 +51,16 @@ module.exports = () => {
   asyncFilter(stocks, async (ele) => {
     try {
       const [aStock] = await Stock.find({ ticker: ele.ticker });
-      return aStock === undefined;
+      if (aStock === undefined) {
+        return true;
+      } else {
+        // console.log(
+        //   `[${ele.ticker}] ${date} < ${new Date()} = ${date < new Date()}`
+        // );
+        const date = new Date(aStock.updatedAt);
+        date.setHours(date.getHours() + 24);
+        return date < new Date();
+      }
     } catch (error) {
       console.log(error);
       return false;

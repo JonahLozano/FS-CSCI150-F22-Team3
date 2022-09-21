@@ -4,6 +4,7 @@ const app = express();
 const session = require("express-session");
 const passport = require("passport");
 require("dotenv").config();
+const schedule = require("node-schedule");
 
 const GetPrice = require("./routes/getPrice");
 const userRoutes = require("./routes/users");
@@ -46,3 +47,7 @@ app.listen(process.env.port, () =>
 );
 
 createOrUpdateStocks();
+
+const job = schedule.scheduleJob("0 0 * * *", function () {
+  createOrUpdateStocks();
+});
