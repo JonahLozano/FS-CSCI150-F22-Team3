@@ -21,6 +21,7 @@ function LoggedinBtn(props) {
       <img
         onClick={props.onClick}
         src={pic}
+        referrerPolicy="no-referrer"
         className="NavbarLoggedInBtn noBtn"
         alt="profile"
       />

@@ -19,6 +19,7 @@
 }
 
 .NavbarFloatingTabTab {
+  display: block;
   width: auto;
   min-width: 10rem;
   height: auto;
@@ -32,6 +33,7 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  text-decoration: none;
 }
 
 .NavbarFloatingTabTab:hover {

@@ -1,11 +1,11 @@
 import React from "react";
 import {
   faHouse,
-  faUser,
   faUserGroup,
   faCog,
   faFootball,
   faShoppingCart,
+  faAddressCard,
 } from "@fortawesome/free-solid-svg-icons";
 import LogoBtn from "../../components/LogoBtn/LogoBtn";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -42,12 +42,7 @@ function Navigation(props) {
             name="League"
             design="VerticalNavbarIcons1"
           />
-          <ClickableIcons
-            to="/"
-            icon={faUser}
-            name="Profile"
-            design="VerticalNavbarIcons1"
-          />
+
           <ClickableIcons
             to="/"
             icon={faUserGroup}
@@ -58,6 +53,12 @@ function Navigation(props) {
             to="/"
             icon={faShoppingCart}
             name="Store"
+            design="VerticalNavbarIcons1"
+          />
+          <ClickableIcons
+            to="/"
+            icon={faAddressCard}
+            name="Profile"
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
@@ -75,15 +76,20 @@ function Navigation(props) {
             icon={faFootball}
             design="VerticalNavbarIcons2"
           />
-          <ClickableIcons to="/" icon={faUser} design="VerticalNavbarIcons2" />
           <ClickableIcons
             to="/"
             icon={faUserGroup}
             design="VerticalNavbarIcons2"
           />
+
           <ClickableIcons
             to="/"
             icon={faShoppingCart}
+            design="VerticalNavbarIcons2"
+          />
+          <ClickableIcons
+            to="/"
+            icon={faAddressCard}
             design="VerticalNavbarIcons2"
           />
           <ClickableIcons to="/" icon={faCog} design="VerticalNavbarIcons2" />

@@ -8,10 +8,12 @@ const StockSchema = new Schema({
     required: true,
     unique: true,
   },
+  name: String,
+  sector: String,
   price: Number,
   lastUpdated: Date,
 });
 
-UserSchema.plugin(findorCreate);
+StockSchema.plugin(findorCreate);
 
 module.exports = mongoose.model("Stock", StockSchema);
