@@ -4,13 +4,13 @@
 }
 
 .teamSubHeader {
-  color: #dcdcdc;
+  color: var(--secondary-font-color-dark);
   margin: 1.75rem;
   padding: 0.5rem;
 }
 
 .teamSubHeader:hover {
-  color: #ffffff;
+  color: var(--main-font-color-dark);
 }
 
 .aboutPage {
@@ -30,7 +30,7 @@
 }
 
 .aboutParagraph {
-  color: #dcdcdc;
+  color: var(--secondary-font-color-dark);
   line-height: 3rem;
   margin: 0.5rem 0 0.5rem 0;
   text-align: justify;

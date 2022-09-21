@@ -1,5 +1,5 @@
 .skeleton {
-  background-color: hsl(220, 13%, 22%);
+  background-color: var(--skeleton-placeholder-color-dark);
   margin: 10px 0;
   border-radius: 4px;
 }

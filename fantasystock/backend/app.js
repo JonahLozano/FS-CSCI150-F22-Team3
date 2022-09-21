@@ -46,8 +46,6 @@ app.listen(process.env.port, () =>
   console.log(`Listening on port ${process.env.PORT}`)
 );
 
-createOrUpdateStocks();
-
-const job = schedule.scheduleJob("0 0 * * *", function () {
+schedule.scheduleJob("0 */4 * * *", function () {
   createOrUpdateStocks();
 });

@@ -14,8 +14,6 @@ const createOrUpdateStock = (stock) => {
         try {
           setTimeout(() => {
             try {
-              const date = new Date();
-              const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
               const parsedBody = JSON.parse(body);
               const aTime = parsedBody["Meta Data"]["3. Last Refreshed"];
               const aPrice =

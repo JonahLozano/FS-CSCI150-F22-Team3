@@ -1,4 +1,4 @@
 .stockCard {
-  background-color: hsl(220, 13%, 22%);
+  background-color: var(--card-color-dark);
   border-radius: 1rem;
 }
