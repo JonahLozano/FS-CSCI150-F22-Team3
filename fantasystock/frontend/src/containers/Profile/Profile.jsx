@@ -16,12 +16,6 @@ function Stock(props) {
   const [editable, setEditable] = useState(false);
 
   useEffect((event) => {
-    axios.defaults.headers = {
-      "Cache-Control": "no-cache",
-      Pragma: "no-cache",
-      Expires: "0",
-    };
-
     axios
       .get(`/register/profile`)
       .then((response) => {

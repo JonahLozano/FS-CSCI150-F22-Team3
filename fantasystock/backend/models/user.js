@@ -13,7 +13,7 @@ const UserSchema = new Schema({
   familyName: { type: String, default: "" },
   givenName: { type: String, default: "" },
   photo: { type: String, default: "" },
-  bio: { type: String, default: "" },
+  bio: { type: String, default: "Hello, World!" },
   friends: [this],
 });
 
