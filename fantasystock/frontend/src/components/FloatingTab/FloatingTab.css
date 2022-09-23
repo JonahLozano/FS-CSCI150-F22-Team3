@@ -1,0 +1,39 @@
+.NavbarFloatingTab {
+  position: fixed;
+  width: auto;
+  min-width: 10rem;
+  height: auto;
+  right: 1rem;
+  top: 3rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 1;
+  padding: 0;
+  border-radius: 3.125%;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.NavbarFloatingTabTab {
+  width: auto;
+  min-width: 10rem;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  z-index: 1;
+  padding: 0.65rem 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.NavbarFloatingTabTab:hover {
+  background-color: rgba(40, 44, 52, 0.5);
+}

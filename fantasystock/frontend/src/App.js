@@ -1,56 +1,42 @@
 import "./App.css";
-import Stocks from "../src/components/Stocks";
-import Signup from "../src/components/Signup";
-import Dashboard from "../src/components/Dashboard";
-import React, { useState, useEffect } from "react";
+import Stocks from "./containers/Stocks/Stocks";
+import Navigation from "./containers/Navigation/Navigation";
+import Unauthorized from "./containers/Unauthenticated/Unauthenticated";
+import React, { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login, logout } from "./redux/authState";
 import axios from "axios";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  const loggedIn = useSelector((state) => state.authState.value);
 
-  useEffect(() => {
+  useMemo(() => {
     axios
       .get("/register/checkAuthentication")
       .then((res) => {
-        res.data.authenticated
-          ? console.log("logged in")
-          : console.log("no idea");
-        setLoggedIn(res.data.authenticated);
+        res.data.authenticated ? dispatch(login()) : dispatch(logout());
       })
       .catch((error) => {
-        console.log("not logged in");
-        setLoggedIn(false);
+        dispatch(logout());
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>FantasyStock</h1>
-        <h2>{`Logged in with google: ${loggedIn}`}</h2>
-        <Signup />
+      <Navigation />
+      <main className="App-header">
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={null} />
+          <Route path="/loggedin" element={null} />
           {loggedIn ? (
             <Route path="/stocks" element={<Stocks />} />
           ) : (
-            <Route path="/" />
+            <Route path="/stocks" element={<Unauthorized />} />
           )}
         </Routes>
-        <ul>
-          <li>
-            <a className="App-link" href="/">
-              Home
-            </a>
-          </li>
-          <li>
-            <a className="App-link" href="/stocks">
-              Stocks
-            </a>
-          </li>
-        </ul>
-      </header>
+      </main>
     </div>
   );
 }

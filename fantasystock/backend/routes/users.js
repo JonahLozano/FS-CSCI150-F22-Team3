@@ -17,9 +17,28 @@ passport.use(
       callbackURL: "http://localhost:5000/register/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      await User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        User.findOneAndUpdate(
+          { googleId: profile.id },
+          {
+            displayName: profile.displayName,
+            familyName: profile.name.familyName,
+            givenName: profile.name.givenName,
+            photo: profile.photos[0].value,
+          }
+        );
         return cb(err, user);
       });
+
+      await User.findOneAndUpdate(
+        { googleId: profile.id },
+        {
+          displayName: profile.displayName,
+          familyName: profile.name.familyName,
+          givenName: profile.name.givenName,
+          photo: profile.photos[0].value,
+        }
+      );
     }
   )
 );
@@ -29,10 +48,6 @@ passport.serializeUser(function (user, done) {
 });
 passport.deserializeUser(function (user, done) {
   done(null, user);
-});
-
-router.get("/", (req, res) => {
-  res.send('<a href="/register/auth/google">authenticate with google</a>');
 });
 
 router.get(
@@ -59,12 +74,23 @@ router.get("/protected", isLoggedIn, (req, res) => {
 router.get("/checkAuthentication", (req, res) => {
   const authenticated = req.user !== undefined;
 
-  console.log(req.user);
-  console.log(authenticated);
-
   res.status(200).json({
     authenticated,
   });
+});
+
+router.post("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+router.get("/profilepicture", isLoggedIn, (req, res) => {
+  // res.send(`<img src="${req.user.photo}" />`);
+  res.send(`${req.user.photo}`);
 });
 
 module.exports = router;

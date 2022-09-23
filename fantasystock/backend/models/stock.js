@@ -2,19 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const findorCreate = require("mongoose-findorcreate");
 
-const UserSchema = new Schema({
-  googleId: {
+const StockSchema = new Schema({
+  ticker: {
     type: String,
     required: true,
     unique: true,
   },
-  username: String,
-  displayName: String,
-  familyName: String,
-  givenName: String,
-  photo: String,
+  price: Number,
+  lastUpdated: Date,
 });
 
 UserSchema.plugin(findorCreate);
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("Stock", StockSchema);
