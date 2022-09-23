@@ -5,10 +5,10 @@ const session = require("express-session");
 const passport = require("passport");
 require("dotenv").config();
 const schedule = require("node-schedule");
-
 const GetPrice = require("./routes/getPrice");
 const userRoutes = require("./routes/users");
 const createOrUpdateStocks = require("./utils/createOrUpdateStock");
+const MongoDBStore = require("connect-mongo");
 
 mongoose.connect(process.env.DB_HOST, {
   useNewURLParser: true,
@@ -21,6 +21,12 @@ db.once("open", () => {
   console.log("Database connected");
 });
 
+const store = new MongoDBStore({
+  mongoUrl: process.env.DB_HOST,
+  secret: process.env.SESSION_SECERET,
+  touchAfter: 24 * 60 * 60,
+});
+
 const sessionConfig = {
   secret: process.env.SESSION_SECERET,
   resave: false,
@@ -30,7 +36,12 @@ const sessionConfig = {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
+  store,
 };
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
 
 app.use(session(sessionConfig));
 
