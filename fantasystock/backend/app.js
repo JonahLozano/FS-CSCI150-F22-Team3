@@ -1,9 +1,11 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const session = require("express-session");
 const passport = require("passport");
-require("dotenv").config();
 const schedule = require("node-schedule");
 const GetPrice = require("./routes/getPrice");
 const userRoutes = require("./routes/users");
