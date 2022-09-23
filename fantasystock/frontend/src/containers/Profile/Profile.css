@@ -1,0 +1,22 @@
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-top: 3rem;
+}
+
+.profileTitle {
+  display: inline;
+}
+
+.profilePic {
+  display: inline-block;
+  border: 0.25rem solid white;
+  border-radius: 100%;
+  padding: 0.125rem;
+}
+
+.profilePic img {
+  border-radius: 100%;
+  display: flex;
+}

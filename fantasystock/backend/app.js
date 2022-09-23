@@ -32,7 +32,7 @@ const store = new MongoDBStore({
 const sessionConfig = {
   secret: process.env.SESSION_SECERET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,

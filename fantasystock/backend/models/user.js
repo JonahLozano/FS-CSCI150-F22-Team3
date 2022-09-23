@@ -8,11 +8,13 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  username: String,
-  displayName: String,
-  familyName: String,
-  givenName: String,
-  photo: String,
+  username: { type: String, default: "Cow1337killr" },
+  displayName: { type: String, default: "" },
+  familyName: { type: String, default: "" },
+  givenName: { type: String, default: "" },
+  photo: { type: String, default: "" },
+  bio: { type: String, default: "" },
+  friends: [this],
 });
 
 UserSchema.plugin(findorCreate);

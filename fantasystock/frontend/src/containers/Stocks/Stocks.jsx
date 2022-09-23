@@ -4,16 +4,10 @@ import SkeletonElement from "./SkeletonElement";
 import "./Stocks.css";
 
 function Stock(props) {
-  const [data, setData] = useState([
-    {
-      ticker: String,
-      name: String,
-      sector: String,
-      price: Number,
-    },
-  ]);
+  const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
   const skeleArrSize = 100;
+  const skeleArr = [...Array(skeleArrSize)];
 
   useMemo((event) => {
     axios
@@ -22,7 +16,8 @@ function Stock(props) {
         response.data.map((ele, index) =>
           setData((oldArr) => [...oldArr, ele])
         );
-        console.log(data);
+      })
+      .then(() => {
         setShow(true);
       })
       .catch((error) => {
@@ -33,16 +28,24 @@ function Stock(props) {
 
   return (
     <div>
-      {show
-        ? data.map((ele) => (
-            <div className="stockCard">
-              <h1>{ele.ticker}</h1>
-              <h2>{ele.name}</h2>
-              <h2>{ele.sector}</h2>
-              <h2>{ele.price}</h2>
-            </div>
-          ))
-        : [...Array(skeleArrSize)].map(() => <SkeletonElement type="div" />)}
+      {
+        <div>
+          {show
+            ? data.map((ele, index) => (
+                <div className="stockCard" key={`uniqueId${index}`}>
+                  <h1>{String(ele.ticker)}</h1>
+                  <h2>{String(ele.name)}</h2>
+                  <h2>{String(ele.sector)}</h2>
+                  <h2>{String(ele.price)}</h2>
+                </div>
+              ))
+            : skeleArr.map((ele, index) => (
+                <div key={`uniqueId${index}`}>
+                  <SkeletonElement type="div" />
+                </div>
+              ))}
+        </div>
+      }
     </div>
   );
 }

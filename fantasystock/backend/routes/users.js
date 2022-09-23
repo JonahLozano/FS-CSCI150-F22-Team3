@@ -17,27 +17,15 @@ passport.use(
       callbackURL: "http://localhost:5000/register/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
-      await User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        User.findOneAndUpdate(
-          { googleId: profile.id },
-          {
-            displayName: profile.displayName,
-            familyName: profile.name.familyName,
-            givenName: profile.name.givenName,
-            photo: profile.photos[0].value,
-          }
-        );
-        return cb(err, user);
-      });
-
-      await User.findOneAndUpdate(
+      await User.findOrCreate(
         { googleId: profile.id },
         {
           displayName: profile.displayName,
           familyName: profile.name.familyName,
           givenName: profile.name.givenName,
           photo: profile.photos[0].value,
-        }
+        },
+        (err, user) => cb(err, user)
       );
     }
   )
@@ -88,9 +76,38 @@ router.post("/logout", function (req, res, next) {
   });
 });
 
-router.get("/profilepicture", isLoggedIn, (req, res) => {
-  // res.send(`<img src="${req.user.photo}" />`);
-  res.send(`${req.user.photo}`);
+router.get(
+  "/profilepicture",
+  isLoggedIn,
+  async (req, res) =>
+    await User.findById(req.user._id).then((aUser) => res.send(aUser.photo))
+);
+
+router.get(
+  "/profile",
+  isLoggedIn,
+  async (req, res) =>
+    await User.findById(req.user._id).then((aUser) => res.send(aUser))
+);
+
+var jsonParser = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+router.patch("/edit", jsonParser, async (req, res) => {
+  await User.findByIdAndUpdate(
+    { _id: req.user._id },
+    {
+      username: req.body.username,
+      bio: req.body.bio,
+    }
+  ),
+    (err, result) => (err ? console.log(err) : console.log(result));
+});
+
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id, (err, docs) =>
+    err ? console.log(err) : console.log(result)
+  );
 });
 
 module.exports = router;

@@ -3,6 +3,7 @@ import Stocks from "./containers/Stocks/Stocks";
 import Navigation from "./containers/Navigation/Navigation";
 import Unauthorized from "./containers/Unauthenticated/Unauthenticated";
 import About from "./containers/About/About";
+import Profile from "./containers/Profile/Profile";
 import React, { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={null} />
           <Route path="/loggedin" element={null} />
           <Route path="/about" element={<About />} />
+          <Route path="/profile" element={<Profile />} />
           {loggedIn ? (
             <Route path="/stocks" element={<Stocks />} />
           ) : (

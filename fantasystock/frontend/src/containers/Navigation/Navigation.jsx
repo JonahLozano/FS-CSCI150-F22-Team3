@@ -56,7 +56,7 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/"
+            to="/profile"
             icon={faAddressCard}
             name="Profile"
             design="VerticalNavbarIcons1"
@@ -88,7 +88,7 @@ function Navigation(props) {
             design="VerticalNavbarIcons2"
           />
           <ClickableIcons
-            to="/"
+            to="/profile"
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
           />
