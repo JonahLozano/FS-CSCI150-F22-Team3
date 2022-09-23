@@ -29,7 +29,6 @@ function Stock(props) {
         setShow(true);
       })
       .catch((error) => {
-        console.log(error.response.data);
         setShow(false);
       });
   }, []);
@@ -40,6 +39,12 @@ function Stock(props) {
       bio: data.bio,
     });
     toggleEdit();
+  };
+
+  const sendDelete = async () => {
+    await axios.delete("/register/delete").catch((err) => {
+      window.location.replace("http://localhost:3000");
+    });
   };
 
   const toggleEdit = () => setEditable(!editable);
@@ -90,6 +95,9 @@ function Stock(props) {
                 ></textarea>
               </div>
               <div>
+                <button type="button" onClick={sendDelete}>
+                  Delete Account :(
+                </button>
                 <button type="button" onClick={sendPatch}>
                   Save :P
                 </button>

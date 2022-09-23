@@ -80,7 +80,9 @@ router.get(
   "/profilepicture",
   isLoggedIn,
   async (req, res) =>
-    await User.findById(req.user._id).then((aUser) => res.send(aUser.photo))
+    await User.findById(req.user._id)
+      .then((aUser) => res.send(aUser.photo))
+      .catch((err) => console.log(err))
 );
 
 router.get(
@@ -103,6 +105,21 @@ router.patch("/edit", jsonParser, async (req, res) => {
   ),
     (err, result) => (err ? console.log(err) : console.log(result));
 });
+
+router.delete(
+  "/delete",
+  async (req, res) =>
+    await User.findByIdAndDelete({ _id: req.user._id })
+      .then((req1, res1) => {
+        req.logout(function (err) {
+          if (err) {
+            return next(err);
+          }
+          res.redirect("/");
+        });
+      })
+      .catch((err) => console.log(err))
+);
 
 router.get("/:id", (req, res) => {
   User.findById(req.params.id, (err, docs) =>
