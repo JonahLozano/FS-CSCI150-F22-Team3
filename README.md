@@ -8,7 +8,7 @@ Before installing, download and install the latest LTS Node.js and Mongodb. You 
 
 If this is a new project, make sure to run npm install on both the frontend directory and the backend directory.
 
-You will need to create a '.env'. file in the backend directory with all the environment varibles needed for this project.
+You will need to create a '.env' file in the backend directory with all the environment varibles needed for this project.
 These include: 
 DB_HOST
 ALPHA_VANTAGE_KEY
