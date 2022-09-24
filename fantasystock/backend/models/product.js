@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const findorCreate = require("mongoose-findorcreate");
 
-const ProductSchema = new Schema({
+const StoreSchema = new Schema({
   item: {
     type: String,
     required: true,
@@ -19,6 +19,6 @@ const ProductSchema = new Schema({
   sold: { type: Number, default: 0 },
 });
 
-ProductSchema.plugin(findorCreate);
+StoreSchema.plugin(findorCreate);
 
-module.exports = mongoose.model("Store", ProductSchema);
+module.exports = mongoose.model("Store", StoreSchema);
