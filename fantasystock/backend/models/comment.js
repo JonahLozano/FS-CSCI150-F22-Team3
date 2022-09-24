@@ -6,11 +6,11 @@ const User = require("./user"); // requiring user.js to be able to reference the
 
 const CommentSchema = new Schema(
   {
-    content: {
+    comment: {
       type: String,
       required: true,
     },
-    user: {
+    owner: {
       type: Schema.Types.ObjectId, // referencing the user for the comment
       ref: "User",
     },
