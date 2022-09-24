@@ -16,10 +16,7 @@ const CommentSchema = new Schema(
     },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
-    replies: {
-      type: [Schema.Types.ObjectId],
-      ref: this,
-    },
+    replies: [this],
   },
   { timestamps: true }
 );
