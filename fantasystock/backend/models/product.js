@@ -16,6 +16,7 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  sold: { type: Number, default: 0 },
 });
 
 ProductSchema.plugin(findorCreate);
