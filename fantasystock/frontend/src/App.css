@@ -25,7 +25,7 @@ body {
   --main-bg-color: hsl(220, 13%, 82%);
   --main-bg-contrast-color: hsl(0, 0%, 0%);
   --main-navbar-color: hsla(220, 13%, 87%, 0.82);
-  --card-color: hsl(220, 13%, 22%);
+  --card-color: hsl(220, 13%, 78%);
   --skeleton-placeholder-color: hsl(220, 13%, 78%);
 
   --main-font-color: hsl(0, 0%, 0%);
@@ -38,8 +38,8 @@ body {
   --floating-tab-color: hsla(0, 0%, 100%, 0.5);
   --floating-contrast-tab-color: hsla(220, 13%, 82%, 0.5);
 
-  --search-btn-color: hsl(0, 0%, 18%);
-  --search-btn-contrast-color: hsl(0, 0%, 21%);
+  --search-btn-color: rgb(208, 208, 208);
+  --search-btn-contrast-color: rgb(201, 201, 201);
 }
 
 body.light {
@@ -56,7 +56,7 @@ body.light {
   --main-bg-color: hsl(220, 13%, 82%);
   --main-bg-contrast-color: hsl(0, 0%, 0%);
   --main-navbar-color: hsla(220, 13%, 87%, 0.82);
-  --card-color: hsl(220, 13%, 22%);
+  --card-color: hsl(220, 13%, 78%);
   --skeleton-placeholder-color: hsl(220, 13%, 78%);
 
   --main-font-color: hsl(0, 0%, 0%);
@@ -69,8 +69,8 @@ body.light {
   --floating-tab-color: hsla(0, 0%, 100%, 0.5);
   --floating-contrast-tab-color: hsla(220, 13%, 82%, 0.5);
 
-  --search-btn-color: hsl(0, 0%, 18%);
-  --search-btn-contrast-color: hsl(0, 0%, 21%);
+  --search-btn-color: rgb(208, 208, 208);
+  --search-btn-contrast-color: rgb(201, 201, 201);
 }
 
 body.dark {
