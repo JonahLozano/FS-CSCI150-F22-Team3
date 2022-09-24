@@ -3,8 +3,8 @@
   width: 6rem;
   height: 2rem;
   float: right;
-  color: var(--sign-in-btn-color-dark);
-  border-color: var(--sign-in-btn-color-dark);
+  color: var(--sign-in-btn-color);
+  border-color: var(--sign-in-btn-color);
   border-radius: 1rem;
   font-weight: 500;
   border-width: 1px;
@@ -26,8 +26,8 @@
 }
 
 .NavbarSignInUpBtn:hover {
-  background-color: var(--sign-in-btn-color-dark);
-  color: var(--main-font-contrast-color-dark);
+  background-color: var(--sign-in-btn-color);
+  color: var(--main-font-contrast-color);
 }
 
 .NavbarLoggedInBtn {
@@ -35,8 +35,8 @@
   width: 2rem;
   height: 2rem;
   float: right;
-  color: var(--sign-in-btn-color-dark);
-  border-color: var(--main-bg-contrast-color-dark);
+  color: var(--sign-in-btn-color);
+  border-color: var(--main-bg-contrast-color);
   border-radius: 100%;
   font-weight: 500;
   border-width: 2px;

@@ -1,27 +1,6 @@
-:root {
-  --main-bg-color-dark: #282c34;
-  --main-bg-contrast-color-dark: white;
-  --main-navbar-color-dark: #1d2026d1;
-  --card-color-dark: hsl(220, 13%, 22%);
-  --skeleton-placeholder-color-dark: hsl(220, 13%, 22%);
-
-  --main-font-color-dark: white;
-  --secondary-font-color-dark: #dcdcdc;
-  --main-font-contrast-color-dark: black;
-  --text-shadow-color-dark: black;
-
-  --sign-in-btn-color-dark: #61dafb;
-
-  --floating-tab-color: rgba(0, 0, 0, 0.5);
-  --floating-contrast-tab-color: rgba(40, 44, 52, 0.5);
-
-  --search-btn-color: rgb(208, 208, 208);
-  --search-btn-contrast-color: rgb(201, 201, 201);
-}
-
 .App {
   text-align: center;
-  background-color: var(--main-bg-color-dark);
+  /* background-color: var(--main-bg-color); */
   font-family: Arial, Helvetica, sans-serif;
   /* background: rgb(255, 0, 0);
   background: linear-gradient(
@@ -30,6 +9,99 @@
     rgba(244, 254, 0, 1) 50%,
     rgba(0, 212, 255, 1) 100%
   ); */
+}
+
+body {
+  text-align: center;
+  background-color: var(--main-bg-color);
+  font-family: Arial, Helvetica, sans-serif;
+  /* background: rgb(255, 0, 0);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(244, 254, 0, 1) 50%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
+  --main-bg-color: hsl(220, 13%, 82%);
+  --main-bg-contrast-color: hsl(0, 0%, 0%);
+  --main-navbar-color: hsla(220, 13%, 87%, 0.82);
+  --card-color: hsl(220, 13%, 22%);
+  --skeleton-placeholder-color: hsl(220, 13%, 78%);
+
+  --main-font-color: hsl(0, 0%, 0%);
+  --secondary-font-color: hsl(0, 0%, 14%);
+  --main-font-contrast-color: hsl(0, 0%, 100%);
+  --text-shadow-color: hsl(0, 0%, 100%);
+
+  --sign-in-btn-color: hsl(193, 95%, 32%);
+
+  --floating-tab-color: hsla(0, 0%, 100%, 0.5);
+  --floating-contrast-tab-color: hsla(220, 13%, 82%, 0.5);
+
+  --search-btn-color: hsl(0, 0%, 18%);
+  --search-btn-contrast-color: hsl(0, 0%, 21%);
+}
+
+body.light {
+  text-align: center;
+  background-color: var(--main-bg-color);
+  font-family: Arial, Helvetica, sans-serif;
+  /* background: rgb(255, 0, 0);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(244, 254, 0, 1) 50%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
+  --main-bg-color: hsl(220, 13%, 82%);
+  --main-bg-contrast-color: hsl(0, 0%, 0%);
+  --main-navbar-color: hsla(220, 13%, 87%, 0.82);
+  --card-color: hsl(220, 13%, 22%);
+  --skeleton-placeholder-color: hsl(220, 13%, 78%);
+
+  --main-font-color: hsl(0, 0%, 0%);
+  --secondary-font-color: hsl(0, 0%, 14%);
+  --main-font-contrast-color: hsl(0, 0%, 100%);
+  --text-shadow-color: hsl(0, 0%, 100%);
+
+  --sign-in-btn-color: hsl(193, 95%, 32%);
+
+  --floating-tab-color: hsla(0, 0%, 100%, 0.5);
+  --floating-contrast-tab-color: hsla(220, 13%, 82%, 0.5);
+
+  --search-btn-color: hsl(0, 0%, 18%);
+  --search-btn-contrast-color: hsl(0, 0%, 21%);
+}
+
+body.dark {
+  text-align: center;
+  background-color: var(--main-bg-color);
+  font-family: Arial, Helvetica, sans-serif;
+  /* background: rgb(255, 0, 0);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(244, 254, 0, 1) 50%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
+  --main-bg-color: #282c34;
+  --main-bg-contrast-color: white;
+  --main-navbar-color: #1d2026d1;
+  --card-color: hsl(219, 13%, 22%);
+  --skeleton-placeholder-color: hsl(220, 13%, 22%);
+
+  --main-font-color: white;
+  --secondary-font-color: #dcdcdc;
+  --main-font-contrast-color: black;
+  --text-shadow-color: black;
+
+  --sign-in-btn-color: #61dafb;
+
+  --floating-tab-color: rgba(0, 0, 0, 0.5);
+  --floating-contrast-tab-color: rgba(40, 44, 52, 0.5);
+
+  --search-btn-color: rgb(208, 208, 208);
+  --search-btn-contrast-color: rgb(201, 201, 201);
 }
 
 .App-logo {
@@ -50,8 +122,8 @@
   align-items: center;
   /* justify-content: center; */
   font-size: calc(10px + 2vmin);
-  color: var(--main-font-color-dark);
-  text-shadow: 5px 4px 4px var(--text-shadow-color-dark);
+  color: var(--main-font-color);
+  text-shadow: 5px 4px 4px var(--text-shadow-color);
   /* background-image: url("https://images.unsplash.com/photo-1617133335361-647ebc4578c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"); */
   background-repeat: no-repeat;
   background-position: center;
@@ -59,11 +131,11 @@
 }
 
 .App-link {
-  color: var(--sign-in-btn-color-dark);
+  color: var(--sign-in-btn-color);
 }
 
 .NavbarContainer {
-  background-color: var(--main-navbar-color-dark);
+  background-color: var(--main-navbar-color);
   padding: 0.5rem;
 }
 .NavbarContainerContainer {
@@ -72,7 +144,7 @@
 }
 
 .VerticalNavbarContainer1 {
-  background-color: var(--main-navbar-color-dark);
+  background-color: var(--main-navbar-color);
   width: 12rem;
   min-height: calc(100vh - 5rem);
   padding: 0.5rem 1rem 1.5rem 1rem;
@@ -83,7 +155,7 @@
   top: 0;
 }
 .VerticalNavbarContainer2 {
-  background-color: var(--main-navbar-color-dark);
+  background-color: var(--main-navbar-color);
   width: auto;
   min-height: calc(100vh - 5rem);
   padding: 0.5rem 1rem 1.5rem 1rem;

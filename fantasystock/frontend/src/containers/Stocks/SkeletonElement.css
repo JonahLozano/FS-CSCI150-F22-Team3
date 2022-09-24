@@ -1,5 +1,5 @@
 .skeleton {
-  background-color: var(--skeleton-placeholder-color-dark);
+  background-color: var(--skeleton-placeholder-color);
   margin: 10px 0;
   border-radius: 4px;
 }

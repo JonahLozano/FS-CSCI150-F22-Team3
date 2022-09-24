@@ -15,6 +15,7 @@ const UserSchema = new Schema({
   photo: { type: String, default: "" },
   bio: { type: String, default: "Hello, World!" },
   friends: [this],
+  currency: { type: Number, default: 0 },
 });
 
 UserSchema.plugin(findorCreate);

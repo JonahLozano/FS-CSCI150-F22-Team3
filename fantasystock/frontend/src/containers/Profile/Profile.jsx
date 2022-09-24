@@ -3,8 +3,18 @@ import axios from "axios";
 import BtnIcons from "../../components/BtnIcon/BtnIcon";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import "./Profile.css";
+import { ReactComponent as Crown } from "../../assets/crown.svg";
+import { ReactComponent as Amazon } from "../../assets/amazon.svg";
+import { ReactComponent as Apple } from "../../assets/apple.svg";
+import { ReactComponent as Google } from "../../assets/google.svg";
+import { ReactComponent as Ibm } from "../../assets/ibm.svg";
+import { ReactComponent as Intel } from "../../assets/intel.svg";
+import { ReactComponent as Meta } from "../../assets/meta.svg";
+import { ReactComponent as Microsoft } from "../../assets/microsoft.svg";
+import { ReactComponent as Nvidia } from "../../assets/nvidia.svg";
+import { ReactComponent as Tesla } from "../../assets/tesla.svg";
 
-function Stock(props) {
+function Profile(props) {
   const [data, setData] = useState({
     displayName: String,
     photo: String,
@@ -105,7 +115,10 @@ function Stock(props) {
             </form>
           ) : (
             <div>
-              <h1 className="profileTitle">{data.username}</h1>
+              <h1 className="profileTitle">
+                <Crown className="userIcon" />
+                {data.username}
+              </h1>
               <h2>{data.id}</h2>
               <p>{data.bio}</p>
             </div>
@@ -116,4 +129,4 @@ function Stock(props) {
   );
 }
 
-export default Stock;
+export default Profile;

@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "./redux/authState";
 import axios from "axios";
+import DarkBtn from "./components/DarkMode/DarkMode";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <div className="App">
+      <DarkBtn />
       <Navigation />
       <main className="App-header">
         <Routes>
