@@ -51,12 +51,6 @@ function Profile(props) {
     toggleEdit();
   };
 
-  const sendDelete = async () => {
-    await axios.delete("/register/delete").catch((err) => {
-      window.location.replace("http://localhost:3000");
-    });
-  };
-
   const toggleEdit = () => setEditable(!editable);
 
   const editUsername = (e) =>
@@ -105,9 +99,6 @@ function Profile(props) {
                 ></textarea>
               </div>
               <div>
-                <button type="button" onClick={sendDelete}>
-                  Delete Account :(
-                </button>
                 <button type="button" onClick={sendPatch}>
                   Save :P
                 </button>

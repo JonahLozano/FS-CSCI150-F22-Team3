@@ -106,9 +106,8 @@ router.patch("/edit", jsonParser, async (req, res) => {
     (err, result) => (err ? console.log(err) : console.log(result));
 });
 
-router.delete(
-  "/delete",
-  async (req, res) =>
+router.delete("/delete", async (req, res) => {
+  try {
     await User.findByIdAndDelete({ _id: req.user._id })
       .then((req1, res1) => {
         req.logout(function (err) {
@@ -118,8 +117,11 @@ router.delete(
           res.redirect("/");
         });
       })
-      .catch((err) => console.log(err))
-);
+      .catch((err) => console.log(err));
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 router.get("/:id", (req, res) => {
   User.findById(req.params.id, (err, docs) =>

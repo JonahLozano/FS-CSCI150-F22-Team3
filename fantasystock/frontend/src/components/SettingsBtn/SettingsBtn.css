@@ -3,7 +3,7 @@
   height: 2rem;
   float: right;
   background-color: #00000000;
-  color: white;
+  color: var(--main-font-color);
   border-style: none;
   border-radius: 1rem;
   font-weight: bolder;
