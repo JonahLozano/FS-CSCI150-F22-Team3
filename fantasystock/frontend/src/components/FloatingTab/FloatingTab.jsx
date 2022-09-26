@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ function FloatingTab(props) {
       });
   };
 
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState("Light");
 
   let clickedClass = "clicked";
   const body = document.body;
@@ -40,8 +40,8 @@ function FloatingTab(props) {
     body.classList.add(lightTheme);
   }
 
-  useEffect(() => {
-    theme === lightTheme ? setColor("Light") : setColor("Dark");
+  useMemo(() => {
+    theme === darkTheme ? setColor("Dark") : setColor("Light");
   }, [theme]);
 
   const switchTheme = (e) => {

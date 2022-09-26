@@ -25,6 +25,19 @@ function Profile(props) {
   const [show, setShow] = useState(false);
   const [editable, setEditable] = useState(false);
 
+  const iconCollection = [
+    { name: "Crown", item: <Crown className="userIcon" /> },
+    { name: "Amazon", item: <Amazon className="userIcon" /> },
+    { name: "Apple", item: <Apple className="userIcon" /> },
+    { name: "Google", item: <Google className="userIcon" /> },
+    { name: "Ibm", item: <Ibm className="userIcon" /> },
+    { name: "Intel", item: <Intel className="userIcon" /> },
+    { name: "Meta", item: <Meta className="userIcon" /> },
+    { name: "Microsoft", item: <Microsoft className="userIcon" /> },
+    { name: "Nvidia", item: <Nvidia className="userIcon" /> },
+    { name: "Tesla", item: <Tesla className="userIcon" /> },
+  ];
+
   useEffect((event) => {
     axios
       .get(`/register/profile`)
@@ -107,7 +120,7 @@ function Profile(props) {
           ) : (
             <div>
               <h1 className="profileTitle">
-                <Crown className="userIcon" />
+                {iconCollection.find((ele) => "Crown").item}
                 {data.username}
               </h1>
               <h2>{data.id}</h2>

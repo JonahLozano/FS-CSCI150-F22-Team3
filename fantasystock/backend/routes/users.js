@@ -9,6 +9,8 @@ function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
 }
 
+var jsonParser = bodyParser.json();
+
 passport.use(
   new GoogleStrategy(
     {
@@ -92,10 +94,7 @@ router.get(
     await User.findById(req.user._id).then((aUser) => res.send(aUser))
 );
 
-var jsonParser = bodyParser.json();
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-router.patch("/edit", jsonParser, async (req, res) => {
+router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   await User.findByIdAndUpdate(
     { _id: req.user._id },
     {
@@ -106,15 +105,16 @@ router.patch("/edit", jsonParser, async (req, res) => {
     (err, result) => (err ? console.log(err) : console.log(result));
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", isLoggedIn, async (req, res) => {
   try {
     await User.findByIdAndDelete({ _id: req.user._id })
       .then((req1, res1) => {
         req.logout(function (err) {
           if (err) {
-            return next(err);
+            console.log(err);
+            return;
           }
-          res.redirect("/");
+          return res.redirect("/");
         });
       })
       .catch((err) => console.log(err));

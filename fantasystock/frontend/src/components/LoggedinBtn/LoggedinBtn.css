@@ -1,5 +1,5 @@
 .noBtn {
-  animation: fadeIn 1s 1;
+  /* animation: fadeIn 1s 1; */
 }
 
 @keyframes fadeIn {
