@@ -14,6 +14,7 @@ import ClickableIcons from "../../components/ClickableIcons/ClickableIcons";
 import LoginSet from "../../components/LoginSet/LoginSet";
 import { useSelector, useDispatch } from "react-redux";
 import { toggle as sidebarToggler } from "../../redux/sidebarState";
+import "./Navigation.css";
 
 function Navigation(props) {
   const sidebarToggle = useSelector((state) => state.sidebarState.value);

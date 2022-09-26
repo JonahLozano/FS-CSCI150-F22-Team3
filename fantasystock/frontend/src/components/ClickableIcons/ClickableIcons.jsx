@@ -6,7 +6,11 @@ import "./ClickableIcons.css";
 function ClickableIcons(props) {
   return (
     <Link className={props.design} to={props.to}>
-      <FontAwesomeIcon icon={props.icon} /> {props.name}
+      <div className="centerIcon">
+        <FontAwesomeIcon icon={props.icon} />
+      </div>
+
+      {props.name}
     </Link>
   );
 }

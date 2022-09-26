@@ -1,0 +1,29 @@
+.NavbarContainer {
+  background-color: var(--main-navbar-color);
+  padding: 0.5rem;
+}
+.NavbarContainerContainer {
+  position: sticky;
+  top: 0;
+}
+
+.VerticalNavbarContainer1 {
+  background-color: var(--main-navbar-color);
+  width: 12rem;
+  min-height: calc(100vh - 5rem);
+  padding: 0.5rem 1rem 1.5rem 1rem;
+  float: left;
+  text-align: left;
+  position: sticky;
+  top: 0;
+}
+.VerticalNavbarContainer2 {
+  background-color: var(--main-navbar-color);
+  width: auto;
+  min-height: calc(100vh - 5rem);
+  padding: 0.5rem 0.9rem 1.5rem 0.9rem;
+  float: left;
+  text-align: left;
+  position: sticky;
+  top: 0;
+}
