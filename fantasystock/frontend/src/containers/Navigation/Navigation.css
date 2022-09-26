@@ -11,19 +11,42 @@
   background-color: var(--main-navbar-color);
   width: 12rem;
   min-height: calc(100vh - 5rem);
-  padding: 0.5rem 1rem 1.5rem 1rem;
+  padding: 0.5rem 1rem 1.5rem 0.9rem;
   float: left;
   text-align: left;
   position: sticky;
   top: 0;
+  animation: slide-out 0.5s forwards;
 }
 .VerticalNavbarContainer2 {
   background-color: var(--main-navbar-color);
-  width: auto;
+  width: 2.5rem;
   min-height: calc(100vh - 5rem);
   padding: 0.5rem 0.9rem 1.5rem 0.9rem;
   float: left;
   text-align: left;
   position: sticky;
   top: 0;
+  animation: slide-in 0.5s forwards;
+}
+
+@keyframes slide-out {
+  0% {
+    width: 2.5rem;
+    filter: blur(0.1rem);
+  }
+  100% {
+    width: 12rem;
+    filter: blur(0rem);
+  }
+}
+@keyframes slide-in {
+  0% {
+    width: 12rem;
+    filter: blur(0.1rem);
+  }
+  100% {
+    width: 2.5rem;
+    filter: blur(0rem);
+  }
 }

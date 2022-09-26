@@ -7,13 +7,15 @@
   transition: 0.25s;
   border-radius: 0.5rem;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   user-select: none;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  overflow: hidden;
 }
 .VerticalNavbarIcons1:hover {
   background-color: var(--main-bg-contrast-color);
