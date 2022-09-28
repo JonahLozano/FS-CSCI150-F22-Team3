@@ -6,6 +6,9 @@ FantasyStock is made to have fun and easy to use, risk-free experience for our g
 
 Before installing, download and install the latest LTS Node.js, Mongodb, and Mongosh (Mongo Shell). You will also need to install nodemon through npm. (Downloading Node.js should install npm/npx, however, if it does not then run 'npm -g i nodemon').
 
+Before installing, download and install the latest LTS Node.js, Mongodb, and Mongosh (Mongo Shell). You will also need to install nodemon through npm. (Downloading Node.js should install npm/npx, however, if it does not then download those as well). To install nodemon you will run 'npm -g i nodemon'.
+
+
 If this is a new project, make sure to run npm install on both the frontend directory and the backend directory.
 
 Now, you will need to create a '.env' file in the backend directory with all the environment varibles needed for this project. Additionally, make sure you can that this file has no extension to it, so it doesn't look like '.env.txt' and instead looks like '.env'.
