@@ -35,6 +35,12 @@ Example:
 
 Now just run 'npm start' in both the backend directory and frontend directory.
 
+## Updating to the newest version
+- To do this you will sync your fork (through GitHub).
+- After this you '.env' should still be where it needs to be, however, if it is not then copy and paste your old '.env' to the backend.
+- After that run npm install on the frontend and backend (This will update and remove dependedncies which may be added with an update).
+- After this just use npm start as normal.
+
 ## Features
 
 - Users with a google login
