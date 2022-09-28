@@ -4,8 +4,6 @@ FantasyStock is made to have fun and easy to use, risk-free experience for our g
 
 ## Install
 
-Before installing, download and install the latest LTS Node.js, Mongodb, and Mongosh (Mongo Shell). You will also need to install nodemon through npm. (Downloading Node.js should install npm/npx, however, if it does not then run 'npm -g i nodemon').
-
 Before installing, download and install the latest LTS Node.js, Mongodb, and Mongosh (Mongo Shell). You will also need to install nodemon through npm. (Downloading Node.js should install npm/npx, however, if it does not then download those as well). To install nodemon you will run 'npm -g i nodemon'.
 
 
