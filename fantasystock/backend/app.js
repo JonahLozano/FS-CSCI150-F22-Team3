@@ -55,7 +55,7 @@ app.use("/getPrice", GetPrice);
 
 app.get("/", (req, res) => res.send("Hi"));
 
-app.listen(process.env.port, () =>
+app.listen(process.env.PORT, () =>
   console.log(`Listening on port ${process.env.PORT}`)
 );
 
