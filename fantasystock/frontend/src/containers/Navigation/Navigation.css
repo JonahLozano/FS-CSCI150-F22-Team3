@@ -1,10 +1,49 @@
+@media screen and (max-width: 991px) { /*medium and smaller devices*/
+  .NavbarContainer {
+    flex-wrap: wrap;
+  }
+
+  .NavbarForm {
+    width: 100%;
+  }
+
+  .NavbarLogoBtn {
+    width: calc(100vw - 2rem);
+  }
+
+  .NavbarForm input[type=search] {
+    width: calc(100vw - 7rem);
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .NavbarContainer {
+    flex-wrap: nowrap;
+  }
+}
+
 .NavbarContainer {
   background-color: var(--main-navbar-color);
   padding: 0.5rem;
+  width: 100%;
+  display: flex;
+    align-content: space-between;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
+
 .NavbarContainerContainer {
   position: sticky;
   top: 0;
+  width: 100%;
+  display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+
 }
 
 .VerticalNavbarContainer1 {
