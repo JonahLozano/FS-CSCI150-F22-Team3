@@ -24,9 +24,8 @@ function Navigation(props) {
     <nav className="NavbarContainerContainer">
       <div className="NavbarContainer">
         <HamburgerToggle onClick={() => dispatch(sidebarToggler())} />
-        
-        <LoginSet />
         <LogoBtn />
+        <LoginSet />
         <SearchBar />
       </div>
 
