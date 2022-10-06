@@ -85,7 +85,7 @@ body.dark {
 }
 
 .App-header {
-  min-height: calc(100vh - 3rem);
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
