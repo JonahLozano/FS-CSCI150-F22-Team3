@@ -12,11 +12,13 @@
   margin: 0;
   padding-left: 2rem;
   border-style: none;
+  animation: 1s forwards searchbarShrink;
 }
 
 .NavbarForm input:focus {
-  /*width: 28rem;*/
+  width: 28rem;
   outline: none;
+  animation: 1s forwards searchbarGrow;
 }
 
 .NavbarForm input::placeholder {
@@ -47,8 +49,25 @@
   background-color: var(--search-btn-contrast-color);
 }
 
-@media (max-width: 991px) {
+@keyframes searchbarGrow {
+  0% {
+    width: 24rem;
+  }
+  100% {
+    width: 28rem;
+  }
+}
 
+@keyframes searchbarShrink {
+  0% {
+    width: 28rem;
+  }
+  100% {
+    width: 24rem;
+  }
+}
+
+@media (max-width: 991px) {
   .NavbarForm input {
     width: 80%;
     height: 2rem;
@@ -56,6 +75,7 @@
     margin: 0;
     padding-left: 2rem;
     border-style: none;
+    animation: none;
   }
 
   .NavbarForm button {
@@ -70,10 +90,16 @@
   .NavbarForm {
     margin: 0;
     padding: 1rem 0 0.5rem 0;
-    height: 2rem;
+    height: auto;
     display: inline-block;
-    width: 95%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem 10%;
   }
 
-
+  .NavbarForm input:focus {
+    width: 80%;
+    outline: none;
+    animation: none;
+  }
 }
