@@ -6,6 +6,7 @@ import {
   faFootball,
   faShoppingCart,
   faAddressCard,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import LogoBtn from "../../components/LogoBtn/LogoBtn";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -63,6 +64,12 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
+            to="/"
+            icon={faEnvelope}
+            name="Messages"
+            design="VerticalNavbarIcons1"
+          />
+          <ClickableIcons
             to="/settings"
             icon={faCog}
             name="Settings"
@@ -92,6 +99,11 @@ function Navigation(props) {
             to="/profile"
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
+          />
+          <ClickableIcons
+            to="/"
+            icon={faEnvelope}
+            design="VerticalNavbarIcons1"
           />
           <ClickableIcons
             to="/settings"
