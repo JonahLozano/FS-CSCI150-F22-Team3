@@ -47,9 +47,6 @@ module.exports = () => {
       if (aStock === undefined) {
         return true;
       } else {
-        // console.log(
-        //   `[${ele.ticker}] ${date} < ${new Date()} = ${date < new Date()}`
-        // );
         const date = new Date(aStock.updatedAt);
         date.setHours(date.getHours() + 24);
         return date < new Date();
