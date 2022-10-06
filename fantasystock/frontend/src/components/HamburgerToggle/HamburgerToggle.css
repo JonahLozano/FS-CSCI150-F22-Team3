@@ -2,8 +2,7 @@
   width: 2rem;
   height: 2rem;
   float: left;
-  background-color: #00000000;
-  color: white;
+  color: var(--main-font-color-dark);
   border-style: none;
   font-size: 1.5rem;
   display: flex;
@@ -17,6 +16,6 @@
 }
 
 .NavbarHamburgerMenu:hover {
-  background-color: rgb(255, 255, 255);
-  color: black;
+  background-color: var(--main-bg-contrast-color-dark);
+  color: var(--main-font-contrast-color-dark);
 }

@@ -40,9 +40,9 @@
   height: 2rem;
   margin: 0;
   border-radius: 0 0.25rem 0.25rem 0;
-  background-color: rgb(208, 208, 208);
+  background-color: var(--search-btn-color);
   border-style: none;
 }
 .NavbarForm button:hover {
-  background-color: rgb(201, 201, 201);
+  background-color: var(--search-btn-contrast-color);
 }

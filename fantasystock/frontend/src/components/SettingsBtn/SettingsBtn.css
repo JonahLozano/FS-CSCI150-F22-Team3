@@ -26,6 +26,6 @@
 }
 
 .NavbarSettings:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--main-bg-contrast-color-dark);
+  color: var(--main-font-contrast-color-dark);
 }

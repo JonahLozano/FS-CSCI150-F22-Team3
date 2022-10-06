@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../../redux/authState";
 import "./FloatingTab.css";
 
@@ -23,6 +24,9 @@ function FloatingTab(props) {
   return (
     <div className="NavbarFloatingTab">
       <div className="NavbarFloatingTabTab">Appearance: Dark</div>
+      <Link className="NavbarFloatingTabTab" to="/About">
+        About Us
+      </Link>
       {loggedIn && (
         <div className="NavbarFloatingTabTab" onClick={handleClick}>
           Sign out

@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const app = express();
 const session = require("express-session");
 const passport = require("passport");
-const User = require("./models/user");
 require("dotenv").config();
+const schedule = require("node-schedule");
 
 const GetPrice = require("./routes/getPrice");
 const userRoutes = require("./routes/users");
+const createOrUpdateStocks = require("./utils/createOrUpdateStock");
 
 mongoose.connect(process.env.DB_HOST, {
   useNewURLParser: true,
@@ -44,3 +45,7 @@ app.get("/", (req, res) => res.send("Hi"));
 app.listen(process.env.port, () =>
   console.log(`Listening on port ${process.env.PORT}`)
 );
+
+schedule.scheduleJob("0 */4 * * *", function () {
+  createOrUpdateStocks();
+});

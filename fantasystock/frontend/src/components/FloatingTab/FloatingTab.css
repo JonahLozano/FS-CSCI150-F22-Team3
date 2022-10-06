@@ -5,8 +5,8 @@
   height: auto;
   right: 1rem;
   top: 3rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color-dark);
   z-index: 1;
   padding: 0;
   border-radius: 3.125%;
@@ -19,11 +19,11 @@
 }
 
 .NavbarFloatingTabTab {
+  display: block;
   width: auto;
   min-width: 10rem;
   height: auto;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
+  color: var(--main-font-color-dark);
   z-index: 1;
   padding: 0.65rem 0;
   user-select: none;
@@ -32,8 +32,9 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  text-decoration: none;
 }
 
 .NavbarFloatingTabTab:hover {
-  background-color: rgba(40, 44, 52, 0.5);
+  background-color: var(--floating-contrast-tab-color);
 }

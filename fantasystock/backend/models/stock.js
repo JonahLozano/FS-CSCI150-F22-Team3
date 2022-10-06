@@ -2,16 +2,20 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const findorCreate = require("mongoose-findorcreate");
 
-const StockSchema = new Schema({
-  ticker: {
-    type: String,
-    required: true,
-    unique: true,
+const StockSchema = new Schema(
+  {
+    ticker: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    name: String,
+    sector: String,
+    price: Number,
   },
-  price: Number,
-  lastUpdated: Date,
-});
+  { timestamps: true }
+);
 
-UserSchema.plugin(findorCreate);
+StockSchema.plugin(findorCreate);
 
 module.exports = mongoose.model("Stock", StockSchema);

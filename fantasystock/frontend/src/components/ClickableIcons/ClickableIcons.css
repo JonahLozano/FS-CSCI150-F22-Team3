@@ -2,7 +2,7 @@
   padding: 0.25rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
-  color: white;
+  color: var(--main-font-color-dark);
   font-weight: 100;
   transition: 0.25s;
   border-radius: 0.5rem;
@@ -16,14 +16,14 @@
   -ms-user-select: none;
 }
 .VerticalNavbarIcons1:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--main-bg-contrast-color-dark);
+  color: var(--main-font-contrast-color-dark);
 }
 .VerticalNavbarIcons2 {
   padding: 0.25rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
-  color: white;
+  color: var(--main-font-color-dark);
   font-weight: 100;
   transition: 0.25s;
   border-radius: 100%;
@@ -37,6 +37,6 @@
   -ms-user-select: none;
 }
 .VerticalNavbarIcons2:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--main-bg-contrast-color-dark);
+  color: var(--main-font-contrast-color-dark);
 }

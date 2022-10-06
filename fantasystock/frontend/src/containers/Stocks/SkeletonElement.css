@@ -1,7 +1,15 @@
 .skeleton {
-  background-color: hsl(220, 13%, 30%);
+  background-color: var(--skeleton-placeholder-color-dark);
   margin: 10px 0;
   border-radius: 4px;
+}
+
+.skeleton.div {
+  width: 35.5rem;
+  height: 20rem;
+  margin: 2.2rem 0;
+  min-width: 14rem;
+  border-radius: 1rem;
 }
 
 .skeleton.h1 {
