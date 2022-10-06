@@ -1,29 +1,35 @@
 .VerticalNavbarIcons1 {
   padding: 0.25rem;
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  color: var(--main-font-color-dark);
+  font-size: 1.25rem;
+  color: var(--main-font-color);
   font-weight: 100;
   transition: 0.25s;
   border-radius: 0.5rem;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   user-select: none;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  overflow: hidden;
 }
 .VerticalNavbarIcons1:hover {
-  background-color: var(--main-bg-contrast-color-dark);
-  color: var(--main-font-contrast-color-dark);
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
+}
+.VerticalNavbarIcons1:hover .centerIcon {
+  background-color: #00000000;
+  color: var(--main-font-contrast-color);
 }
 .VerticalNavbarIcons2 {
   padding: 0.25rem;
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  color: var(--main-font-color-dark);
+  font-size: 1.25rem;
+  color: var(--main-font-color);
   font-weight: 100;
   transition: 0.25s;
   border-radius: 100%;
@@ -37,6 +43,28 @@
   -ms-user-select: none;
 }
 .VerticalNavbarIcons2:hover {
-  background-color: var(--main-bg-contrast-color-dark);
-  color: var(--main-font-contrast-color-dark);
+  color: var(--main-font-contrast-color);
+}
+
+.centerIcon {
+  display: inline-block;
+  padding: 0.35rem;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  color: var(--main-font-color);
+  border-radius: 100%;
+  font-weight: 100;
+  transition: 0.25s;
+  border-radius: 100%;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.centerIcon:hover {
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
 }

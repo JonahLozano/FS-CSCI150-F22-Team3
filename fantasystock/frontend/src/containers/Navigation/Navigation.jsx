@@ -6,6 +6,7 @@ import {
   faFootball,
   faShoppingCart,
   faAddressCard,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import LogoBtn from "../../components/LogoBtn/LogoBtn";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -14,6 +15,7 @@ import ClickableIcons from "../../components/ClickableIcons/ClickableIcons";
 import LoginSet from "../../components/LoginSet/LoginSet";
 import { useSelector, useDispatch } from "react-redux";
 import { toggle as sidebarToggler } from "../../redux/sidebarState";
+import "./Navigation.css";
 
 function Navigation(props) {
   const sidebarToggle = useSelector((state) => state.sidebarState.value);
@@ -24,8 +26,8 @@ function Navigation(props) {
       <div className="NavbarContainer">
         <HamburgerToggle onClick={() => dispatch(sidebarToggler())} />
         <LogoBtn />
-        <SearchBar />
         <LoginSet />
+        <SearchBar />
       </div>
 
       {sidebarToggle ? (
@@ -56,13 +58,19 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/"
+            to="/profile"
             icon={faAddressCard}
             name="Profile"
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
             to="/"
+            icon={faEnvelope}
+            name="Messages"
+            design="VerticalNavbarIcons1"
+          />
+          <ClickableIcons
+            to="/settings"
             icon={faCog}
             name="Settings"
             design="VerticalNavbarIcons1"
@@ -88,11 +96,20 @@ function Navigation(props) {
             design="VerticalNavbarIcons2"
           />
           <ClickableIcons
-            to="/"
+            to="/profile"
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
           />
-          <ClickableIcons to="/" icon={faCog} design="VerticalNavbarIcons2" />
+          <ClickableIcons
+            to="/"
+            icon={faEnvelope}
+            design="VerticalNavbarIcons2"
+          />
+          <ClickableIcons
+            to="/settings"
+            icon={faCog}
+            design="VerticalNavbarIcons2"
+          />
         </div>
       )}
     </nav>
