@@ -123,8 +123,8 @@ function Profile(props) {
                 {iconCollection.find((ele) => "Crown").item}
                 {data.username}
               </h1>
-              <h2>{data.id}</h2>
-              <p>{data.bio}</p>
+              <h2 className="profileIDstring">{data.id}</h2>
+              <p className="profileBio">{data.bio}</p>
             </div>
           )}
         </div>
