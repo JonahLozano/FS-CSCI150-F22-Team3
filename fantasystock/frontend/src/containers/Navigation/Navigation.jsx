@@ -103,7 +103,7 @@ function Navigation(props) {
           <ClickableIcons
             to="/"
             icon={faEnvelope}
-            design="VerticalNavbarIcons1"
+            design="VerticalNavbarIcons2"
           />
           <ClickableIcons
             to="/settings"
