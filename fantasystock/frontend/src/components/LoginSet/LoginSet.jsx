@@ -1,32 +1,27 @@
 import React from "react";
-import SigninBtn from "../../components/SigninBtn/SigninBtn";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import LoggedInBtn from "../../components/LoggedinBtn/LoggedinBtn";
-import SettingsBtn from "../../components/SettingsBtn/SettingsBtn";
 import FloatingTab from "../../components/FloatingTab/FloatingTab";
+import ClickableIcons from "../../components/ClickableIcons/ClickableIcons";
 import { useSelector, useDispatch } from "react-redux";
 import { toggle as fTabToggler } from "../../redux/fTabState";
 import OutsideAlerter from "../../helpers/OutsideAlerter";
 
 function LoginSet(props) {
   const fTabToggle = useSelector((state) => state.fTabState.value);
-  const loggedIn = useSelector((state) => state.authState.value);
   const dispatch = useDispatch();
   return (
     <OutsideAlerter>
       <span>
-        {loggedIn ? (
-          <LoggedInBtn onClick={() => dispatch(fTabToggler())} />
-        ) : (
-          <SigninBtn onClick={() => dispatch(fTabToggler())} />
-        )}
-        {!loggedIn && (
-          <SettingsBtn
-            onClick={() => {
-              dispatch(fTabToggler());
-            }}
-          />
-        )}
+        <LoggedInBtn onClick={() => dispatch(fTabToggler())} />
         {fTabToggle && <FloatingTab />}
+        <ClickableIcons
+          to="/"
+          icon={faPlus}
+          design="createleague"
+          hoverName="Create League"
+          hoverDesign="hovertextbottom"
+        />
       </span>
     </OutsideAlerter>
   );
