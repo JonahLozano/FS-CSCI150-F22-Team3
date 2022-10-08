@@ -68,3 +68,62 @@
   background-color: var(--main-bg-contrast-color);
   color: var(--main-font-contrast-color);
 }
+
+.hovertextright {
+  position: relative;
+}
+
+.hovertextright:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color);
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+  position: absolute;
+  z-index: 1;
+  left: 3.5rem;
+  top: 0;
+  font-size: 0.75rem;
+}
+
+.hovertextright:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hovertextbottom {
+  position: relative;
+}
+
+.hovertextbottom:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color);
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+  position: absolute;
+  z-index: 1;
+  left: -0.5rem;
+  top: 3rem;
+  font-size: 0.75rem;
+}
+
+.hovertextbottom:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.createleague {
+  float: right;
+  margin: 0 1rem;
+}
