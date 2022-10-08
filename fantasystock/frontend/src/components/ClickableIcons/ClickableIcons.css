@@ -127,3 +127,10 @@
   float: right;
   margin: 0 1rem;
 }
+
+@media (max-width: 991px) {
+  .VerticalNavbarIcons1 {
+    min-height: 10vh;
+    font-size: 2rem;
+  }
+}
