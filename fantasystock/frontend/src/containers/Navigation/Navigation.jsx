@@ -78,37 +78,55 @@ function Navigation(props) {
         </div>
       ) : (
         <div className="VerticalNavbarContainer2">
-          <ClickableIcons to="/" icon={faHouse} design="VerticalNavbarIcons2" />
+          <ClickableIcons
+            to="/"
+            icon={faHouse}
+            design="VerticalNavbarIcons2"
+            hoverName="Home"
+            hoverDesign="hovertextright"
+          />
           <ClickableIcons
             to="/stocks"
             icon={faFootball}
             design="VerticalNavbarIcons2"
+            hoverName="League"
+            hoverDesign="hovertextright"
           />
           <ClickableIcons
             to="/"
             icon={faUserGroup}
             design="VerticalNavbarIcons2"
+            hoverName="Friends"
+            hoverDesign="hovertextright"
           />
 
           <ClickableIcons
             to="/"
             icon={faShoppingCart}
             design="VerticalNavbarIcons2"
+            hoverName="Store"
+            hoverDesign="hovertextright"
           />
           <ClickableIcons
             to="/profile"
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
+            hoverName="Profile"
+            hoverDesign="hovertextright"
           />
           <ClickableIcons
             to="/"
             icon={faEnvelope}
             design="VerticalNavbarIcons2"
+            hoverName="Messages"
+            hoverDesign="hovertextright"
           />
           <ClickableIcons
             to="/settings"
             icon={faCog}
             design="VerticalNavbarIcons2"
+            hoverName="Settings"
+            hoverDesign="hovertextright"
           />
         </div>
       )}

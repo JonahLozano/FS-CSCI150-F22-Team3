@@ -95,14 +95,15 @@ router.get(
 );
 
 router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
-  await User.findByIdAndUpdate(
-    { _id: req.user._id },
-    {
-      username: req.body.username,
-      bio: req.body.bio,
-    }
-  ),
-    (err, result) => (err ? console.log(err) : console.log(result));
+  if (req.body.username.length <= 32 && req.body.bio.length <= 300) {
+    await User.findByIdAndUpdate(
+      { _id: req.user._id },
+      {
+        username: req.body.username,
+        bio: req.body.bio,
+      }
+    );
+  }
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
