@@ -3,15 +3,19 @@ import Stocks from "./containers/Stocks/Stocks";
 import Navigation from "./containers/Navigation/Navigation";
 import Unauthorized from "./containers/Unauthenticated/Unauthenticated";
 import About from "./containers/About/About";
+import Settings from "./containers/Settings/Settings";
+import Profile from "./containers/Profile/Profile";
 import React, { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "./redux/authState";
 import axios from "axios";
+import DarkMode from "./helpers/DarkMode";
 
 function App() {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.authState.value);
+  DarkMode();
 
   useMemo(() => {
     axios
@@ -32,6 +36,16 @@ function App() {
           <Route path="/" element={null} />
           <Route path="/loggedin" element={null} />
           <Route path="/about" element={<About />} />
+          {loggedIn ? (
+            <Route path="/profile" element={<Profile />} />
+          ) : (
+            <Route path="/profile" element={<Unauthorized />} />
+          )}
+          {loggedIn ? (
+            <Route path="/settings" element={<Settings />} />
+          ) : (
+            <Route path="/settings" element={<Unauthorized />} />
+          )}
           {loggedIn ? (
             <Route path="/stocks" element={<Stocks />} />
           ) : (

@@ -12,30 +12,25 @@ const createOrUpdateStock = (stock) => {
     async (error, response, body) => {
       if (!error && response.statusCode == 200) {
         try {
-          setTimeout(() => {
-            try {
-              const parsedBody = JSON.parse(body);
-              const aTime = parsedBody["Meta Data"]["3. Last Refreshed"];
-              const aPrice =
-                parsedBody["Time Series (5min)"][aTime]["4. close"];
-              Stock.findOrCreate(
-                { ticker: stock.ticker },
-                {
-                  ticker: stock.ticker,
-                  name: stock.name,
-                  sector: stock.sector,
+          setTimeout(async () => {
+            const parsedBody = JSON.parse(body);
+            const aTime = parsedBody["Meta Data"]["3. Last Refreshed"];
+            const aPrice = parsedBody["Time Series (5min)"][aTime]["4. close"];
+            await Stock.findOrCreate(
+              { ticker: stock.ticker },
+              {
+                ticker: stock.ticker,
+                name: stock.name,
+                sector: stock.sector,
+                price: aPrice,
+              }
+            )
+              .then(async (res) => {
+                await Stock.findByIdAndUpdate(res.doc._id, {
                   price: aPrice,
-                }
-              )
-                .then((res) => {
-                  Stock.findOneAndUpdate(res, {
-                    price: aPrice,
-                  }).then((res) => res);
-                })
-                .catch((error) => console.log(`Mongo Error: ${error}`));
-            } catch (error) {
-              console.log(error);
-            }
+                });
+              })
+              .catch((error) => console.log(`Mongo Error: ${error}`));
           }, 1000 * 72);
         } catch (error) {
           console.log(error);
@@ -52,9 +47,6 @@ module.exports = () => {
       if (aStock === undefined) {
         return true;
       } else {
-        // console.log(
-        //   `[${ele.ticker}] ${date} < ${new Date()} = ${date < new Date()}`
-        // );
         const date = new Date(aStock.updatedAt);
         date.setHours(date.getHours() + 24);
         return date < new Date();
@@ -64,7 +56,8 @@ module.exports = () => {
       return false;
     }
   }).then((res) => {
-    console.log(res);
+    console.log(`UPDATING LIST: ${res.map((e) => e.ticker)}`);
+    console.log(`LENGTH: ${res.length}`);
     batchMap(res, createOrUpdateStock);
   });
 };

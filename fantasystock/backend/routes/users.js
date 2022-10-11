@@ -9,6 +9,8 @@ function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
 }
 
+var jsonParser = bodyParser.json();
+
 passport.use(
   new GoogleStrategy(
     {
@@ -17,27 +19,15 @@ passport.use(
       callbackURL: "http://localhost:5000/register/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
-      await User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        User.findOneAndUpdate(
-          { googleId: profile.id },
-          {
-            displayName: profile.displayName,
-            familyName: profile.name.familyName,
-            givenName: profile.name.givenName,
-            photo: profile.photos[0].value,
-          }
-        );
-        return cb(err, user);
-      });
-
-      await User.findOneAndUpdate(
+      await User.findOrCreate(
         { googleId: profile.id },
         {
           displayName: profile.displayName,
           familyName: profile.name.familyName,
           givenName: profile.name.givenName,
           photo: profile.photos[0].value,
-        }
+        },
+        (err, user) => cb(err, user)
       );
     }
   )
@@ -88,9 +78,55 @@ router.post("/logout", function (req, res, next) {
   });
 });
 
-router.get("/profilepicture", isLoggedIn, (req, res) => {
-  // res.send(`<img src="${req.user.photo}" />`);
-  res.send(`${req.user.photo}`);
+router.get(
+  "/profilepicture",
+  isLoggedIn,
+  async (req, res) =>
+    await User.findById(req.user._id)
+      .then((aUser) => res.send(aUser.photo))
+      .catch((err) => console.log(err))
+);
+
+router.get(
+  "/profile",
+  isLoggedIn,
+  async (req, res) =>
+    await User.findById(req.user._id).then((aUser) => res.send(aUser))
+);
+
+router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
+  await User.findByIdAndUpdate(
+    { _id: req.user._id },
+    {
+      username: req.body.username,
+      bio: req.body.bio,
+    }
+  ),
+    (err, result) => (err ? console.log(err) : console.log(result));
+});
+
+router.delete("/delete", isLoggedIn, async (req, res) => {
+  try {
+    await User.findByIdAndDelete({ _id: req.user._id })
+      .then((req1, res1) => {
+        req.logout(function (err) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          return res.redirect("/");
+        });
+      })
+      .catch((err) => console.log(err));
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id, (err, docs) =>
+    err ? console.log(err) : console.log(result)
+  );
 });
 
 module.exports = router;

@@ -13,15 +13,6 @@ function About(props) {
         <h2 className="teamSubHeader">Quality Assurance: Quan Nguyen</h2>
         <h2 className="teamSubHeader">Tester: Jaspinder Singh</h2>
       </div>
-      <div className="aboutProject">
-        <h3 className="aboutTitle">About this project</h3>
-        <p className="aboutParagraph">
-          This project is to create a fun, easy-to-use, and risk-free experience
-          for our game'ifed version of the stock market. The idea for this
-          project came from the idea of combining the stock market with fantasy
-          football.
-        </p>
-      </div>
     </div>
   );
 }
