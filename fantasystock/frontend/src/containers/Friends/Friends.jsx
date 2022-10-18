@@ -9,23 +9,27 @@ function Profile(props) {
   const [friendcode, setFriendcode] = useState("");
 
   useMemo((event) => {
-    axios
-      .get(`/register/friends`)
-      .then((response) => {
-        setData((prev) => {
-          return [
-            ...prev,
-            {
-              _id: response.data[0]._id,
-              username: response.data[0].username,
-              photo: response.data[0].photo,
-            },
-          ];
+    try {
+      axios
+        .get(`/register/friends`)
+        .then((response) => {
+          setData((prev) => {
+            return [
+              ...prev,
+              {
+                _id: response.data[0]._id,
+                username: response.data[0].username,
+                photo: response.data[0].photo,
+              },
+            ];
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   const sendPatch = () => {
@@ -56,19 +60,24 @@ function Profile(props) {
         onClick={sendPatch}
       />
       <div>
-        {data.map((ele, index) => (
-          <div className="friendblock" key={`uniqueId${index}`}>
-            <ClickablePic
-              aSrc={ele.photo}
-              design="circlePic"
-              aAlt={`${ele.username}'s Profile`}
-              to={`/user/${ele._id}`}
-            />
-            <div className="friendusername">{ele.username}</div>
-            <input type="button" className="msgfriend" value="Message" />
-            <input type="button" className="unfriendfriend" value="Unfriend" />
-          </div>
-        ))}
+        {data !== [] &&
+          data.map((ele, index) => (
+            <div className="friendblock" key={`uniqueId${index}`}>
+              <ClickablePic
+                aSrc={ele.photo}
+                design="circlePic"
+                aAlt={`${ele.username}'s Profile`}
+                to={`/user/${ele._id}`}
+              />
+              <div className="friendusername">{ele.username}</div>
+              <input type="button" className="msgfriend" value="Message" />
+              <input
+                type="button"
+                className="unfriendfriend"
+                value="Unfriend"
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
