@@ -1,4 +1,5 @@
 import "./App.css";
+import Home from "./containers/Home/Home";
 import Stocks from "./containers/Stocks/Stocks";
 import Navigation from "./containers/Navigation/Navigation";
 import Unauthorized from "./containers/Unauthenticated/Unauthenticated";
@@ -30,12 +31,24 @@ function App() {
 
   return (
     <div className="App">
-      <Navigation />
+      {loggedIn && <Navigation />}
       <main className="App-header">
         <Routes>
-          <Route path="/" element={null} />
-          <Route path="/loggedin" element={null} />
-          <Route path="/about" element={<About />} />
+          {loggedIn ? (
+            <Route path="/" element={<Home />} />
+          ) : (
+            <Route path="/" element={<Unauthorized />} />
+          )}
+          {loggedIn ? (
+            <Route path="/loggedin" element={<Home />} />
+          ) : (
+            <Route path="/loggedin" element={<Unauthorized />} />
+          )}
+          {loggedIn ? (
+            <Route path="/about" element={<About />} />
+          ) : (
+            <Route path="/about" element={<Unauthorized />} />
+          )}
           {loggedIn ? (
             <Route path="/profile" element={<Profile />} />
           ) : (

@@ -6,7 +6,10 @@ import "./ClickableIcons.css";
 function ClickableIcons(props) {
   return (
     <Link className={props.design} to={props.to}>
-      <div className="centerIcon">
+      <div
+        className={`centerIcon ${props.hoverDesign}`}
+        data-hover={props.hoverName}
+      >
         <FontAwesomeIcon icon={props.icon} />
       </div>
 
