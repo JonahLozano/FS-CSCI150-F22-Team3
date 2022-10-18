@@ -57,11 +57,13 @@ function Profile(props) {
   }, []);
 
   const sendPatch = () => {
-    axios.patch("/register/edit", {
-      username: data.username,
-      bio: data.bio,
-    });
-    toggleEdit();
+    if (data.username.length <= 32 && data.bio.length <= 300) {
+      axios.patch("/register/edit", {
+        username: data.username,
+        bio: data.bio,
+      });
+      toggleEdit();
+    }
   };
 
   const toggleEdit = () => setEditable(!editable);
@@ -120,7 +122,7 @@ function Profile(props) {
           ) : (
             <div>
               <h1 className="profileTitle">
-                {iconCollection.find((ele) => "Crown").item}
+                {iconCollection.find((ele) => ele.name === "Crown").item}
                 {data.username}
               </h1>
               <h2 className="profileIDstring">{data.id}</h2>
