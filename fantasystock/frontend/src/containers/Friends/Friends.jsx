@@ -5,39 +5,48 @@ import "./Friends.css";
 
 function Profile(props) {
   const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
 
   const [friendcode, setFriendcode] = useState("");
 
   useMemo((event) => {
-    try {
-      axios
-        .get(`/register/friends`)
-        .then((response) => {
-          setData((prev) => {
-            return [
-              ...prev,
-              {
-                _id: response.data[0]._id,
-                username: response.data[0].username,
-                photo: response.data[0].photo,
-              },
-            ];
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+    axios
+      .get(`/register/friends`)
+      .then((response) => {
+        setData((prev) => {
+          console.log(response);
+          if (
+            response === undefined ||
+            response.data === undefined ||
+            response.data[0] === undefined ||
+            response.data[0]._id === undefined ||
+            response.data[0].username === undefined ||
+            response.data[0].photo === undefined
+          )
+            return [];
+
+          return [
+            ...prev,
+            {
+              _id: response.data[0]._id,
+              username: response.data[0].username,
+              photo: response.data[0].photo,
+            },
+          ];
         });
-    } catch (e) {
-      console.log(e);
-    }
+        setShow(true);
+      })
+      .catch((error) => {
+        setShow(false);
+        console.log(error);
+      });
   }, []);
 
   const sendPatch = () => {
-    if (data.username.length <= 32) {
-      axios.patch("/register/addfriend", {
-        friendcode: friendcode,
-      });
-    }
+    console.log(friendcode);
+    axios.patch("/register/addfriend", {
+      friendcode: friendcode,
+    });
   };
 
   const editFriendcode = (e) => {
@@ -60,7 +69,7 @@ function Profile(props) {
         onClick={sendPatch}
       />
       <div>
-        {data !== [] &&
+        {show &&
           data.map((ele, index) => (
             <div className="friendblock" key={`uniqueId${index}`}>
               <ClickablePic
