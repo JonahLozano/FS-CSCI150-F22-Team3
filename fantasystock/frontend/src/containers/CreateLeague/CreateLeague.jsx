@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CreateLeague.css";
 
 function Home() {
   const [visibility, setVisibility] = useState("Public");
@@ -60,9 +61,9 @@ function Home() {
   };
 
   return (
-    <div>
-      <div>
-        <label htmlFor="clTitle" style={{ fontSize: "1rem", margin: "0 1rem" }}>
+    <div className="CL">
+      <div className="CLTitle">
+        <label htmlFor="clTitle">
           Title
         </label>
         <input
@@ -74,10 +75,9 @@ function Home() {
           value={title}
         />
       </div>
-      <div>
+      <div className="CLVisibility">
         <label
           htmlFor="visibility"
-          style={{ fontSize: "1rem", margin: "0 1rem" }}
         >
           League
         </label>
@@ -86,8 +86,8 @@ function Home() {
           <option>Private</option>
         </select>
       </div>
-      <div>
-        <label htmlFor="start" style={{ fontSize: "1rem", margin: "0 1rem" }}>
+      <div className="CLStart">
+        <label htmlFor="start">
           Start
         </label>
         <input
@@ -99,8 +99,8 @@ function Home() {
           value={start}
         />
       </div>
-      <div>
-        <label htmlFor="end" style={{ fontSize: "1rem", margin: "0 1rem" }}>
+      <div className="CLEnd">
+        <label htmlFor="end">
           End
         </label>
         <input
@@ -112,14 +112,11 @@ function Home() {
           value={end}
         />
       </div>
-      <div>
-        <label style={{ fontSize: "1rem", margin: "0 1rem" }}>Stocks</label>
+      <div className="CLStocks">
+        <label>Stocks</label>
 
         <div>
-          <label
-            htmlFor="clTicker"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
+          <label htmlFor="clTicker">
             Ticker:
           </label>
           <input
@@ -138,10 +135,7 @@ function Home() {
             ))}
           </datalist>
 
-          <label
-            htmlFor="clQuantity"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
+          <label htmlFor="clQuantity">
             Quantity:
           </label>
           <input
@@ -155,10 +149,7 @@ function Home() {
             value={qnt}
           />
 
-          <label
-            htmlFor="clPosition"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
+          <label htmlFor="clPosition">
             Position:
           </label>
           <select
@@ -181,7 +172,6 @@ function Home() {
             <div style={{ fontSize: "1rem" }} key={index}>
               {aStock.stock} {aStock.quantity} {aStock.position}
               <input
-                style={{ margin: "0 1rem" }}
                 type="button"
                 value="delete"
                 onClick={() => deleteStk(index)}

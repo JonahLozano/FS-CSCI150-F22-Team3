@@ -1,0 +1,34 @@
+.CL {
+	display: flex;
+	flex-direction: column;
+}
+
+
+.CL div {
+	margin: 0.25rem 0;
+}
+
+.CL label {
+	font-size: 1rem; 
+	margin: 0px 1rem;
+}
+
+.CL input, .CL select, .CL button {
+	border-width: 0px;
+	border-radius: 0.25rem;
+	padding:  0.25rem;
+}
+
+.CL .CLStocks {
+	/*
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+    align-items: center;
+    */
+	margin: 0.5rem 0;
+}
+.CL option {
+	border-width: 0px ;
+	border-radius: 1rem 0rem 0rem 1rem;
+}

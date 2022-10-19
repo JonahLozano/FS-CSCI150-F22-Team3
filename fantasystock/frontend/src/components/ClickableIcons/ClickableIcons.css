@@ -69,6 +69,7 @@
   color: var(--main-font-contrast-color);
 }
 
+
 .hovertextright {
   position: relative;
 }
@@ -128,9 +129,12 @@
   margin: 0 1rem;
 }
 
+
 @media (max-width: 991px) {
   .VerticalNavbarIcons1 {
     min-height: 10vh;
     font-size: 2rem;
   }
+
 }
+
