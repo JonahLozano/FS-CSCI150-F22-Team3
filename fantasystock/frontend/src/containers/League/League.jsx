@@ -128,10 +128,11 @@ function League() {
       <div>{`start: ${data.start}`}</div>
       <div>{`end: ${data.end}`}</div>
 
-      <div className="CLStocks" style={{ margin: "4rem 0" }}>
-        <label>Stocks</label>
-
+      <div className="CLStocks">
+        <h4>Stocks</h4>
         <div>
+        <div className="clOption">
+        
           <label htmlFor="clTicker">Ticker:</label>
           <input
             id="clTicker"
@@ -177,17 +178,19 @@ function League() {
             style={{ margin: "0 1rem" }}
             onClick={stash}
           />
-
-          {stkList.map((aStock, index) => (
-            <div style={{ fontSize: "1rem" }} key={index}>
-              {aStock.stock} {aStock.quantity} {aStock.position}
-              <input
-                type="button"
-                value="delete"
-                onClick={() => deleteStk(index)}
-              />
-            </div>
-          ))}
+          </div>
+          <div id="StockOptList">
+            {stkList.map((aStock, index) => (
+              <div className = "StockOpt" key={index}>
+                {aStock.stock} {aStock.quantity} {aStock.position}
+                <input
+                  type="button"
+                  value="delete"
+                  onClick={() => deleteStk(index)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

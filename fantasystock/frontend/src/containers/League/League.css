@@ -43,3 +43,22 @@
   padding: 1rem;
   border-radius: 1rem;
 }
+
+.CLStocks {
+  margin: 4rem 0;
+}
+
+
+.CLStocks .StockOpt input, .CLStocks .StockOpt select {
+  border-width: 0px;
+  border-radius: 0.5rem;
+  padding:  0.5rem;
+}
+
+.StockOpt p {
+  font-weight: bold;
+  display: flex;
+  flex-wrap: nowrap;
+    justify-content: center;
+    flex-direction: row;
+}
