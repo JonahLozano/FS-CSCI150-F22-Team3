@@ -25,6 +25,7 @@ function Home() {
             alt="Article"
           />{" "}
           {article.title}
+          <div>{article.createdAt}</div>
         </div>
       ))}
     </div>
