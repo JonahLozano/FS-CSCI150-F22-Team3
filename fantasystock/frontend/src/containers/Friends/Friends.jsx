@@ -13,27 +13,11 @@ function Profile(props) {
     axios
       .get(`/register/friends`)
       .then((response) => {
-        setData((prev) => {
-          console.log(response);
-          if (
-            response === undefined ||
-            response.data === undefined ||
-            response.data[0] === undefined ||
-            response.data[0]._id === undefined ||
-            response.data[0].username === undefined ||
-            response.data[0].photo === undefined
-          )
-            return [];
-
-          return [
-            ...prev,
-            {
-              _id: response.data[0]._id,
-              username: response.data[0].username,
-              photo: response.data[0].photo,
-            },
-          ];
-        });
+        setData(() =>
+          response === undefined || response.data === undefined
+            ? []
+            : response.data
+        );
         setShow(true);
       })
       .catch((error) => {
@@ -42,10 +26,16 @@ function Profile(props) {
       });
   }, []);
 
-  const sendPatch = () => {
+  const addFriend = () => {
     console.log(friendcode);
     axios.patch("/register/addfriend", {
       friendcode: friendcode,
+    });
+  };
+
+  const deleteFriend = (aFriendCode) => {
+    axios.patch("/register/deletefriend", {
+      friendcode: aFriendCode,
     });
   };
 
@@ -66,7 +56,7 @@ function Profile(props) {
         className="friendbaradderbtn"
         type="button"
         value="Add Friend"
-        onClick={sendPatch}
+        onClick={addFriend}
       />
       <div>
         {show &&
@@ -84,6 +74,7 @@ function Profile(props) {
                 type="button"
                 className="unfriendfriend"
                 value="Unfriend"
+                onClick={() => deleteFriend(ele._id)}
               />
             </div>
           ))}
