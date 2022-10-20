@@ -5,6 +5,8 @@ const router = express.Router();
 const passport = require("passport");
 const { findById } = require("../models/stock");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const adjectives = require("../data/adjectives");
+const animals = require("../data/animals");
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -23,6 +25,9 @@ passport.use(
       await User.findOrCreate(
         { googleId: profile.id },
         {
+          username: `${
+            adjectives[Math.floor(Math.random() * adjectives.length)]
+          } ${animals[Math.floor(Math.random() * animals.length)]}`,
           displayName: profile.displayName,
           familyName: profile.name.familyName,
           givenName: profile.name.givenName,
@@ -138,6 +143,26 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
       friend && user.friends.push(friend);
       user.save();
     } catch {}
+  }
+});
+
+router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
+  if (req.body.friendcode.length <= 32) {
+    try {
+      const user = await User.findById(req.user._id);
+
+      console.log(req.body.friendcode);
+      console.log(
+        user.friends.filter((ele) => ele.toString() !== req.body.friendcode)
+      );
+
+      user.friends = user.friends.filter(
+        (ele) => ele.toString() !== req.body.friendcode
+      );
+      user.save();
+    } catch (err) {
+      console.log(err);
+    }
   }
 });
 
