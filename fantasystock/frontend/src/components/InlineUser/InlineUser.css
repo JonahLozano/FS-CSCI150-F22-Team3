@@ -1,0 +1,24 @@
+.iuUsername {
+  color: var(--main-font-color);
+}
+
+.iuContainer {
+  display: inline-flex;
+  background-color: var(--main-user-color);
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  margin: 0 1rem;
+  align-items: center;
+  align-content: center;
+}
+
+.iuContainer:hover {
+  background-color: var(--main-user-contrast-color);
+}
+
+.iuIcon {
+  width: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  align-content: center;
+}
