@@ -1,0 +1,45 @@
+.leagueUserCard {
+  background-color: var(--main-card-color);
+  border-radius: 1rem;
+  margin: 2rem;
+  padding: 2rem;
+}
+
+.leagueUserCardStocks {
+  background-color: var(--main-user-color);
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.LeagueCommentSection {
+  background-color: var(--main-user-color);
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.LeagueComment {
+  background-color: var(--main-card-color);
+  border-radius: 1rem;
+  margin: 2rem;
+  padding: 2rem;
+}
+
+.LeagueCommentData {
+  font-size: 1rem;
+}
+
+.LeagueCommentReplySection {
+  background-color: rgb(96, 101, 123);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.LeagueCommentReply {
+  background-color: rgb(128, 133, 159);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
