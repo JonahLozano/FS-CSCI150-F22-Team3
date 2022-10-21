@@ -113,9 +113,9 @@ function Home() {
         />
       </div>
       <div className="CLStocks">
-        <label>Stocks</label>
-
-        <div>
+        <h4>Stocks</h4>
+      <div>
+        <div className="clOption">
           <label htmlFor="clTicker">
             Ticker:
           </label>
@@ -164,23 +164,25 @@ function Home() {
           <input
             type="button"
             value="Pick"
-            style={{ margin: "0 1rem" }}
+
             onClick={stash}
           />
-
-          {stkList.map((aStock, index) => (
-            <div style={{ fontSize: "1rem" }} key={index}>
-              {aStock.stock} {aStock.quantity} {aStock.position}
-              <input
-                type="button"
-                value="delete"
-                onClick={() => deleteStk(index)}
-              />
-            </div>
-          ))}
         </div>
-        <div>
-          <input type="button" value="Create" onClick={createLeague} />
+          <div id="StockOptList">
+            {stkList.map((aStock, index) => (
+              <div className="StockOpt" key={index}>
+                <p>{aStock.stock} {aStock.quantity} {aStock.position}</p>
+                <input
+                  type="button"
+                  value="delete"
+                  onClick={() => deleteStk(index)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div id="CLcreate">
+          <input type="button" value="Create League" onClick={createLeague} />
         </div>
       </div>
     </div>

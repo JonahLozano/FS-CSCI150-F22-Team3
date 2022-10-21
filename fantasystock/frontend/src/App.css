@@ -67,6 +67,9 @@ body.light {
   --main-user-contrast-color: hsl(220, 13%, 75%);
 
   --main-card-color: hsl(220, 13%, 65%);
+
+  --del-btn-color: rgb(255, 140, 140);
+  --del-btn-contrast-color: rgb(255, 100, 100);
 }
 
 body.dark {
@@ -97,6 +100,9 @@ body.dark {
   --main-user-contrast-color: hsl(220, 13%, 25%);
 
   --main-card-color: hsl(220, 13%, 35%);
+
+  --del-btn-color: rgb(255, 140, 140);
+  --del-btn-contrast-color: rgb(255, 100, 100);
 }
 
 .App-header {
