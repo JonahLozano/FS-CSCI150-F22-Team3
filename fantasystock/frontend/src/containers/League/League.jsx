@@ -128,16 +128,17 @@ function League() {
       <div>{`start: ${data.start}`}</div>
       <div>{`end: ${data.end}`}</div>
 
-      <div className="CLStocks">
+      <div id="LeagueJoinStocks">
         <h4>Stocks</h4>
-        <div>
-        <div className="clOption">
-        
-          <label htmlFor="clTicker">Ticker:</label>
+      <div>
+        <div id="StockOptSelect">
+          <label htmlFor="clTicker">
+            Ticker:
+          </label>
           <input
             id="clTicker"
+            type="text"
             list="data"
-            name="data"
             onChange={(e) => {
               setStk(e.target.value);
             }}
@@ -150,7 +151,9 @@ function League() {
             ))}
           </datalist>
 
-          <label htmlFor="clQuantity">Quantity:</label>
+          <label htmlFor="clQuantity">
+            Quantity:
+          </label>
           <input
             id="clQuantity"
             type="number"
@@ -162,7 +165,9 @@ function League() {
             value={qnt}
           />
 
-          <label htmlFor="clPosition">Position:</label>
+          <label htmlFor="clPosition">
+            Position:
+          </label>
           <select
             id="clPosition"
             onChange={(e) => setPos(e.target.value)}
@@ -175,14 +180,16 @@ function League() {
           <input
             type="button"
             value="Pick"
-            style={{ margin: "0 1rem" }}
+
             onClick={stash}
           />
-          </div>
+        </div>
+        </div>
           <div id="StockOptList">
+            <h4> My Stocks </h4>
             {stkList.map((aStock, index) => (
-              <div className = "StockOpt" key={index}>
-                {aStock.stock} {aStock.quantity} {aStock.position}
+              <div className="MyStockOpt" key={index}>
+                <p>{aStock.stock} {aStock.quantity} {aStock.position}</p>
                 <input
                   type="button"
                   value="delete"
@@ -192,9 +199,8 @@ function League() {
             ))}
           </div>
         </div>
-      </div>
 
-      <div>
+      <div id="JoinLeagueBtn">
         <input type="button" value="Join :P" onClick={joinLeague} />
       </div>
       <div style={{ marginTop: "4rem" }}>Players</div>

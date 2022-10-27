@@ -1,93 +1,35 @@
-.CL {
+#CreateLeague {
 	display: flex;
 	flex-direction: column;
 }
 
-
-.CL div {
+#CL div {
 	margin: 0.25rem 0;
 }
 
-.CL label, .CL .clOption {
+#CL label {
 	font-size: 1rem; 
 	margin: 0px 1rem;
 }
 
-.CL input, .CL select, .CL input[type="button"] {
+#CL input, #CL select, #CLcreate input {
 	border-width: 0px;
 	border-radius: 0.5rem;
 	padding:  0.5rem;
 }
 
-.CL .CLStocks {
-
+#CL div {
+	margin: 0.5rem 0;
 }
 
-.CL option {
-	border-width: 0px ;
-	border-radius: 1rem 0rem 0rem 1rem;
-}
-
-.CL input[type="button"]:hover {
-	background-color: var(--search-btn-contrast-color);
-}
-
-.StockOpt p {
-	font-weight: bold;
-	display: flex;
-	flex-wrap: nowrap;
-    justify-content: center;
-    flex-direction: row;
-}
-
-.CL input[value="Pick"] {
-	padding:  0.5rem 1.5rem;
-	margin:  0 0 0 1rem;
-}
-
-.StockOpt {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.CLStocks .StockOpt input[value="delete"] {
-	display: flex;
-	background-color: var(--del-btn-color);
-	margin: 0 0 0 1rem;
-	border-radius: 1rem;
-}
-
-.CLStocks .StockOpt input[value="delete"]:hover {
-	background-color: var(--del-btn-contrast-color);
-}
-
-.CLStocks #CLcreate input[type="button"] {
+#CLcreate input[type="button"] {
 	background-color: rgb(200, 230, 150);
 }
 
-.CLStocks #CLcreate input[type="button"]:hover {
+#CLcreate input[type="button"]:hover {
 	background-color: rgb(100, 255, 100);
 }
 
-.CLStocks #StockOptList {
-/*	background-color: white;	*/
-}
 
 
-/*dark palette*/
-.dark .clOption input[type="button"] {
-	background-color: var(--search-btn-color);
-}
 
-.dark .clOption input[type="button"]:hover { 
-	background-color: var(--search-btn-contrast-color);
-}
-
-.dark .StockOpt input[value="delete"] {
-	background-color: var(--del-btn-color);
-}
-
-.dark .StockOpt input[value="delete"]:hover {
-	background-color: var(--del-btn-contrast-color);
-}
