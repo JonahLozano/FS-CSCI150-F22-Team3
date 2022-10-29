@@ -44,21 +44,129 @@
   border-radius: 1rem;
 }
 
-.CLStocks {
-  margin: 4rem 0;
+
+
+#LeagueJoinStocks {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
+#LeagueJoinStocks h4 {
+  margin: 1rem 0;
+}
 
-.CLStocks .StockOpt input, .CLStocks .StockOpt select {
+#LeagueJoinStocks div {
+  margin: 0.25rem 0;
+}
+
+#LeagueJoinStocks label {
+  font-size: 1rem; 
+  margin: 0px 1rem;
+}
+
+#LeagueJoinStocks input, #LeagueJoinStocks select, #LeagueJoinStocks input[type="button"] {
   border-width: 0px;
   border-radius: 0.5rem;
   padding:  0.5rem;
 }
 
-.StockOpt p {
+#LeagueJoinStocks input[type="button"]:hover {
+  background-color: var(--search-btn-contrast-color);
+}
+
+#LeagueJoinStocks #StockOptList {
+  background-color: var(--main-navbar-color);
+    margin: 0.75rem 0;
+    padding: 0.25rem;
+    display: flex;
+      flex-direction: column;
+    width: 80%;
+    border-radius: 2rem;
+}
+
+
+#StockOptSelect option {
+  border-width: 0px ;
+  
+  border-radius: 1rem 0rem 0rem 1rem;
+}
+
+#StockOptSelect select:hover option:focus {
+  /*background-color: red;*/
+}
+
+#StockOptSelect input[value="Pick"] {
+  padding:  0.5rem 1.5rem;
+  margin:  0 0 0 1rem;
+}
+
+
+
+
+#StockOptList h4 {
+  margin: 0.5rem;
+  font-size: 1.25rem;
+}
+
+
+.MyStockOpt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.MyStockOpt p {
   font-weight: bold;
   display: flex;
   flex-wrap: nowrap;
     justify-content: center;
     flex-direction: row;
+  margin: 0.25rem 0;
+}
+
+#StockOptList .MyStockOpt input[value="delete"] {
+  display: flex;
+  background-color: var(--del-btn-color);
+  margin: 0 0 0 1rem;
+  border-radius: 1rem;
+}
+
+#StockOptList .MyStockOpt input[value="delete"]:hover {
+  background-color: var(--del-btn-contrast-color);
+}
+
+#JoinLeagueBtn input[type="button"] {
+  background-color: rgb(200, 230, 150);
+}
+
+#JoinLeagueBtn input[type="button"]:hover {
+  background-color: rgb(100, 255, 100);
+}
+
+
+
+
+
+/*dark palette*/
+.dark #StockOptSelect input[type="button"] {
+  background-color: var(--search-btn-color);
+}
+
+.dark #StockOptSelect input[type="button"]:hover { 
+  background-color: var(--search-btn-contrast-color);
+}
+
+.dark .MyStockOpt input[value="delete"] {
+  background-color: var(--del-btn-color);
+}
+
+.dark .MyStockOpt input[value="delete"]:hover {
+  background-color: var(--del-btn-contrast-color);
+}
+
+.dark #StockOptList h4 {
+  color: var(--search-btn-color);
 }

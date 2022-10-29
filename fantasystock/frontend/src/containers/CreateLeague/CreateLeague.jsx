@@ -61,8 +61,9 @@ function Home() {
   };
 
   return (
-    <div className="CL">
-      <div className="CLTitle">
+    <div id="CreateLeague">
+    <div id="CL">
+      <div id="CLTitle">
         <label htmlFor="clTitle">
           Title
         </label>
@@ -75,7 +76,7 @@ function Home() {
           value={title}
         />
       </div>
-      <div className="CLVisibility">
+      <div id="CLVisibility">
         <label
           htmlFor="visibility"
         >
@@ -86,7 +87,7 @@ function Home() {
           <option>Private</option>
         </select>
       </div>
-      <div className="CLStart">
+      <div id="CLStart">
         <label htmlFor="start">
           Start
         </label>
@@ -99,7 +100,7 @@ function Home() {
           value={start}
         />
       </div>
-      <div className="CLEnd">
+      <div id="CLEnd">
         <label htmlFor="end">
           End
         </label>
@@ -112,10 +113,11 @@ function Home() {
           value={end}
         />
       </div>
-      <div className="CLStocks">
+    </div>
+      <div id="LeagueJoinStocks">
         <h4>Stocks</h4>
       <div>
-        <div className="clOption">
+        <div id="StockOptSelect">
           <label htmlFor="clTicker">
             Ticker:
           </label>
@@ -168,9 +170,11 @@ function Home() {
             onClick={stash}
           />
         </div>
+        </div>
           <div id="StockOptList">
+            <h4> My Stocks </h4>
             {stkList.map((aStock, index) => (
-              <div className="StockOpt" key={index}>
+              <div className="MyStockOpt" key={index}>
                 <p>{aStock.stock} {aStock.quantity} {aStock.position}</p>
                 <input
                   type="button"
@@ -181,10 +185,10 @@ function Home() {
             ))}
           </div>
         </div>
-        <div id="CLcreate">
+
+      <div id="CLcreate">
           <input type="button" value="Create League" onClick={createLeague} />
         </div>
-      </div>
     </div>
   );
 }
