@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const League = require("../models/league");
+const Stock = require("../models/stock");
 const User = require("../models/user");
 
 var jsonParser = bodyParser.json();
@@ -12,17 +13,23 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
-  // ADD LEAGUE TO USERS ACTIVE LEAGUE
-  // MAKE SURE START DATE IS AFTER CURRENT DAY
-  // MAKE SURE END DATE IS AFTER THAT
+  const rightnow = new Date();
+
+  const start = new Date(req.body.start);
+  const end = new Date(req.body.end);
+
   if (
     req.body.title === undefined ||
     req.body.stocks === undefined ||
     req.body.visibility === undefined ||
     req.body.start === undefined ||
-    req.body.end === undefined
-  )
+    req.body.end === undefined ||
+    start <= rightnow ||
+    start >= end
+  ) {
+    res.send({ created: false });
     return;
+  }
 
   const leagueData = {
     host: req.user._id,
@@ -30,13 +37,17 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     players: [
       {
         player: req.user._id,
-        stocks: req.body.stocks.map((stockData) => {
-          return {
-            ticker: stockData.stock,
-            quantity: stockData.quantity,
-            position: stockData.position,
-          };
-        }),
+        stocks: await Promise.all(
+          req.body.stocks.map(async (stockData) => {
+            const price = await Stock.findOne({ ticker: stockData.stock });
+            return {
+              ticker: stockData.stock,
+              quantity: stockData.quantity,
+              position: stockData.position,
+              priceAtTime: price.price,
+            };
+          })
+        ),
       },
     ],
     visibility: req.body.visibility,
@@ -45,38 +56,58 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     end: new Date(req.body.end),
   };
 
-  (await League.create(leagueData)).save();
+  const aThing = await (await League.create(leagueData)).save();
+
+  const host = await User.findById({ _id: req.user._id });
+
+  host.activeLeagues = [...host.activeLeagues, aThing._id];
+  host.save();
+
+  res.send({ created: true });
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
-  // ADD LEAGUE TO USERS ACTIVE LIST
-  // DONT LET USER JOIN IF ALREADY JOINED
-  // MAKE SURE USER IS LOGGED IN
-  // MAKE SURE START DATE IS AFTER CURRENT DATE
-  // console.log(req.body);
+  const host = await User.findById({ _id: req.user._id });
+
+  const activeLeagues = host.activeLeagues;
+
+  const in_league = activeLeagues.includes(req.body.gameID);
+
   if (req.body.gameID === undefined || req.body.stocks === undefined) return;
 
   const exists = League.exists({ _id: req.body.gameID });
 
   if (exists) {
+    if (!in_league) {
+      host.activeLeagues = [...host.activeLeagues, req.body.gameID];
+      host.save();
+    }
     const game = await League.findById(req.body.gameID);
 
     game.players.push({
       player: req.user._id,
-      stocks: req.body.stocks.map((stockData) => {
-        return {
-          ticker: stockData.stock,
-          quantity: stockData.quantity,
-          position: stockData.position,
-        };
-      }),
+      stocks: await Promise.all(
+        req.body.stocks.map(async (stockData) => {
+          const price = await Stock.findOne({ ticker: stockData.stock });
+          return {
+            ticker: stockData.stock,
+            quantity: stockData.quantity,
+            position: stockData.position,
+            priceAtTime: price.price,
+          };
+        })
+      ),
     });
     game.save();
   }
 });
 
+// DOES NOT WORK
 router.get("/search", jsonParser, async (req, res) => {
   if (req.query.page === undefined || req.query.page < 1) return;
+
+  // SEARCH_CRITERIA = { TITLE:contains(something), VISIBILITY: "public", START_DATE: tomorrow }
+  // const leagues = await league.find(SEARCH_CRITERIA);
 
   const leagues = await League.find({});
 
@@ -147,6 +178,26 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
   }
 });
 
+// // NOT DONE YET
+// router.patch("/comment/like", isLoggedIn, jsonParser, async (req, res) => {
+//   // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//   // CHECK IF LEAGUE REFERED TO EXISTS
+//   // IF IT DOES THEN FIND THIS LEAGUE
+//   // FIND THE COMMENT WHICH IS PART OF THIS LEAGUE
+//   // INCREMENT LIKES UP BY ONE
+//   // SAVE LEAGUE
+// });
+
+// // NOT DONE YET
+// router.patch("/comment/dislike", isLoggedIn, jsonParser, async (req, res) => {
+//   // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//   // CHECK IF LEAGUE REFERED TO EXISTS
+//   // IF IT DOES THEN FIND THIS LEAGUE
+//   // FIND THE COMMENT WHICH IS PART OF THIS LEAGUE
+//   // INCREMENT DISLIKES UP BY ONE
+//   // SAVE LEAGUE
+// });
+
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   // console.log(req.body);
   if (req.body.comment === undefined) return;
@@ -175,6 +226,73 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
     game.save();
   }
 });
+
+// // THIS IS NOT DONE YET
+// router.patch(
+//   "/comment/reply/delete",
+//   isLoggedIn,
+//   jsonParser,
+//   async (req, res) => {
+//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//     // CHECK IF LEAGUE REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS LEAGUE
+//     // CHECK IF COMMENT REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS COMMENT
+//     // CHECK IF REPLY REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS REPLY AND DELETE
+//     // SAVE LEAGUE
+//   }
+// );
+// // THIS IS NOT DONE YET
+// router.patch(
+//   "/comment/reply/edit",
+//   isLoggedIn,
+//   jsonParser,
+//   async (req, res) => {
+//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//     // CHECK IF LEAGUE REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS LEAGUE
+//     // CHECK IF COMMENT REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS COMMENT
+//     // CHECK IF REPLY REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS REPLY AND EDIT
+//     // SAVE LEAGUE
+//   }
+// );
+
+// // NOT DONE YET
+// router.patch(
+//   "/comment/reply/like",
+//   isLoggedIn,
+//   jsonParser,
+//   async (req, res) => {
+//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//     // CHECK IF LEAGUE REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS LEAGUE
+//     // CHECK IF COMMENT REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS COMMENT
+//     // CHECK IF REPLY REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS REPLY AND INCREMENT ITS LIKES
+//     // SAVE LEAGUE
+//   }
+// );
+
+// // NOT DONE YET
+// router.patch(
+//   "/comment/rpely/dislike",
+//   isLoggedIn,
+//   jsonParser,
+//   async (req, res) => {
+//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
+//     // CHECK IF LEAGUE REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS LEAGUE
+//     // CHECK IF COMMENT REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS COMMENT
+//     // CHECK IF REPLY REFERED TO EXISTS
+//     // IF IT DOES THEN FIND THIS REPLY AND INCREMENT ITS DISLIKES
+//     // SAVE LEAGUE
+//   }
+// );
 
 router.get("/:id", async (req, res) => {
   const exists = League.exists({ _id: req.params.id });
