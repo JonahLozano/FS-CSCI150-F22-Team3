@@ -116,13 +116,16 @@ function League() {
       <div>{`Title: ${data.title}`}</div>
       <div>
         Host:
-        <InlineUser
-          to={`/user/${data.host._id}`}
-          aAlt={`${data.host.username}'s Profile`}
-          design="circlePic"
-          aSrc={data.host.photo}
-          username={data.host.username}
-        />
+        {show && (
+          <InlineUser
+            user={data.host._id}
+            to={`/user/${data.host._id}`}
+            aAlt={`${data.host.username}'s Profile`}
+            design="circlePic"
+            aSrc={data.host.photo}
+            username={data.host.username}
+          />
+        )}
       </div>
       <div>{`Visibility: ${data.visibility}`}</div>
       <div>{`start: ${data.start}`}</div>
@@ -130,75 +133,66 @@ function League() {
 
       <div id="LeagueJoinStocks">
         <h4>Stocks</h4>
-      <div>
-        <div id="StockOptSelect">
-          <label htmlFor="clTicker">
-            Ticker:
-          </label>
-          <input
-            id="clTicker"
-            type="text"
-            list="data"
-            onChange={(e) => {
-              setStk(e.target.value);
-            }}
-            value={stk}
-            placeholder="Pick a stock"
-          />
-          <datalist id="data">
-            {tickers.map((item, key) => (
-              <option key={key} value={item} />
-            ))}
-          </datalist>
+        <div>
+          <div id="StockOptSelect">
+            <label htmlFor="clTicker">Ticker:</label>
+            <input
+              id="clTicker"
+              type="text"
+              list="data"
+              onChange={(e) => {
+                setStk(e.target.value);
+              }}
+              value={stk}
+              placeholder="Pick a stock"
+            />
+            <datalist id="data">
+              {tickers.map((item, key) => (
+                <option key={key} value={item} />
+              ))}
+            </datalist>
 
-          <label htmlFor="clQuantity">
-            Quantity:
-          </label>
-          <input
-            id="clQuantity"
-            type="number"
-            min="1"
-            max="999"
-            onChange={(e) => {
-              setQnt(e.target.value);
-            }}
-            value={qnt}
-          />
+            <label htmlFor="clQuantity">Quantity:</label>
+            <input
+              id="clQuantity"
+              type="number"
+              min="1"
+              max="999"
+              onChange={(e) => {
+                setQnt(e.target.value);
+              }}
+              value={qnt}
+            />
 
-          <label htmlFor="clPosition">
-            Position:
-          </label>
-          <select
-            id="clPosition"
-            onChange={(e) => setPos(e.target.value)}
-            value={pos}
-          >
-            <option>Long</option>
-            <option>Short</option>
-          </select>
+            <label htmlFor="clPosition">Position:</label>
+            <select
+              id="clPosition"
+              onChange={(e) => setPos(e.target.value)}
+              value={pos}
+            >
+              <option>Long</option>
+              <option>Short</option>
+            </select>
 
-          <input
-            type="button"
-            value="Pick"
-
-            onClick={stash}
-          />
-        </div>
-        </div>
-          <div id="StockOptList">
-            <h4> My Stocks </h4>
-            {stkList.map((aStock, index) => (
-              <div className="MyStockOpt" key={index}>
-                <p>{aStock.stock} {aStock.quantity} {aStock.position}</p>
-                <input
-                  type="button"
-                  value="delete"
-                  onClick={() => deleteStk(index)}
-                />
-              </div>
-            ))}
+            <input type="button" value="Pick" onClick={stash} />
           </div>
         </div>
+        <div id="StockOptList">
+          <h4> My Stocks </h4>
+          {stkList.map((aStock, index) => (
+            <div className="MyStockOpt" key={index}>
+              <p>
+                {aStock.stock} {aStock.quantity} {aStock.position}
+              </p>
+              <input
+                type="button"
+                value="delete"
+                onClick={() => deleteStk(index)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div id="JoinLeagueBtn">
         <input type="button" value="Join :P" onClick={joinLeague} />
@@ -208,13 +202,16 @@ function League() {
         data.players.map((player, index) => {
           return (
             <div key={index} className="leagueUserCard">
-              <InlineUser
-                to={`/user/${player.player._id}`}
-                aAlt={`${player.player.username}'s Profile`}
-                design="circlePic"
-                aSrc={player.player.photo}
-                username={player.player.username}
-              />
+              {show && (
+                <InlineUser
+                  user={player.player._id}
+                  to={`/user/${player.player._id}`}
+                  aAlt={`${player.player.username}'s Profile`}
+                  design="circlePic"
+                  aSrc={player.player.photo}
+                  username={player.player.username}
+                />
+              )}
               <div className="leagueUserCardStocks">
                 Stocks
                 {player.stocks.map((stock, index) => {
@@ -252,17 +249,17 @@ function League() {
           data.commentsection.map((data, index) => {
             return (
               <div key={index} className="LeagueComment">
-                <InlineUser
-                  to={`/user/${data.owner._id}`}
-                  aAlt={`${data.owner.username}'s Profile`}
-                  design="circlePic"
-                  aSrc={data.owner.photo}
-                  username={data.owner.username}
-                />
+                {show && (
+                  <InlineUser
+                    user={data.owner._id}
+                    to={`/user/${data.owner._id}`}
+                    aAlt={`${data.owner.username}'s Profile`}
+                    design="circlePic"
+                    aSrc={data.owner.photo}
+                    username={data.owner.username}
+                  />
+                )}
                 <div className="LeagueCommentData">{data.comment}</div>
-                <div className="LeagueCommentData">
-                  Likes:{data.likes} Dislikes:{data.dislikes}
-                </div>
 
                 {data.isOwner && (
                   <span>
@@ -310,25 +307,24 @@ function League() {
                     />
                   </span>
                 )}
-                <input type="button" value="Like" />
-                <input type="button" value="Dislike" />
+
                 <div className="LeagueCommentReplySection">
                   Replies:
                   {data.replies.map((reply, index) => {
                     return (
                       <div key={index} className="LeagueCommentReply">
-                        <InlineUser
-                          to={`/user/${reply.replyowner._id}`}
-                          aAlt={`${reply.replyowner.username}'s Profile`}
-                          design="circlePic"
-                          aSrc={reply.replyowner.photo}
-                          username={reply.replyowner.username}
-                        />
+                        {show && (
+                          <InlineUser
+                            user={reply.replyowner._id}
+                            to={`/user/${reply.replyowner._id}`}
+                            aAlt={`${reply.replyowner.username}'s Profile`}
+                            design="circlePic"
+                            aSrc={reply.replyowner.photo}
+                            username={reply.replyowner.username}
+                          />
+                        )}
                         <div className="LeagueCommentData">{reply.reply}</div>
-                        <div className="LeagueCommentData">
-                          Likes:{reply.replylikes} Dislikes:
-                          {reply.replydislikes}
-                        </div>
+
                         <div>
                           {reply.isOwner && (
                             <span>
@@ -376,8 +372,6 @@ function League() {
                               />
                             </span>
                           )}
-                          <input type="button" value="Like" />
-                          <input type="button" value="Dislike" />
                         </div>
                       </div>
                     );
