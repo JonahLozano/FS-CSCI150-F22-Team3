@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import "./InlineUser.css";
 import { ReactComponent as Crown } from "../../assets/crown.svg";
@@ -13,18 +14,51 @@ import { ReactComponent as Nvidia } from "../../assets/nvidia.svg";
 import { ReactComponent as Tesla } from "../../assets/tesla.svg";
 
 function InlineUser(props) {
+  const [data, setData] = useState({
+    displayName: String,
+    photo: String,
+    id: String,
+    bio: String,
+    username: String,
+    activeIcon: String,
+    iconList: [String],
+  });
+  const [show, setShow] = useState(false);
+
   const iconCollection = [
-    { name: "Crown", item: <Crown className="userIcon" /> },
-    { name: "Amazon", item: <Amazon className="userIcon" /> },
-    { name: "Apple", item: <Apple className="userIcon" /> },
-    { name: "Google", item: <Google className="userIcon" /> },
-    { name: "Ibm", item: <Ibm className="userIcon" /> },
-    { name: "Intel", item: <Intel className="userIcon" /> },
-    { name: "Meta", item: <Meta className="userIcon" /> },
-    { name: "Microsoft", item: <Microsoft className="userIcon" /> },
-    { name: "Nvidia", item: <Nvidia className="userIcon" /> },
-    { name: "Tesla", item: <Tesla className="userIcon" /> },
+    { name: "crown", item: <Crown className="userIcon" /> },
+    { name: "amazon", item: <Amazon className="userIcon" /> },
+    { name: "apple", item: <Apple className="userIcon" /> },
+    { name: "google", item: <Google className="userIcon" /> },
+    { name: "ibm", item: <Ibm className="userIcon" /> },
+    { name: "intel", item: <Intel className="userIcon" /> },
+    { name: "meta", item: <Meta className="userIcon" /> },
+    { name: "microsoft", item: <Microsoft className="userIcon" /> },
+    { name: "nvidia", item: <Nvidia className="userIcon" /> },
+    { name: "tesla", item: <Tesla className="userIcon" /> },
   ];
+
+  useEffect((event) => {
+    axios
+      .get(`/register/${props.user}`)
+      .then((response) => {
+        console.log(response.data);
+        setData({
+          displayName: response.data.displayName,
+          photo: response.data.photo,
+          id: `#${response.data._id}`,
+          bio: response.data.bio,
+          username: response.data.username,
+          activeIcon: response.data.activeIcon,
+          icons: response.data.icons,
+        });
+        setShow(true);
+      })
+      .catch((error) => {
+        setShow(false);
+      });
+  }, []);
+
   return (
     <Link
       style={{ textDecoration: "none" }}
@@ -36,7 +70,8 @@ function InlineUser(props) {
         data-hover={props.hoverName}
       >
         <span className="iuIcon">
-          {iconCollection.find((ele) => ele.name === "Crown").item}
+          {show &&
+            iconCollection.find((ele) => ele.name === data.activeIcon).item}
         </span>
         <span className="iuUsername">{props.username}</span>
       </div>
