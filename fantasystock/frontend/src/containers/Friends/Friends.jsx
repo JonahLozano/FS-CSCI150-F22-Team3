@@ -5,6 +5,7 @@ import "./Friends.css";
 
 function Profile(props) {
   const [data, setData] = useState([]);
+  const [fr, setFr] = useState([]);
   const [show, setShow] = useState(false);
 
   const [friendcode, setFriendcode] = useState("");
@@ -14,6 +15,21 @@ function Profile(props) {
       .get(`/register/friends`)
       .then((response) => {
         setData(() =>
+          response === undefined || response.data === undefined
+            ? []
+            : response.data
+        );
+        setShow(true);
+      })
+      .catch((error) => {
+        setShow(false);
+        console.log(error);
+      });
+
+    axios
+      .get(`/register/friendsrequests`)
+      .then((response) => {
+        setFr(() =>
           response === undefined || response.data === undefined
             ? []
             : response.data
@@ -59,6 +75,44 @@ function Profile(props) {
         onClick={addFriend}
       />
       <div>
+        <h1>Friend Requests</h1>
+        {show &&
+          fr.map((ele, index) => (
+            <div className="friendblock" key={`uniqueId${index}`}>
+              <ClickablePic
+                aSrc={ele.photo}
+                design="circlePic"
+                aAlt={`${ele.username}'s Profile`}
+                to={`/user/${ele._id}`}
+              />
+              <div className="friendusername">{ele.username}</div>
+              <input
+                type="button"
+                className="msgfriend"
+                value="Accept"
+                onClick={() => {
+                  console.log(ele._id);
+
+                  axios.patch("/register/friend/request/accept", {
+                    friendcode: ele._id,
+                  });
+                }}
+              />
+              <input
+                type="button"
+                className="unfriendfriend"
+                value="Reject"
+                onClick={() => {
+                  console.log(ele._id);
+
+                  axios.patch("/register/friend/request/decline", {
+                    friendcode: ele._id,
+                  });
+                }}
+              />
+            </div>
+          ))}
+        <h1>Friends</h1>
         {show &&
           data.map((ele, index) => (
             <div className="friendblock" key={`uniqueId${index}`}>
