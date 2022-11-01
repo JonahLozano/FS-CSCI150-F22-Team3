@@ -37,6 +37,8 @@ body {
   --main-user-contrast-color: hsl(220, 13%, 75%);
 
   --main-card-color: hsl(220, 13%, 60%);
+
+  --league-comment-reply-color:  rgb(128, 133, 159);
 }
 
 body.light {

@@ -113,9 +113,10 @@ function League() {
   };
   return (
     <div>
-      <div>{`Title: ${data.title}`}</div>
-      <div>
-        Host:
+    <div id="LeagueDeetsHeader">
+      <div className="LeagueTitle">{`${data.title}`}</div>
+      <div className="LeagueDeets">
+        <h4>Host:
         {show && (
           <InlineUser
             user={data.host._id}
@@ -126,13 +127,14 @@ function League() {
             username={data.host.username}
           />
         )}
+        </h4>
       </div>
-      <div>{`Visibility: ${data.visibility}`}</div>
-      <div>{`start: ${data.start}`}</div>
-      <div>{`end: ${data.end}`}</div>
-
+      <div className="LeagueDeets">{`Visibility: ${data.visibility}`}</div>
+      <div className="LeagueDeets">{`League Start: ${data.start}`}</div>
+      <div className="LeagueDeets">{`League End: ${data.end}`}</div>
+      </div>
       <div id="LeagueJoinStocks">
-        <h4>Stocks</h4>
+        <h4>{`Join ${data.title}: Choose Stocks`}</h4>
         <div>
           <div id="StockOptSelect">
             <label htmlFor="clTicker">Ticker:</label>
@@ -195,9 +197,10 @@ function League() {
       </div>
 
       <div id="JoinLeagueBtn">
-        <input type="button" value="Join :P" onClick={joinLeague} />
+        <input type="button" value="Join League" onClick={joinLeague} />
       </div>
-      <div style={{ marginTop: "4rem" }}>Players</div>
+      <h4 className="pl">{`${data.title} Players`}</h4>
+      <div id="LeagueUsers">
       {show &&
         data.players.map((player, index) => {
           return (
@@ -213,7 +216,7 @@ function League() {
                 />
               )}
               <div className="leagueUserCardStocks">
-                Stocks
+                <h4>{`${player.player.username}'s Stocks`}</h4>
                 {player.stocks.map((stock, index) => {
                   return (
                     <div key={index}>
@@ -225,17 +228,18 @@ function League() {
             </div>
           );
         })}
+        </div>
 
-      <div className="LeagueCommentSection">
-        <div>Comment Section</div>
-        <div>
+      <div id="LeagueCommentSection">
+        <h4>Comment Section</h4>
+        <div id="LeagueCreateComment">
           <textarea
             id="LeagueComment"
             value={comment}
             onChange={(e) => {
               setComment(e.target.value);
             }}
-            placeholder="Leave a Comment :P"
+            placeholder="Leave a Comment"
           />
           <input
             type="button"
@@ -309,7 +313,7 @@ function League() {
                 )}
 
                 <div className="LeagueCommentReplySection">
-                  Replies:
+                  <h4>Replies:</h4>
                   {data.replies.map((reply, index) => {
                     return (
                       <div key={index} className="LeagueCommentReply">
@@ -325,7 +329,7 @@ function League() {
                         )}
                         <div className="LeagueCommentData">{reply.reply}</div>
 
-                        <div>
+                        
                           {reply.isOwner && (
                             <span>
                               {editableComment[index] && (
@@ -373,11 +377,11 @@ function League() {
                             </span>
                           )}
                         </div>
-                      </div>
+                      
                     );
                   })}
                 </div>
-                <div>
+                <div className="LeagueCreateCommentReply">
                   <textarea
                     onChange={(e) => {
                       const tmpThing = reply;
@@ -385,7 +389,7 @@ function League() {
                       setReply([...tmpThing]);
                     }}
                     value={reply[index]}
-                    placeholder="Leave a Reply :P"
+                    placeholder="Leave a Reply"
                   />
                   <input
                     type="button"

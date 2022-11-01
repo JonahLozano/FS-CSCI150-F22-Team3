@@ -153,7 +153,7 @@ function Profile(props) {
                 }
                 {data.username}
               </h1>
-              <h2 className="profileIDstring">{data.id}</h2>
+              <h3 className="profileIDstring">{data.id}</h3>
               <p className="profileBio">{data.bio}</p>
             </div>
           )}
