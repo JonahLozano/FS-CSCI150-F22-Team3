@@ -19,7 +19,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   const end = new Date(req.body.end);
 
   // use res.send({ data: req.body }) to display data being sent from frontend to backend:
-  // res.send({ data: req.body });
+  //res.send({ data: req.body });
   // example of data being sent:
   // data: {start: "2022-11-02", end: "2022-11-03", title: "temp1", visibility: "public", stocks: [{stock: "AAPL", quantity: 1, position: "long"}]}
 
@@ -27,7 +27,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   if (
     (req.body.title === undefined || typeof req.body.title !== "string") ||
     req.body.stocks.length === 0 ||
-    (req.body.visibility !== "public" || req.body.visibility !== "private" ) ||
+    (req.body.visibility !== "public" && req.body.visibility !== "private") ||
     (req.body.start === undefined || typeof req.body.start !== "string") ||
     (req.body.end === undefined || typeof req.body.end !== "string") ||
     start <= rightnow ||
