@@ -13,17 +13,23 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
-  const rightnow = new Date();
 
+  const rightnow = new Date();
   const start = new Date(req.body.start);
   const end = new Date(req.body.end);
 
+  // use res.send({ data: req.body }) to display data being sent from frontend to backend:
+  // res.send({ data: req.body });
+  // example of data being sent:
+  // data: {start: "2022-11-02", end: "2022-11-03", title: "temp1", visibility: "public", stocks: [{stock: "AAPL", quantity: 1, position: "long"}]}
+
+  // check data is present and is of correct type
   if (
-    req.body.title === undefined ||
-    req.body.stocks === undefined ||
-    req.body.visibility === undefined ||
-    req.body.start === undefined ||
-    req.body.end === undefined ||
+    (req.body.title === undefined || typeof req.body.title !== "string") ||
+    req.body.stocks.length === 0 ||
+    (req.body.visibility !== "public" || req.body.visibility !== "private" ) ||
+    (req.body.start === undefined || typeof req.body.start !== "string") ||
+    (req.body.end === undefined || typeof req.body.end !== "string") ||
     start <= rightnow ||
     start >= end
   ) {
@@ -67,6 +73,10 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
+
+  // checking to make sure
+  //res.send({ data: req.body });
+
   const host = await User.findById({ _id: req.user._id });
 
   const activeLeagues = host.activeLeagues;
@@ -119,6 +129,11 @@ router.get("/search", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
+
+  // check all the comments contain chars
+
+
+
   if (req.body.comment === undefined) return;
 
   const commentData = {
@@ -142,6 +157,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/edit", jsonParser, async (req, res) => {
+
+  // contains data 
+
+
   if (req.body.gameID === undefined || req.body.commentID === undefined) return;
 
   const exists1 = League.exists({ _id: req.body.gameID });
@@ -163,7 +182,10 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
-  console.log(req.body);
+
+  // check it exists and belongs to whoever made comment
+  //console.log(req.body);
+
   if (req.body.gameID === undefined || req.body.commentID === undefined) return;
 
   const exists1 = League.exists({ _id: req.body.gameID });
@@ -199,7 +221,10 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 // });
 
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
+
+  // comment user is replying to exists
   // console.log(req.body);
+
   if (req.body.comment === undefined) return;
 
   const commentData = {
@@ -295,6 +320,9 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 // );
 
 router.get("/:id", async (req, res) => {
+
+  // make sure id exists
+
   const exists = League.exists({ _id: req.params.id });
 
   if (exists) {
