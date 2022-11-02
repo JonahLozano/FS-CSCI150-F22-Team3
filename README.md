@@ -13,6 +13,7 @@ Now, you will need to create a '.env' file in the backend directory with all the
 The enviornment varibles needed include: 
 - DB_HOST
 - ALPHA_VANTAGE_KEY
+- NEWS_API_KEY
 - GOOGLE_CLIENT_ID
 - GOOGLE_CLIENT_SECRET
 - PORT
