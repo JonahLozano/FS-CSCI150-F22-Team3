@@ -47,12 +47,13 @@ function Store() {
   }, []);
 
   return (
-    <div className="iconContainer">
+    <div id="iconContainerContainer">
+      <div className="iconContainer">
       {data.map((data, index) => (
         <div className="iconCard" key={`uniqueId${index}`}>
           {iconCollection.find((ele) => ele.name === data.name).item}
           <div className="iconName">{data.name}</div>
-          <div className="iconName">{data.price}</div>
+          <div className="iconPrice">{data.price}</div>
           <input
             type="button"
             value="Buy"
@@ -67,6 +68,7 @@ function Store() {
           />
         </div>
       ))}
+    </div>
     </div>
   );
 }

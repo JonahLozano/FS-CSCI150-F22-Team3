@@ -1,5 +1,5 @@
 .iconCard {
-  border: 0.5rem solid black;
+  border: 0.25rem solid black;
   border-radius: 1rem;
   width: 20rem;
   font-size: 1rem;
@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   align-content: center;
-  margin: 1rem;
+  margin: 0.5rem;
   display: inline-flex;
   padding: 1rem;
   background-color: rgba(128, 128, 128, 0.125);
@@ -31,9 +31,21 @@
   padding: 0.5rem;
 }
 
+.iconPrice {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
 .iconContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+#iconContainerContainer {
+  display: flex;
+  align-items: center;
 }
 
 .iconBuy {
@@ -46,4 +58,11 @@
 .iconBuy:hover {
   background-color: hsl(0, 0%, 90%);
   transform: scale(1.05);
+}
+
+@media screen and (max-width:600px) {
+  .iconContainer {
+    width: ;
+}
+
 }
