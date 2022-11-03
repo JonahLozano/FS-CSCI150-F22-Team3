@@ -15,8 +15,13 @@ function isLoggedIn(req, res, next) {
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 
   const rightnow = new Date();
+  //console.log("rightnow " + rightnow);
   const start = new Date(req.body.start);
+  //console.log("start " + start);
   const end = new Date(req.body.end);
+  //console.log("end " + end);
+
+  // we have an issue where the input being parsed from start and end is a day off backwards 
 
   // use res.send({ data: req.body }) to display data being sent from frontend to backend:
   //res.send({ data: req.body });
@@ -33,8 +38,22 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     start <= rightnow ||
     start >= end
   ) {
-    res.send({ created: false });
+    res.send({ created1: false });
     return;
+  }
+  else{
+    // now check the stocks input array (size can vary, need to check every possibility)
+    for(let i = 0; i < req.body.stocks.length; i++){
+      if(
+        typeof req.body.stocks[i]["stock"] !== "string" ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
+        (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
+        )
+      {
+        res.send({ created2: false });
+        return;
+      }
+    }
   }
 
   const leagueData = {
@@ -74,16 +93,29 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 
 router.patch("/join", jsonParser, async (req, res) => {
 
-  // checking to make sure
-  //res.send({ data: req.body });
-
   const host = await User.findById({ _id: req.user._id });
-
   const activeLeagues = host.activeLeagues;
-
   const in_league = activeLeagues.includes(req.body.gameID);
 
-  if (req.body.gameID === undefined || req.body.stocks === undefined) return;
+  // checking to make sure data is valid 
+  if(req.body.gameID === undefined || req.body.stocks.length === 0){
+    console.log("join failed1");
+    return;
+  }
+  else{
+    // now check the stocks input array (size can vary, need to check every possibility)
+    for(let i = 0; i < req.body.stocks.length; i++){
+        if(
+          typeof req.body.stocks[i]["stock"] !== "string" ||
+          typeof req.body.stocks[i]["quantity"] !== "string" ||
+          (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
+          )
+        {
+            console.log("join failed2");
+            return;
+        }
+    }
+  } 
 
   const exists = League.exists({ _id: req.body.gameID });
 
@@ -130,11 +162,16 @@ router.get("/search", jsonParser, async (req, res) => {
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
-  // check all the comments contain chars
-
-
-
-  if (req.body.comment === undefined) return;
+  // check to make sure data is valid
+  // data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
+  if(req.body.gameID === undefined ||
+     req.body.comment === undefined ||
+     typeof req.body.comment !== "string"
+    )
+  {
+    console.log("post comment failed");
+    return;
+  }
 
   const commentData = {
     comment: req.body.comment,
