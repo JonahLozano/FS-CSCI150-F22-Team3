@@ -66,7 +66,7 @@ function User(props) {
           <h2 className="userIDstring">{`#${user._id}`}</h2>
           <p className="userBio">{user.bio}</p>
 
-          <input type="button" value="Add Friend :)" onClick={addFriend} />
+          <input className="addFriendBtn" type="button" value="Add Friend :)" onClick={addFriend} />
         </div>
       )}
     </div>

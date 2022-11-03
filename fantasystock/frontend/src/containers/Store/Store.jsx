@@ -47,7 +47,7 @@ function Store() {
   }, []);
 
   return (
-    <div id="iconContainerContainer">
+    
       <div className="iconContainer">
       {data.map((data, index) => (
         <div className="iconCard" key={`uniqueId${index}`}>
@@ -68,7 +68,6 @@ function Store() {
           />
         </div>
       ))}
-    </div>
     </div>
   );
 }

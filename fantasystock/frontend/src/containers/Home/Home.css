@@ -1,5 +1,5 @@
 .articleCard {
-  border: 0.5rem solid black;
+  border: 0.25rem solid black;
   border-radius: 1rem;
   width: 20rem;
   font-size: 1rem;
@@ -12,18 +12,25 @@
 }
 
 .articleCardImage {
-  width: 20rem;
-  height: 20rem;
+  width: 100%;
   display: block;
   object-fit: cover;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0.75rem 0.75rem 0 0;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
 }
 
-.homePage {
+.articleHeader {
+  padding: 0.25rem;
+  font-weight: bold;
+}
+
+.articleCreatedAt {
+  font-size: 0.75rem;
+}
+
+#homePage {
   margin-top: 2rem;
 }

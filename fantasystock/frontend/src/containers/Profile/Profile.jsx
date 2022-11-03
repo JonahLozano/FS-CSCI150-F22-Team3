@@ -101,8 +101,8 @@ function Profile(props) {
             </div>
           </div>
           {editable ? (
-            <form>
-              <div>
+            <form id="editProfile">
+              <div id="editProfileName">
                 <input
                   type="textbox"
                   placeholder="Username"
@@ -111,7 +111,7 @@ function Profile(props) {
                   value={data.username}
                 />
               </div>
-              <div>
+              <div id="editProfileBio">
                 <textarea
                   rows="4"
                   cols="50"
@@ -121,7 +121,7 @@ function Profile(props) {
                   value={data.bio}
                 ></textarea>
               </div>
-              <div>
+              <div id="editProfileIcon">
                 <select
                   value={data.activeIcon}
                   onChange={(e) => {
@@ -138,9 +138,9 @@ function Profile(props) {
                   ))}
                 </select>
               </div>
-              <div>
+              <div id="editProfileSave">
                 <button type="button" onClick={sendPatch}>
-                  Save :P
+                  Save
                 </button>
               </div>
             </form>
