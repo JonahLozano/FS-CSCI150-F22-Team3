@@ -38,8 +38,22 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     start <= rightnow ||
     start >= end
   ) {
-    res.send({ created: false });
+    res.send({ created1: false });
     return;
+  }
+  else{
+    // now check the stocks input array (size can vary, need to check every possibility)
+    for(let i = 0; i < req.body.stocks.length; i++){
+      if(
+        typeof req.body.stocks[i]["stock"] !== "string" ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
+        (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
+        )
+      {
+        res.send({ created2: false });
+        return;
+      }
+    }
   }
 
   const leagueData = {
@@ -148,11 +162,16 @@ router.get("/search", jsonParser, async (req, res) => {
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
-  // check all the comments contain chars
-
-
-
-  if (req.body.comment === undefined) return;
+  // check to make sure data is valid
+  // data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
+  if(req.body.gameID === undefined ||
+     req.body.comment === undefined ||
+     typeof req.body.comment !== "string"
+    )
+  {
+    console.log("post comment failed");
+    return;
+  }
 
   const commentData = {
     comment: req.body.comment,
