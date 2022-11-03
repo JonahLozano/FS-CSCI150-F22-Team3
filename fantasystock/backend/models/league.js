@@ -25,6 +25,7 @@ const LeagueSchema = new Schema(
                 enum: ["long", "short"],
                 default: "long",
               },
+              priceAtTime: { type: Number, default: 0 },
             },
           ],
         },
@@ -37,6 +38,7 @@ const LeagueSchema = new Schema(
     },
     start: { type: Date, required: true },
     end: { type: Date, required: true },
+    active: { type: Boolean, default: true },
     commentsection: [
       {
         comment: {

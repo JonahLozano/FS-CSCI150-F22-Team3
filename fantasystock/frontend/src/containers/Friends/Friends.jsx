@@ -5,6 +5,7 @@ import "./Friends.css";
 
 function Profile(props) {
   const [data, setData] = useState([]);
+  const [fr, setFr] = useState([]);
   const [show, setShow] = useState(false);
 
   const [friendcode, setFriendcode] = useState("");
@@ -13,27 +14,26 @@ function Profile(props) {
     axios
       .get(`/register/friends`)
       .then((response) => {
-        setData((prev) => {
-          console.log(response);
-          if (
-            response === undefined ||
-            response.data === undefined ||
-            response.data[0] === undefined ||
-            response.data[0]._id === undefined ||
-            response.data[0].username === undefined ||
-            response.data[0].photo === undefined
-          )
-            return [];
+        setData(() =>
+          response === undefined || response.data === undefined
+            ? []
+            : response.data
+        );
+        setShow(true);
+      })
+      .catch((error) => {
+        setShow(false);
+        console.log(error);
+      });
 
-          return [
-            ...prev,
-            {
-              _id: response.data[0]._id,
-              username: response.data[0].username,
-              photo: response.data[0].photo,
-            },
-          ];
-        });
+    axios
+      .get(`/register/friendsrequests`)
+      .then((response) => {
+        setFr(() =>
+          response === undefined || response.data === undefined
+            ? []
+            : response.data
+        );
         setShow(true);
       })
       .catch((error) => {
@@ -42,10 +42,16 @@ function Profile(props) {
       });
   }, []);
 
-  const sendPatch = () => {
+  const addFriend = () => {
     console.log(friendcode);
     axios.patch("/register/addfriend", {
       friendcode: friendcode,
+    });
+  };
+
+  const deleteFriend = (aFriendCode) => {
+    axios.patch("/register/deletefriend", {
+      friendcode: aFriendCode,
     });
   };
 
@@ -66,9 +72,47 @@ function Profile(props) {
         className="friendbaradderbtn"
         type="button"
         value="Add Friend"
-        onClick={sendPatch}
+        onClick={addFriend}
       />
       <div>
+        <h1>Friend Requests</h1>
+        {show &&
+          fr.map((ele, index) => (
+            <div className="friendblock" key={`uniqueId${index}`}>
+              <ClickablePic
+                aSrc={ele.photo}
+                design="circlePic"
+                aAlt={`${ele.username}'s Profile`}
+                to={`/user/${ele._id}`}
+              />
+              <div className="friendusername">{ele.username}</div>
+              <input
+                type="button"
+                className="msgfriend"
+                value="Accept"
+                onClick={() => {
+                  console.log(ele._id);
+
+                  axios.patch("/register/friend/request/accept", {
+                    friendcode: ele._id,
+                  });
+                }}
+              />
+              <input
+                type="button"
+                className="unfriendfriend"
+                value="Reject"
+                onClick={() => {
+                  console.log(ele._id);
+
+                  axios.patch("/register/friend/request/decline", {
+                    friendcode: ele._id,
+                  });
+                }}
+              />
+            </div>
+          ))}
+        <h1>Friends</h1>
         {show &&
           data.map((ele, index) => (
             <div className="friendblock" key={`uniqueId${index}`}>
@@ -84,6 +128,7 @@ function Profile(props) {
                 type="button"
                 className="unfriendfriend"
                 value="Unfriend"
+                onClick={() => deleteFriend(ele._id)}
               />
             </div>
           ))}

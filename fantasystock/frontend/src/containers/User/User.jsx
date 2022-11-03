@@ -44,6 +44,12 @@ function User(props) {
       });
   }, []);
 
+  const addFriend = () => {
+    axios.patch("/register/addfriend", {
+      friendcode: id,
+    });
+  };
+
   return (
     <div>
       {show && (
@@ -59,6 +65,8 @@ function User(props) {
 
           <h2 className="userIDstring">{`#${user._id}`}</h2>
           <p className="userBio">{user.bio}</p>
+
+          <input type="button" value="Add Friend :)" onClick={addFriend} />
         </div>
       )}
     </div>

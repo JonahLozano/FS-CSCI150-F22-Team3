@@ -21,33 +21,38 @@ function Profile(props) {
     id: String,
     bio: String,
     username: String,
+    activeIcon: String,
+    iconList: [String],
   });
   const [show, setShow] = useState(false);
   const [editable, setEditable] = useState(false);
 
   const iconCollection = [
-    { name: "Crown", item: <Crown className="userIcon" /> },
-    { name: "Amazon", item: <Amazon className="userIcon" /> },
-    { name: "Apple", item: <Apple className="userIcon" /> },
-    { name: "Google", item: <Google className="userIcon" /> },
-    { name: "Ibm", item: <Ibm className="userIcon" /> },
-    { name: "Intel", item: <Intel className="userIcon" /> },
-    { name: "Meta", item: <Meta className="userIcon" /> },
-    { name: "Microsoft", item: <Microsoft className="userIcon" /> },
-    { name: "Nvidia", item: <Nvidia className="userIcon" /> },
-    { name: "Tesla", item: <Tesla className="userIcon" /> },
+    { name: "crown", item: <Crown className="userIcon" /> },
+    { name: "amazon", item: <Amazon className="userIcon" /> },
+    { name: "apple", item: <Apple className="userIcon" /> },
+    { name: "google", item: <Google className="userIcon" /> },
+    { name: "ibm", item: <Ibm className="userIcon" /> },
+    { name: "intel", item: <Intel className="userIcon" /> },
+    { name: "meta", item: <Meta className="userIcon" /> },
+    { name: "microsoft", item: <Microsoft className="userIcon" /> },
+    { name: "nvidia", item: <Nvidia className="userIcon" /> },
+    { name: "tesla", item: <Tesla className="userIcon" /> },
   ];
 
   useEffect((event) => {
     axios
       .get(`/register/profile`)
       .then((response) => {
+        console.log(response.data);
         setData({
           displayName: response.data.displayName,
           photo: response.data.photo,
           id: `#${response.data._id}`,
           bio: response.data.bio,
           username: response.data.username,
+          activeIcon: response.data.activeIcon,
+          icons: response.data.icons,
         });
         setShow(true);
       })
@@ -61,6 +66,7 @@ function Profile(props) {
       axios.patch("/register/edit", {
         username: data.username,
         bio: data.bio,
+        activeIcon: data.activeIcon,
       });
       toggleEdit();
     }
@@ -102,6 +108,7 @@ function Profile(props) {
                   placeholder="Username"
                   onChange={editUsername}
                   text={data.username}
+                  value={data.username}
                 />
               </div>
               <div>
@@ -111,7 +118,25 @@ function Profile(props) {
                   placeholder="Bio"
                   onChange={editBio}
                   text={data.bio}
+                  value={data.bio}
                 ></textarea>
+              </div>
+              <div>
+                <select
+                  value={data.activeIcon}
+                  onChange={(e) => {
+                    setData((prev) => ({
+                      ...prev,
+                      activeIcon: e.target.value,
+                    }));
+                  }}
+                >
+                  {data.icons.map((icon, index) => (
+                    <option key={index} value={icon}>
+                      {icon}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <button type="button" onClick={sendPatch}>
@@ -122,10 +147,13 @@ function Profile(props) {
           ) : (
             <div>
               <h1 className="profileTitle">
-                {iconCollection.find((ele) => ele.name === "Crown").item}
+                {
+                  iconCollection.find((ele) => ele.name === data.activeIcon)
+                    .item
+                }
                 {data.username}
               </h1>
-              <h2 className="profileIDstring">{data.id}</h2>
+              <h3 className="profileIDstring">{data.id}</h3>
               <p className="profileBio">{data.bio}</p>
             </div>
           )}
