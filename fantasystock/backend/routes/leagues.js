@@ -200,10 +200,14 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
 router.patch("/comment/edit", jsonParser, async (req, res) => {
 
-  // contains data 
-
-
-  if (req.body.gameID === undefined || req.body.commentID === undefined) return;
+  // check to make sure data is valid
+  if(req.body.gameID === undefined ||
+     req.body.commentID === undefined ||
+     typeof req.body.comment !== "string"
+    )
+  {
+    return;
+  }
 
   const exists1 = League.exists({ _id: req.body.gameID });
 
@@ -225,9 +229,7 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 
-  // check it exists and belongs to whoever made comment
-  //console.log(req.body);
-
+  // check gameID & commentID are defined (means user can only delete their own comment)
   if (req.body.gameID === undefined || req.body.commentID === undefined) return;
 
   const exists1 = League.exists({ _id: req.body.gameID });
@@ -264,10 +266,14 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 
-  // comment user is replying to exists
-  // console.log(req.body);
-
-  if (req.body.comment === undefined) return;
+  // check to make sure data is valid
+  if(req.body.gameID === undefined ||
+     req.body.comment === undefined ||
+     typeof req.body.comment !== "string"
+    )
+  {
+    return;
+  }
 
   const commentData = {
     reply: req.body.comment,
