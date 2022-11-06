@@ -8,6 +8,7 @@ const { findById } = require("../models/stock");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const adjectives = require("../data/adjectives");
 const animals = require("../data/animals");
+const user = require("../models/user");
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -139,6 +140,19 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
+
+  // input data validation
+  if(req.body.friendcode === undefined ||         // friendcode must be defined
+     req.body.friendcode.length > 32 ||           // friendcode input must be 32 chars or less
+     typeof req.body.friendcode !== "string" ||   // friendcode input must be a string
+     req.body.friendcode === req.user._id         // user can not add him/herself as a friend
+    )
+  {
+    console.log("Invalid friend code");
+    return;
+  }
+
+
   if (req.body.friendcode.length <= 32) {
     try {
       console.log(req.user._id);
