@@ -103,7 +103,23 @@ router.get(
 );
 
 router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
+
   const user = await User.findById(req.user._id);
+
+  // data validation for 'username', 'bio', and 'activeIcon' attributes
+  if(req.body.username.length > 32 ||             // username must be less than or equal to 32 chars
+     req.body.username === undefined ||           // username must be defined
+     typeof req.body.username !== "string" ||     // username must be a string
+     req.body.bio.length > 300 ||                 // bio must be less than or equal to 300 chars 
+     req.body.bio === undefined ||                // bio must be defined
+     typeof req.body.bio !== "string" ||          // bio must be a string
+     req.body.activeIcon === undefined ||         // activeIcon must be defined
+     typeof req.body.activeIcon !== "string" ||   // activeIcon must be a string
+     (!user.icons.includes(req.body.activeIcon))) // activeIcon requested to switch must be owned by user already
+  {
+    console.log("Edit failed due to input errors");
+    return;
+  }
 
   if (
     req.body.username.length <= 32 &&
