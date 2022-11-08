@@ -4,6 +4,7 @@ const router = express.Router();
 require("dotenv").config();
 const League = require("../models/league");
 const Stock = require("../models/stock");
+const user = require("../models/user");
 const User = require("../models/user");
 
 var jsonParser = bodyParser.json();
@@ -14,11 +15,8 @@ function isLoggedIn(req, res, next) {
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   const rightnow = new Date();
-  //console.log("rightnow " + rightnow);
   const start = new Date(req.body.start);
-  //console.log("start " + start);
   const end = new Date(req.body.end);
-  //console.log("end " + end);
 
   // we have an issue where the input being parsed from start and end is a day off backwards
 
@@ -93,24 +91,32 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
+  // host represents the user instance from the MongoDB that is currently trying to join
   const host = await User.findById({ _id: req.user._id });
+  // grabs data the activeLeagues of the user that is currently trying to join
   const activeLeagues = host.activeLeagues;
+  // testing to see if user that is currently trying to join is already joined (hence can't join)
   const in_league = activeLeagues.includes(req.body.gameID);
 
   // checking to make sure data is valid
-  if (req.body.gameID === undefined || req.body.stocks.length === 0) {
-    console.log("join failed1");
+  if (
+    req.body.gameID === undefined ||
+    in_league ||
+    req.body.stocks.length === 0
+  ) {
+    console.log("join case 1 failed");
     return;
   } else {
     // now check the stocks input array (size can vary, need to check every possibility)
+
     for (let i = 0; i < req.body.stocks.length; i++) {
       if (
         typeof req.body.stocks[i]["stock"] !== "string" ||
-        typeof req.body.stocks[i]["quantity"] !== "string" ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
         (req.body.stocks[i]["position"] !== "long" &&
           req.body.stocks[i]["position"] !== "short")
       ) {
-        console.log("join failed2");
+        console.log("join case 2 failed");
         return;
       }
     }
