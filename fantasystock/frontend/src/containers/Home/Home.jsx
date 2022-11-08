@@ -16,7 +16,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="homePage">
+    <div id="homePage">
       {articles.map((article, index) => (
         <div className="articleCard" key={`uniqueId${index}`}>
           <img
@@ -24,8 +24,10 @@ function Home() {
             src={article.urlToImage}
             alt="Article"
           />{" "}
-          {article.title}
-          <div>{article.createdAt}</div>
+          <div className="articleHeader">
+            {article.title}
+          </div>
+          <div className="articleCreatedAt">{article.createdAt}</div>
         </div>
       ))}
     </div>

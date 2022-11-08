@@ -1,14 +1,9 @@
 .iconCard {
   border: 0.25rem solid black;
   border-radius: 1rem;
-  width: 20rem;
+  min-width: 15rem;
   font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  margin: 0.5rem;
-  display: inline-flex;
+
   padding: 1rem;
   background-color: rgba(128, 128, 128, 0.125);
 }
@@ -37,10 +32,15 @@
 }
 
 .iconContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(23rem , 1fr));
+  grid-gap: 1rem;
+  width:  100%;
+/*  display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+*/
 }
 
 #iconContainerContainer {
