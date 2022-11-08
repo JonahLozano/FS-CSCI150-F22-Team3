@@ -8,6 +8,7 @@ const { findById } = require("../models/stock");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const adjectives = require("../data/adjectives");
 const animals = require("../data/animals");
+const user = require("../models/user");
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -102,7 +103,23 @@ router.get(
 );
 
 router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
+
   const user = await User.findById(req.user._id);
+
+  // data validation for 'username', 'bio', and 'activeIcon' attributes
+  if(req.body.username.length > 32 ||             // username must be less than or equal to 32 chars
+     req.body.username === undefined ||           // username must be defined
+     typeof req.body.username !== "string" ||     // username must be a string
+     req.body.bio.length > 300 ||                 // bio must be less than or equal to 300 chars 
+     req.body.bio === undefined ||                // bio must be defined
+     typeof req.body.bio !== "string" ||          // bio must be a string
+     req.body.activeIcon === undefined ||         // activeIcon must be defined
+     typeof req.body.activeIcon !== "string" ||   // activeIcon must be a string
+     (!user.icons.includes(req.body.activeIcon))) // activeIcon requested to switch must be owned by user already
+  {
+    console.log("Edit failed due to input errors");
+    return;
+  }
 
   if (
     req.body.username.length <= 32 &&
@@ -139,6 +156,19 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
+
+  // input data validation
+  if(req.body.friendcode === undefined ||         // friendcode must be defined
+     req.body.friendcode.length > 32 ||           // friendcode input must be 32 chars or less
+     typeof req.body.friendcode !== "string" ||   // friendcode input must be a string
+     req.body.friendcode === req.user._id         // user can not add him/herself as a friend
+    )
+  {
+    console.log("Invalid friend code");
+    return;
+  }
+
+
   if (req.body.friendcode.length <= 32) {
     try {
       console.log(req.user._id);
