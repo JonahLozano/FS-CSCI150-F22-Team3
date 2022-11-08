@@ -14,11 +14,12 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
+
   const rightnow = new Date();
   const start = new Date(req.body.start);
   const end = new Date(req.body.end);
 
-  // we have an issue where the input being parsed from start and end is a day off backwards
+  // we have an issue where the input being parsed from start and end is a day off backwards 
 
   // use res.send({ data: req.body }) to display data being sent from frontend to backend:
   //res.send({ data: req.body });
@@ -27,28 +28,26 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 
   // check data is present and is of correct type
   if (
-    req.body.title === undefined ||
-    typeof req.body.title !== "string" ||
+    (req.body.title === undefined || typeof req.body.title !== "string") ||
     req.body.stocks.length === 0 ||
     (req.body.visibility !== "public" && req.body.visibility !== "private") ||
-    req.body.start === undefined ||
-    typeof req.body.start !== "string" ||
-    req.body.end === undefined ||
-    typeof req.body.end !== "string" ||
+    (req.body.start === undefined || typeof req.body.start !== "string") ||
+    (req.body.end === undefined || typeof req.body.end !== "string") ||
     start <= rightnow ||
     start >= end
   ) {
     res.send({ created1: false });
     return;
-  } else {
+  }
+  else{
     // now check the stocks input array (size can vary, need to check every possibility)
-    for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
+    for(let i = 0; i < req.body.stocks.length; i++){
+      if(
         typeof req.body.stocks[i]["stock"] !== "string" ||
         typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
+        (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
+        )
+      {
         res.send({ created2: false });
         return;
       }
@@ -91,6 +90,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
+
   // host represents the user instance from the MongoDB that is currently trying to join
   const host = await User.findById({ _id: req.user._id });
   // grabs data the activeLeagues of the user that is currently trying to join
@@ -98,29 +98,29 @@ router.patch("/join", jsonParser, async (req, res) => {
   // testing to see if user that is currently trying to join is already joined (hence can't join)
   const in_league = activeLeagues.includes(req.body.gameID);
 
-  // checking to make sure data is valid
-  if (
-    req.body.gameID === undefined ||
-    in_league ||
-    req.body.stocks.length === 0
-  ) {
+  // checking to make sure data is valid 
+  if(req.body.gameID === undefined ||
+     in_league ||
+     req.body.stocks.length === 0
+    )
+  {
     console.log("join case 1 failed");
     return;
-  } else {
-    // now check the stocks input array (size can vary, need to check every possibility)
-
-    for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
-        typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
-        console.log("join case 2 failed");
-        return;
-      }
-    }
   }
+  else{
+    // now check the stocks input array (size can vary, need to check every possibility)
+    for(let i = 0; i < req.body.stocks.length; i++){
+        if(
+          typeof req.body.stocks[i]["stock"] !== "string" ||
+          typeof req.body.stocks[i]["quantity"] !== "number" ||
+          (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
+          )
+        {
+            console.log("join case 2 failed");
+            return;
+        }
+    }
+  } 
 
   const exists = League.exists({ _id: req.body.gameID });
 
@@ -151,21 +151,12 @@ router.patch("/join", jsonParser, async (req, res) => {
 
 // DOES NOT WORK
 router.get("/search", jsonParser, async (req, res) => {
-  if (
-    req.query.page === undefined ||
-    req.query.page < 1 ||
-    req.query.search === undefined
-  )
-    return;
+  if (req.query.page === undefined || req.query.page < 1) return;
 
-  console.log(req.query);
   // SEARCH_CRITERIA = { TITLE:contains(something), VISIBILITY: "public", START_DATE: tomorrow }
   // const leagues = await league.find(SEARCH_CRITERIA);
 
-  const leagues = await League.find({
-    visibility: "public",
-    title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
-  });
+  const leagues = await League.find({});
 
   leagues.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
 
@@ -175,13 +166,14 @@ router.get("/search", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
+
   // check to make sure data is valid
   // data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
-  if (
-    req.body.gameID === undefined ||
-    req.body.comment === undefined ||
-    typeof req.body.comment !== "string"
-  ) {
+  if(req.body.gameID === undefined ||
+     req.body.comment === undefined ||
+     typeof req.body.comment !== "string"
+    )
+  {
     console.log("post comment failed");
     return;
   }
@@ -238,7 +230,6 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 
   // check gameID & commentID are defined (means user can only delete their own comment)
-
   if (req.body.gameID === undefined || req.body.commentID === undefined) return;
 
   const exists1 = League.exists({ _id: req.body.gameID });
@@ -253,26 +244,6 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
   }
 });
 
-// // NOT DONE YET
-// router.patch("/comment/like", isLoggedIn, jsonParser, async (req, res) => {
-//   // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//   // CHECK IF LEAGUE REFERED TO EXISTS
-//   // IF IT DOES THEN FIND THIS LEAGUE
-//   // FIND THE COMMENT WHICH IS PART OF THIS LEAGUE
-//   // INCREMENT LIKES UP BY ONE
-//   // SAVE LEAGUE
-// });
-
-// // NOT DONE YET
-// router.patch("/comment/dislike", isLoggedIn, jsonParser, async (req, res) => {
-//   // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//   // CHECK IF LEAGUE REFERED TO EXISTS
-//   // IF IT DOES THEN FIND THIS LEAGUE
-//   // FIND THE COMMENT WHICH IS PART OF THIS LEAGUE
-//   // INCREMENT DISLIKES UP BY ONE
-//   // SAVE LEAGUE
-// });
-
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 
   // check to make sure data is valid
@@ -283,7 +254,6 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   {
     return;
   }
-
 
   const commentData = {
     reply: req.body.comment,
@@ -310,74 +280,8 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   }
 });
 
-// // THIS IS NOT DONE YET
-// router.patch(
-//   "/comment/reply/delete",
-//   isLoggedIn,
-//   jsonParser,
-//   async (req, res) => {
-//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//     // CHECK IF LEAGUE REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS LEAGUE
-//     // CHECK IF COMMENT REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS COMMENT
-//     // CHECK IF REPLY REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS REPLY AND DELETE
-//     // SAVE LEAGUE
-//   }
-// );
-// // THIS IS NOT DONE YET
-// router.patch(
-//   "/comment/reply/edit",
-//   isLoggedIn,
-//   jsonParser,
-//   async (req, res) => {
-//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//     // CHECK IF LEAGUE REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS LEAGUE
-//     // CHECK IF COMMENT REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS COMMENT
-//     // CHECK IF REPLY REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS REPLY AND EDIT
-//     // SAVE LEAGUE
-//   }
-// );
-
-// // NOT DONE YET
-// router.patch(
-//   "/comment/reply/like",
-//   isLoggedIn,
-//   jsonParser,
-//   async (req, res) => {
-//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//     // CHECK IF LEAGUE REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS LEAGUE
-//     // CHECK IF COMMENT REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS COMMENT
-//     // CHECK IF REPLY REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS REPLY AND INCREMENT ITS LIKES
-//     // SAVE LEAGUE
-//   }
-// );
-
-// // NOT DONE YET
-// router.patch(
-//   "/comment/rpely/dislike",
-//   isLoggedIn,
-//   jsonParser,
-//   async (req, res) => {
-//     // CHECK IF ALL VARIABLES USED ARE RECIEVED
-//     // CHECK IF LEAGUE REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS LEAGUE
-//     // CHECK IF COMMENT REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS COMMENT
-//     // CHECK IF REPLY REFERED TO EXISTS
-//     // IF IT DOES THEN FIND THIS REPLY AND INCREMENT ITS DISLIKES
-//     // SAVE LEAGUE
-//   }
-// );
-
 router.get("/:id", async (req, res) => {
+
   // make sure id exists
 
   const exists = League.exists({ _id: req.params.id });
