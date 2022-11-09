@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Inventory = require("../data/inventory.js");
-
 const bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
-
 require("dotenv").config();
 
-router.patch("/buy", jsonParser, async (req, res) => {
 
+router.patch("/buy", jsonParser, async (req, res) => {
   // host is the current user
   const host = await User.findById({ _id: req.user._id });
   // if req.body.item is in inventory.js, itemThing will be equal to ex: { name: 'amazon', price: 1000 }, else undefined
@@ -38,11 +36,12 @@ router.patch("/buy", jsonParser, async (req, res) => {
   host.currency = host.currency - itemThing.price;
   host.icons.push(itemThing.name);
   host.save();
-  
 });
+
 
 router.get("/", async (req, res) => {
   res.send(Inventory);
 });
+
 
 module.exports = router;
