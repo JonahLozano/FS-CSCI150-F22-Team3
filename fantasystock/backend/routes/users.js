@@ -273,23 +273,32 @@ router.patch(
     // CHECK TO SEE IF USER EXISTS
     // MOVE USER FROM FRIEND REQUEST LIST TO FRIENDS LIST
     // SAVE
+    if(req.body.friendcode === undefined ||         // friendcode must be defined
+       typeof req.body.friendcode !== "string" ||   // friendcode must be of type string
+       req.body.friendcode.length > 32              // friendcode must be 32 or less chars
+      )
+    {
+        console.log("Could not accept friend request.");
+        return;
+    }
 
-    if (req.body.friendcode.length <= 32) {
-      try {
-        // GET CURRENT USER
-        const user = await User.findById(req.user._id);
+    // two users add each other as friend
+    try {
+      // GET CURRENT USER
+      const user = await User.findById(req.user._id);
 
-        // GET FRIEND
-        const friend = await User.findById(req.body.friendcode);
+      // GET FRIEND
+      const friend = await User.findById(req.body.friendcode);
 
-        // ADD FRIEND TO FRIENDS LIST
-        user.friends.push(friend);
-        friend.friends.push(user);
+      // ADD FRIEND TO FRIENDS LIST
+      user.friends.push(friend);
+      friend.friends.push(user);
 
-        // REMOVE FRIEND FROM FRIEND REQUEST LIST
-        user.friendRequests = user.friendRequests.filter(
-          (request) => request.toString() !== friend._id.toString()
-        );
+      // REMOVE FRIEND FROM FRIEND REQUEST LIST
+      user.friendRequests = user.friendRequests.filter(
+        (request) => request.toString() !== friend._id.toString()
+      );
+
 
         // SAVE USER DATA
         user.save();
@@ -314,19 +323,27 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
   // CHECK TO SEE IF USER EXISTS
   // REMOVE USER FROM FRIEND REQUEST LIST
   // SAVE
+  if(req.body.friendcode === undefined ||         // friendcode must be defined
+    typeof req.body.friendcode !== "string" ||    // friendcode must be of type string
+    req.body.friendcode.length > 32               // friendcode must be 32 or less chars
+  )
+  {
+    console.log("Could not accept friend request.");
+    return;
+  }
 
-  if (req.body.friendcode.length <= 32) {
-    try {
-      // GET CURRENT USER
-      const user = await User.findById(req.user._id);
+  try {
+    // GET CURRENT USER
+    const user = await User.findById(req.user._id);
 
-      // GET FRIEND
-      const friend = await User.findById(req.body.friendcode);
+    // GET FRIEND
+    const friend = await User.findById(req.body.friendcode);
 
-      // REMOVE FRIEND FROM FRIEND REQUEST LIST
-      user.friendRequests = user.friendRequests.filter(
-        (request) => request.toString() !== friend._id.toString()
-      );
+    // REMOVE FRIEND FROM FRIEND REQUEST LIST
+    user.friendRequests = user.friendRequests.filter(
+      (request) => request.toString() !== friend._id.toString()
+    );
+
 
       // SAVE USER DATA
       user.save();
