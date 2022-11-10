@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateLeague.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [visibility, setVisibility] = useState("Public");
@@ -14,6 +15,8 @@ function Home() {
 
   const [stkList, setstkList] = useState([]);
   const [tickers, setTickers] = useState([]);
+
+  const navigate = useNavigate();
 
   const createLeague = () => {
     axios
@@ -32,6 +35,7 @@ function Home() {
       })
       .then((e) => {
         console.log(e.data);
+        navigate(`/league/${e.data.leagueID}`);
       });
   };
 
