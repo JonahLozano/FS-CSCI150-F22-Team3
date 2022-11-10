@@ -87,7 +87,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   host.activeLeagues = [...host.activeLeagues, aThing._id];
   host.save();
 
-  res.send({ created: true });
+  res.send({ created: true, leagueID: aThing._id });
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
@@ -203,17 +203,19 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
     game.commentsection.push(commentData);
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 router.patch("/comment/edit", jsonParser, async (req, res) => {
-
   // check to make sure data is valid
-  if(req.body.gameID === undefined ||
-     req.body.commentID === undefined ||
-     typeof req.body.comment !== "string"
-    )
-  {
+  if (
+    req.body.gameID === undefined ||
+    req.body.commentID === undefined ||
+    typeof req.body.comment !== "string"
+  ) {
     return;
   }
 
@@ -236,7 +238,6 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
-
   // check gameID & commentID are defined (means user can only delete their own comment)
 
   if (req.body.gameID === undefined || req.body.commentID === undefined) return;
@@ -250,7 +251,10 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
     });
     game.commentsection = aComment;
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 // // NOT DONE YET
@@ -274,16 +278,14 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 // });
 
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
-
   // check to make sure data is valid
-  if(req.body.gameID === undefined ||
-     req.body.comment === undefined ||
-     typeof req.body.comment !== "string"
-    )
-  {
+  if (
+    req.body.gameID === undefined ||
+    req.body.comment === undefined ||
+    typeof req.body.comment !== "string"
+  ) {
     return;
   }
-
 
   const commentData = {
     reply: req.body.comment,
@@ -307,7 +309,10 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 
     console.log(game);
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 // // THIS IS NOT DONE YET
@@ -423,6 +428,10 @@ router.get("/:id", async (req, res) => {
       })
     );
 
+    const userInLeague =
+      game.players.filter((ele) => ele.player.toString() === req.user._id)
+        .length === 1;
+
     const aGame = {
       title: game.title,
       host,
@@ -431,11 +440,11 @@ router.get("/:id", async (req, res) => {
       end: game.end,
       players,
       commentsection: commentCollection,
+      userInLeague,
     };
 
     // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     // console.log(aGame.commentsection);
-
     res.send(aGame);
   }
 });
