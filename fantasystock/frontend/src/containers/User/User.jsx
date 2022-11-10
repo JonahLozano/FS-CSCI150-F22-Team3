@@ -12,6 +12,7 @@ import { ReactComponent as Microsoft } from "../../assets/microsoft.svg";
 import { ReactComponent as Nvidia } from "../../assets/nvidia.svg";
 import { ReactComponent as Tesla } from "../../assets/tesla.svg";
 import "./User.css";
+import { useNavigate } from "react-router-dom";
 
 function User(props) {
   const iconCollection = [
@@ -31,6 +32,8 @@ function User(props) {
   const [user, setUser] = useState();
   const [show, setShow] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect((event) => {
     axios
       .get(`/register/${id}`)
@@ -48,6 +51,7 @@ function User(props) {
     axios.patch("/register/addfriend", {
       friendcode: id,
     });
+    navigate(`/friends`);
   };
 
   return (
@@ -66,7 +70,12 @@ function User(props) {
           <h2 className="userIDstring">{`#${user._id}`}</h2>
           <p className="userBio">{user.bio}</p>
 
-          <input className="addFriendBtn" type="button" value="Add Friend :)" onClick={addFriend} />
+          <input
+            className="addFriendBtn"
+            type="button"
+            value="Add Friend :)"
+            onClick={addFriend}
+          />
         </div>
       )}
     </div>
