@@ -70,12 +70,6 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/messagecenter"
-            icon={faEnvelope}
-            name="Messages"
-            design="VerticalNavbarIcons1"
-          />
-          <ClickableIcons
             to="/settings"
             icon={faCog}
             name="Settings"
@@ -125,13 +119,6 @@ function Navigation(props) {
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
             hoverName="Profile"
-            hoverDesign="hovertextright"
-          />
-          <ClickableIcons
-            to="/messagecenter"
-            icon={faEnvelope}
-            design="VerticalNavbarIcons2"
-            hoverName="Messages"
             hoverDesign="hovertextright"
           />
           <ClickableIcons
