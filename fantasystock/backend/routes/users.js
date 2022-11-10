@@ -273,13 +273,13 @@ router.patch(
     // CHECK TO SEE IF USER EXISTS
     // MOVE USER FROM FRIEND REQUEST LIST TO FRIENDS LIST
     // SAVE
-    if(req.body.friendcode === undefined ||         // friendcode must be defined
-       typeof req.body.friendcode !== "string" ||   // friendcode must be of type string
-       req.body.friendcode.length > 32              // friendcode must be 32 or less chars
-      )
-    {
-        console.log("Could not accept friend request.");
-        return;
+    if (
+      req.body.friendcode === undefined || // friendcode must be defined
+      typeof req.body.friendcode !== "string" || // friendcode must be of type string
+      req.body.friendcode.length > 32 // friendcode must be 32 or less chars
+    ) {
+      console.log("Could not accept friend request.");
+      return;
     }
 
     // two users add each other as friend
@@ -299,17 +299,15 @@ router.patch(
         (request) => request.toString() !== friend._id.toString()
       );
 
-
-        // SAVE USER DATA
-        user.save();
-        friend.save();
-        res.send({ success: true });
-        return;
-      } catch (e) {
-        console.log(e);
-        res.send({ success: false });
-        return;
-      }
+      // SAVE USER DATA
+      user.save();
+      friend.save();
+      res.send({ success: true });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.send({ success: false });
+      return;
     }
     res.send({ success: false });
     return;
@@ -323,11 +321,11 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
   // CHECK TO SEE IF USER EXISTS
   // REMOVE USER FROM FRIEND REQUEST LIST
   // SAVE
-  if(req.body.friendcode === undefined ||         // friendcode must be defined
-    typeof req.body.friendcode !== "string" ||    // friendcode must be of type string
-    req.body.friendcode.length > 32               // friendcode must be 32 or less chars
-  )
-  {
+  if (
+    req.body.friendcode === undefined || // friendcode must be defined
+    typeof req.body.friendcode !== "string" || // friendcode must be of type string
+    req.body.friendcode.length > 32 // friendcode must be 32 or less chars
+  ) {
     console.log("Could not accept friend request.");
     return;
   }
@@ -344,16 +342,14 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
       (request) => request.toString() !== friend._id.toString()
     );
 
-
-      // SAVE USER DATA
-      user.save();
-      res.send({ success: true });
-      return;
-    } catch (e) {
-      console.log(e);
-      res.send({ success: false });
-      return;
-    }
+    // SAVE USER DATA
+    user.save();
+    res.send({ success: true });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false });
+    return;
   }
   res.send({ success: false });
   return;
