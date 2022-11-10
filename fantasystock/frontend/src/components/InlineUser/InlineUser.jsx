@@ -42,7 +42,6 @@ function InlineUser(props) {
     axios
       .get(`/register/${props.user}`)
       .then((response) => {
-        console.log(response.data);
         setData({
           displayName: response.data.displayName,
           photo: response.data.photo,

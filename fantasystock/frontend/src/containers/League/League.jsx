@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import InlineUser from "../../components/InlineUser/InlineUser";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./League.css";
 
 function League() {
@@ -48,14 +50,15 @@ function League() {
     players: [String],
     title: String,
     visibility: String,
+    userInLeague: Boolean,
   });
 
-  useEffect((event) => {
+  const updateData = () => {
     axios
       .get(`/league/${id}`)
       .then((response) => {
+        setShow(true);
         console.log(response.data);
-
         let startDate = new Date(response.data.start);
         startDate = `${
           startDate.getUTCMonth() + 1
@@ -67,13 +70,14 @@ function League() {
         }/${endDate.getUTCDate()}/${endDate.getUTCFullYear()}`;
 
         setData({
-          commentsection: response.data.commentsection,
+          commentsection: response.data.commentsection.reverse(),
           end: endDate,
           start: startDate,
           host: response.data.host,
           players: response.data.players,
           title: response.data.title,
           visibility: response.data.visibility,
+          userInLeague: response.data.userInLeague,
         });
 
         setEditableComment(
@@ -90,6 +94,10 @@ function League() {
         setShow(false);
         console.log(error);
       });
+  };
+
+  useEffect((event) => {
+    updateData();
 
     axios
       .get(`/price/tickers`)
@@ -111,124 +119,137 @@ function League() {
       gameID: id,
     });
   };
+
+  const postComment = () => {
+    axios.patch("/league/comment", { gameID: id, comment }).then((e) => {
+      updateData();
+      setComment("");
+    });
+  };
+
   return (
     <div>
-    <div id="LeagueDeetsHeader">
-      <div className="LeagueTitle">{`${data.title}`}</div>
-      <div className="LeagueDeets">
-        <h4>Host:
-        {show && (
-          <InlineUser
-            user={data.host._id}
-            to={`/user/${data.host._id}`}
-            aAlt={`${data.host.username}'s Profile`}
-            design="circlePic"
-            aSrc={data.host.photo}
-            username={data.host.username}
-          />
-        )}
-        </h4>
+      <div id="LeagueDeetsHeader">
+        <div className="LeagueTitle">{`${data.title}`}</div>
+        <div className="LeagueDeets">
+          <h4>
+            Host:
+            {show && (
+              <InlineUser
+                user={data.host._id}
+                to={`/user/${data.host._id}`}
+                aAlt={`${data.host.username}'s Profile`}
+                design="circlePic"
+                aSrc={data.host.photo}
+                username={data.host.username}
+              />
+            )}
+          </h4>
+        </div>
+        <div className="LeagueDeets">{`Visibility: ${data.visibility}`}</div>
+        <div className="LeagueDeets">{`League Start: ${data.start}`}</div>
+        <div className="LeagueDeets">{`League End: ${data.end}`}</div>
       </div>
-      <div className="LeagueDeets">{`Visibility: ${data.visibility}`}</div>
-      <div className="LeagueDeets">{`League Start: ${data.start}`}</div>
-      <div className="LeagueDeets">{`League End: ${data.end}`}</div>
-      </div>
-      <div id="LeagueJoinStocks">
-        <h4>{`Join ${data.title}: Choose Stocks`}</h4>
-        <div>
-          <div id="StockOptSelect">
-            <label htmlFor="clTicker">Ticker:</label>
-            <input
-              id="clTicker"
-              type="text"
-              list="data"
-              onChange={(e) => {
-                setStk(e.target.value);
-              }}
-              value={stk}
-              placeholder="Pick a stock"
-            />
-            <datalist id="data">
-              {tickers.map((item, key) => (
-                <option key={key} value={item} />
-              ))}
-            </datalist>
+      {!data.userInLeague && (
+        <div id="LeagueJoinStocks">
+          <h4>{`Join ${data.title}: Choose Stocks`}</h4>
+          <div>
+            <div id="StockOptSelect">
+              <label htmlFor="clTicker">Ticker:</label>
+              <input
+                id="clTicker"
+                type="text"
+                list="data"
+                onChange={(e) => {
+                  setStk(e.target.value);
+                }}
+                value={stk}
+                placeholder="Pick a stock"
+              />
+              <datalist id="data">
+                {tickers.map((item, key) => (
+                  <option key={key} value={item} />
+                ))}
+              </datalist>
 
-            <label htmlFor="clQuantity">Quantity:</label>
-            <input
-              id="clQuantity"
-              type="number"
-              min="1"
-              max="999"
-              onChange={(e) => {
-                setQnt(e.target.value);
-              }}
-              value={qnt}
-            />
+              <label htmlFor="clQuantity">Quantity:</label>
+              <input
+                id="clQuantity"
+                type="number"
+                min="1"
+                max="999"
+                onChange={(e) => {
+                  setQnt(e.target.value);
+                }}
+                value={qnt}
+              />
 
-            <label htmlFor="clPosition">Position:</label>
-            <select
-              id="clPosition"
-              onChange={(e) => setPos(e.target.value)}
-              value={pos}
-            >
-              <option>Long</option>
-              <option>Short</option>
-            </select>
+              <label htmlFor="clPosition">Position:</label>
+              <select
+                id="clPosition"
+                onChange={(e) => setPos(e.target.value)}
+                value={pos}
+              >
+                <option>Long</option>
+                <option>Short</option>
+              </select>
 
-            <input type="button" value="Pick" onClick={stash} />
+              <input type="button" value="Pick" onClick={stash} />
+            </div>
+          </div>
+          <div id="StockOptList">
+            <h4> My Stocks </h4>
+            {stkList.map((aStock, index) => (
+              <div className="MyStockOpt" key={index}>
+                <p>
+                  {aStock.stock} {aStock.quantity} {aStock.position}
+                </p>
+                <input
+                  type="button"
+                  value="delete"
+                  onClick={() => deleteStk(index)}
+                />
+              </div>
+            ))}
           </div>
         </div>
-        <div id="StockOptList">
-          <h4> My Stocks </h4>
-          {stkList.map((aStock, index) => (
-            <div className="MyStockOpt" key={index}>
-              <p>
-                {aStock.stock} {aStock.quantity} {aStock.position}
-              </p>
-              <input
-                type="button"
-                value="delete"
-                onClick={() => deleteStk(index)}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
 
-      <div id="JoinLeagueBtn">
-        <input type="button" value="Join League" onClick={joinLeague} />
-      </div>
+      {!data.userInLeague && (
+        <div id="JoinLeagueBtn">
+          <input type="button" value="Join League" onClick={joinLeague} />
+        </div>
+      )}
       <h4 className="pl">{`${data.title} Players`}</h4>
       <div id="LeagueUsers">
-      {show &&
-        data.players.map((player, index) => {
-          return (
-            <div key={index} className="leagueUserCard">
-              {show && (
-                <InlineUser
-                  user={player.player._id}
-                  to={`/user/${player.player._id}`}
-                  aAlt={`${player.player.username}'s Profile`}
-                  design="circlePic"
-                  aSrc={player.player.photo}
-                  username={player.player.username}
-                />
-              )}
-              <div className="leagueUserCardStocks">
-                <h4>{`${player.player.username}'s Stocks`}</h4>
-                {player.stocks.map((stock, index) => {
-                  return (
-                    <div key={index}>
-                      {stock.ticker} {stock.quantity} {stock.position}
-                    </div>
-                  );
-                })}
+        {show &&
+          data.players.map((player, index) => {
+            return (
+              <div key={index} className="leagueUserCard">
+                {show && (
+                  <InlineUser
+                    user={player.player._id}
+                    to={`/user/${player.player._id}`}
+                    aAlt={`${player.player.username}'s Profile`}
+                    design="circlePic"
+                    aSrc={player.player.photo}
+                    username={player.player.username}
+                  />
+                )}
+                <div className="leagueUserCardStocks">
+                  <h4>{`${player.player.username}'s Stocks`}</h4>
+                  {player.stocks.map((stock, index) => {
+                    return (
+                      <div key={index}>
+                        {stock.ticker} {stock.quantity} {stock.position}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-        </div>
+            );
+          })}
+      </div>
 
       <div id="LeagueCommentSection">
         <h4>Comment Section</h4>
@@ -241,13 +262,7 @@ function League() {
             }}
             placeholder="Leave a Comment"
           />
-          <input
-            type="button"
-            value="Post Comment"
-            onClick={() =>
-              axios.patch("/league/comment", { gameID: id, comment })
-            }
-          />
+          <input type="button" value="Post Comment" onClick={postComment} />
         </div>
         {show &&
           data.commentsection.map((data, index) => {
@@ -303,12 +318,22 @@ function League() {
                       type="button"
                       value="Delete"
                       onClick={() =>
-                        axios.patch("/league/comment/delete", {
-                          gameID: id,
-                          commentID: data.commentID,
-                        })
+                        axios
+                          .patch("/league/comment/delete", {
+                            gameID: id,
+                            commentID: data.commentID,
+                          })
+                          .then((e) => {
+                            updateData();
+                          })
                       }
                     />
+                    <div>
+                      <FontAwesomeIcon icon={faEdit} className="commentIcon" />
+                    </div>
+                    <div>
+                      <FontAwesomeIcon icon={faTrash} className="commentIcon" />
+                    </div>
                   </span>
                 )}
 
@@ -329,55 +354,34 @@ function League() {
                         )}
                         <div className="LeagueCommentData">{reply.reply}</div>
 
-                        
-                          {reply.isOwner && (
-                            <span>
-                              {editableComment[index] && (
-                                <div>
-                                  <textarea
-                                    onChange={(e) => {
-                                      const tmpThing = editComment;
-                                      tmpThing[index] = e.target.value;
-                                      setEditComment([...tmpThing]);
-                                    }}
-                                    value={editComment[index]}
-                                  />
-                                  <input
-                                    type="button"
-                                    value="Post Edit"
-                                    onClick={() =>
-                                      axios.patch("/league/comment/edit", {
-                                        gameID: id,
-                                        commentID: data.commentID,
-                                        comment: editComment[index],
-                                      })
-                                    }
-                                  />
-                                </div>
-                              )}
-                              <input
-                                type="button"
-                                value="Edit"
-                                onClick={() => {
-                                  const tmpThing = editableComment;
-                                  tmpThing[index] = !tmpThing[index];
-                                  setEditableComment([...tmpThing]);
-                                }}
-                              />
-                              <input
-                                type="button"
-                                value="Delete"
-                                onClick={() =>
-                                  axios.patch("/league/comment/delete", {
-                                    gameID: id,
-                                    commentID: data.commentID,
-                                  })
-                                }
-                              />
-                            </span>
-                          )}
-                        </div>
-                      
+                        {reply.isOwner && (
+                          <span>
+                            {editableComment[index] && (
+                              <div>
+                                <textarea
+                                  onChange={(e) => {
+                                    const tmpThing = editComment;
+                                    tmpThing[index] = e.target.value;
+                                    setEditComment([...tmpThing]);
+                                  }}
+                                  value={editComment[index]}
+                                />
+                                <input
+                                  type="button"
+                                  value="Post Edit"
+                                  onClick={() =>
+                                    axios.patch("/league/comment/edit", {
+                                      gameID: id,
+                                      commentID: data.commentID,
+                                      comment: editComment[index],
+                                    })
+                                  }
+                                />
+                              </div>
+                            )}
+                          </span>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
@@ -395,11 +399,18 @@ function League() {
                     type="button"
                     value="Post Reply"
                     onClick={() => {
-                      axios.patch("/league/comment/reply", {
-                        gameID: id,
-                        commentID: data.commentID,
-                        comment: reply[index],
-                      });
+                      axios
+                        .patch("/league/comment/reply", {
+                          gameID: id,
+                          commentID: data.commentID,
+                          comment: reply[index],
+                        })
+                        .then((e) => {
+                          const tmpThing = reply;
+                          tmpThing[index] = "";
+                          setReply([...tmpThing]);
+                          updateData();
+                        });
                     }}
                   />
                 </div>

@@ -15,8 +15,6 @@ function SearchBar(props) {
         aria-label="Search"
         onChange={(e) => {
           setSearch(e.target.value);
-
-          console.log(search);
         }}
       />
       {search !== "" ? (

@@ -92,7 +92,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   host.activeLeagues = [...host.activeLeagues, aThing._id];
   host.save();
 
-  res.send({ created: true });
+  res.send({ created: true, leagueID: aThing._id });
 });
 
 
@@ -219,7 +219,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
     game.commentsection.push(commentData);
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 
@@ -232,6 +235,7 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
      typeof req.body.comment !== "string"   // comment must be of type string
     )
   {
+
     return;
   }
 
@@ -272,7 +276,10 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
     });
     game.commentsection = aComment;
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 
@@ -286,6 +293,7 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
     )
   {
     console.log("Can not reply to comment because gameID or comment is undefined or type of comment is not a string.");
+
     return;
   }
 
@@ -311,7 +319,10 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 
     console.log(game);
     game.save();
+    res.send({ created: true });
+    return;
   }
+  res.send({ created: false });
 });
 
 
@@ -361,6 +372,10 @@ router.get("/:id", async (req, res) => {
       })
     );
 
+    const userInLeague =
+      game.players.filter((ele) => ele.player.toString() === req.user._id)
+        .length === 1;
+
     const aGame = {
       title: game.title,
       host,
@@ -369,11 +384,11 @@ router.get("/:id", async (req, res) => {
       end: game.end,
       players,
       commentsection: commentCollection,
+      userInLeague,
     };
 
     // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     // console.log(aGame.commentsection);
-
     res.send(aGame);
   }
 });
