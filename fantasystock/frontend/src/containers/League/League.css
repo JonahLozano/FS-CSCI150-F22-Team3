@@ -1,7 +1,7 @@
 #LeagueUsers {
   display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 .leagueUserCard {
   background-color: var(--main-card-color);
@@ -20,16 +20,15 @@
 }
 
 .leagueUserCardStocks h4 {
-  margin:  0;
+  margin: 0;
 }
 
 .LeagueDeets {
   font-size: 1rem;
   display: flex;
-    flex-flow: column;
-    align-items: center;
+  flex-flow: column;
+  align-items: center;
 }
-
 
 #LeagueCommentSection {
   background-color: var(--main-user-color);
@@ -45,8 +44,8 @@
 
 #LeagueCreateComment {
   display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #LeagueCreateComment textarea {
@@ -70,18 +69,16 @@
   background-color: var(--league-comment-reply-color);
 }
 
-
-
 .LeagueCreateCommentReply {
   display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-self: flex-end;
-    align-items: center;
-    width: 50%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: flex-end;
+  align-items: center;
+  width: 50%;
 }
 
-.LeagueCreateCommentReply textarea{
+.LeagueCreateCommentReply textarea {
   width: 75%;
   margin: 0.25rem;
   border-radius: 0.25rem;
@@ -94,15 +91,14 @@
   background-color: var(--search-btn-color);
 }
 
-
 .LeagueComment {
   background-color: var(--main-card-color);
   border-radius: 0.5rem;
   margin: 0.25rem;
   padding: 0.5rem;
   display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .LeagueComment .iuContainer {
@@ -114,25 +110,28 @@
   padding: 0 1rem;
 }
 
-.LeagueComment > span > input[value="Edit"], .LeagueCommentReply > span > input[value="Edit"] {
-  border-radius: 1rem  0 0 1rem;
-  padding:  0.25rem 0.5rem 0.25rem 1rem;
+.LeagueComment > span > input[value="Edit"],
+.LeagueCommentReply > span > input[value="Edit"] {
+  border-radius: 1rem 0 0 1rem;
+  padding: 0.25rem 0.5rem 0.25rem 1rem;
   border: 0;
   margin: 0 0.15rem 0 0;
 }
 
-.LeagueComment > span > input[value="Delete"], .LeagueCommentReply > span > input[value="Delete"] {
+.LeagueComment > span > input[value="Delete"],
+.LeagueCommentReply > span > input[value="Delete"] {
   border-radius: 0 1rem 1rem 0;
-  padding:  0.25rem 1rem 0.25rem 0.5rem;
+  padding: 0.25rem 1rem 0.25rem 0.5rem;
   border: 0;
   margin: 0 0.15rem 0 0;
-  
 }
 
-.LeagueComment >span > input[value="Edit"]:hover, .LeagueCommentReply > span > input[value="Edit"]:hover {
+.LeagueComment > span > input[value="Edit"]:hover,
+.LeagueCommentReply > span > input[value="Edit"]:hover {
   background-color: var(--search-btn-color);
 }
-.LeagueComment >span > input[value="Delete"]:hover,  .LeagueCommentReply > span > input[value="Delete"]:hover {
+.LeagueComment > span > input[value="Delete"]:hover,
+.LeagueCommentReply > span > input[value="Delete"]:hover {
   background-color: var(--del-btn-color);
 }
 
@@ -143,11 +142,9 @@
   border-radius: 0.25rem;
   width: 90%;
   display: flex;
-    flex-direction: column;
-    align-self: center;
+  flex-direction: column;
+  align-self: center;
 }
-
-
 
 .LeagueCommentReply {
   background-color: var(--league-comment-reply-color);
@@ -155,20 +152,18 @@
   padding: 1rem;
   border-radius: 0.25rem;
   display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .LeagueCommentReply .circlePic {
   width: auto;
 }
 
-
-
 #LeagueJoinStocks {
   display: flex;
-    align-items: center;
-    flex-direction: column;
+  align-items: center;
+  flex-direction: column;
 }
 
 #LeagueJoinStocks h4 {
@@ -180,14 +175,16 @@
 }
 
 #LeagueJoinStocks label {
-  font-size: 1rem; 
+  font-size: 1rem;
   margin: 0px 1rem;
 }
 
-#LeagueJoinStocks input, #LeagueJoinStocks select, #LeagueJoinStocks input[type="button"] {
+#LeagueJoinStocks input,
+#LeagueJoinStocks select,
+#LeagueJoinStocks input[type="button"] {
   border-width: 0px;
   border-radius: 0.5rem;
-  padding:  0.5rem;
+  padding: 0.5rem;
 }
 
 #LeagueJoinStocks input[type="button"]:hover {
@@ -196,18 +193,17 @@
 
 #LeagueJoinStocks #StockOptList {
   background-color: var(--main-navbar-color);
-    margin: 0.75rem 0;
-    padding: 0.25rem;
-    display: flex;
-      flex-direction: column;
-    width: 80%;
-    border-radius: 2rem;
+  margin: 0.75rem 0;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  border-radius: 2rem;
 }
 
-
 #StockOptSelect option {
-  border-width: 0px ;
-  
+  border-width: 0px;
+
   border-radius: 1rem 0rem 0rem 1rem;
 }
 
@@ -216,18 +212,14 @@
 }
 
 #StockOptSelect input[value="Pick"] {
-  padding:  0.5rem 1.5rem;
-  margin:  0 0 0 1rem;
+  padding: 0.5rem 1.5rem;
+  margin: 0 0 0 1rem;
 }
-
-
-
 
 #StockOptList h4 {
   margin: 0.5rem;
   font-size: 1.25rem;
 }
-
 
 .MyStockOpt {
   display: flex;
@@ -241,8 +233,8 @@
   font-weight: bold;
   display: flex;
   flex-wrap: nowrap;
-    justify-content: center;
-    flex-direction: row;
+  justify-content: center;
+  flex-direction: row;
   margin: 0.25rem 0;
 }
 
@@ -266,7 +258,7 @@
 }
 
 #JoinLeagueBtn input[type="button"] {
-  padding:  0.75rem;
+  padding: 0.75rem;
   border-width: 0px;
   border-radius: 0.5rem;
   background-color: rgb(30, 230, 130);
@@ -280,17 +272,12 @@
   margin: 0.5rem 0;
 }
 
-
-
-
-
-
 /*dark palette*/
 .dark #StockOptSelect input[type="button"] {
   background-color: var(--search-btn-color);
 }
 
-.dark #StockOptSelect input[type="button"]:hover { 
+.dark #StockOptSelect input[type="button"]:hover {
   background-color: var(--search-btn-contrast-color);
 }
 
@@ -312,4 +299,10 @@
 
 .dark #JoinLeagueBtn input[type="button"]:hover {
   background-color: rgb(100, 255, 100);
+}
+
+.commentIcon {
+}
+.commentIcon:hover {
+  color: red;
 }
