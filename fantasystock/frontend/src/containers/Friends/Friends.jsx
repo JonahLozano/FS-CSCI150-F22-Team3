@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ClickablePic from "../../components/ClickablePic/ClickablePic";
 import "./Friends.css";
@@ -10,7 +10,7 @@ function Profile(props) {
 
   const [friendcode, setFriendcode] = useState("");
 
-  useMemo((event) => {
+  const updateData = () => {
     axios
       .get(`/register/friends`)
       .then((response) => {
@@ -40,6 +40,10 @@ function Profile(props) {
         setShow(false);
         console.log(error);
       });
+  };
+
+  useEffect((event) => {
+    updateData();
   }, []);
 
   const addFriend = () => {
@@ -50,9 +54,13 @@ function Profile(props) {
   };
 
   const deleteFriend = (aFriendCode) => {
-    axios.patch("/register/deletefriend", {
-      friendcode: aFriendCode,
-    });
+    axios
+      .patch("/register/deletefriend", {
+        friendcode: aFriendCode,
+      })
+      .then((e) => {
+        updateData();
+      });
   };
 
   const editFriendcode = (e) => {
@@ -93,9 +101,13 @@ function Profile(props) {
                 onClick={() => {
                   console.log(ele._id);
 
-                  axios.patch("/register/friend/request/accept", {
-                    friendcode: ele._id,
-                  });
+                  axios
+                    .patch("/register/friend/request/accept", {
+                      friendcode: ele._id,
+                    })
+                    .then((e) => {
+                      updateData();
+                    });
                 }}
               />
               <input
@@ -103,11 +115,14 @@ function Profile(props) {
                 className="unfriendfriend"
                 value="Reject"
                 onClick={() => {
-                  console.log(ele._id);
-
-                  axios.patch("/register/friend/request/decline", {
-                    friendcode: ele._id,
-                  });
+                  axios
+                    .patch("/register/friend/request/decline", {
+                      friendcode: ele._id,
+                    })
+                    .then((e) => {
+                      updateData();
+                      console.log(e);
+                    });
                 }}
               />
             </div>
@@ -123,7 +138,6 @@ function Profile(props) {
                 to={`/user/${ele._id}`}
               />
               <div className="friendusername">{ele.username}</div>
-              <input type="button" className="msgfriend" value="Message" />
               <input
                 type="button"
                 className="unfriendfriend"
