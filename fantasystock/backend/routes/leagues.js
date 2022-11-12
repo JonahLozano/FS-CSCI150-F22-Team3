@@ -7,6 +7,9 @@ const Stock = require("../models/stock");
 const User = require("../models/user");
 var jsonParser = bodyParser.json();
 
+// used in create route
+const stocks = require("../data/stocks");
+
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -60,6 +63,21 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     }
   }
 
+  // now checking that all input stock tickers are actually in our ../data/stocks.js
+  for(let i = 0; i < req.body.stocks.length; i++){
+    let count = 0;
+    for(let j = 0; j < stocks.length; j++){
+      if(req.body.stocks[i]["stock"] === stocks[j]["ticker"]){
+        count++;
+      }
+    }
+    if(count === 0){
+      console.log("Your requested stock is not allowed.");
+      return;
+    }
+  }
+
+  // no errors detected proceed to create league
   const leagueData = {
     host: req.user._id,
     title: req.body.title,
