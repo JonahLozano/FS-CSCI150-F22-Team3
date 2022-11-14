@@ -211,10 +211,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
 
   // data validation
-  if(req.body.gameID === undefined ||       // gameID must be defined
-     req.body.comment === undefined ||      // comment must be defined 
-     typeof req.body.comment !== "string"   // commment must be of type string
-    )
+  if(req.body.gameID === undefined ||         // gameID must be defined
+     req.body.comment === undefined ||        // comment must be defined 
+     typeof req.body.comment !== "string" ||  // comment must be of type string
+     req.body.comment === "")                 // comment can not be blank
   {
     console.log("post comment failed");
     return;
