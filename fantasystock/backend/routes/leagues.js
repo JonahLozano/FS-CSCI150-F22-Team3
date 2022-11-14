@@ -7,6 +7,9 @@ const Stock = require("../models/stock");
 const User = require("../models/user");
 var jsonParser = bodyParser.json();
 
+// used in create route
+const stocks = require("../data/stocks");
+
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -60,6 +63,21 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     }
   }
 
+  // now checking that all input stock tickers are actually in our ../data/stocks.js
+  for(let i = 0; i < req.body.stocks.length; i++){
+    let count = 0;
+    for(let j = 0; j < stocks.length; j++){
+      if(req.body.stocks[i]["stock"] === stocks[j]["ticker"]){
+        count++;
+      }
+    }
+    if(count === 0){
+      console.log("Your requested stock is not allowed.");
+      return;
+    }
+  }
+
+  // no errors detected proceed to create league
   const leagueData = {
     host: req.user._id,
     title: req.body.title,
@@ -193,10 +211,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
 
   // data validation
-  if(req.body.gameID === undefined ||       // gameID must be defined
-     req.body.comment === undefined ||      // comment must be defined 
-     typeof req.body.comment !== "string"   // commment must be of type string
-    )
+  if(req.body.gameID === undefined ||         // gameID must be defined
+     req.body.comment === undefined ||        // comment must be defined 
+     typeof req.body.comment !== "string" ||  // comment must be of type string
+     req.body.comment === "")                 // comment can not be blank
   {
     console.log("post comment failed");
     return;
