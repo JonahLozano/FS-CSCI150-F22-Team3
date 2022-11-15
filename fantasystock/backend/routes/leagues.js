@@ -145,6 +145,7 @@ router.patch("/join", jsonParser, async (req, res) => {
     req.body.stocks.length === 0
   ) {
     console.log("join case 1 failed");
+    res.send({ success: false });
     return;
   } else {
     // now check the stocks input array (size can vary, need to check every possibility)
@@ -156,6 +157,7 @@ router.patch("/join", jsonParser, async (req, res) => {
           req.body.stocks[i]["position"] !== "short")
       ) {
         console.log("join case 2 failed");
+        res.send({ success: false });
         return;
       }
     }
@@ -185,6 +187,7 @@ router.patch("/join", jsonParser, async (req, res) => {
       ),
     });
     game.save();
+    res.send({ success: true });
   }
 });
 

@@ -114,16 +114,21 @@ function League() {
   }, []);
 
   const joinLeague = () => {
-    axios.patch("/league/join", {
-      stocks: stkList.map((aStock) => {
-        return {
-          stock: aStock.stock,
-          quantity: aStock.quantity,
-          position: aStock.position.toLowerCase(),
-        };
-      }),
-      gameID: id,
-    });
+    axios
+      .patch("/league/join", {
+        stocks: stkList.map((aStock) => {
+          return {
+            stock: aStock.stock,
+            quantity: aStock.quantity,
+            position: aStock.position.toLowerCase(),
+          };
+        }),
+        gameID: id,
+      })
+      .then((res) => {
+        updateData();
+      })
+      .catch((e) => console.log(e));
   };
 
   const postComment = () => {
