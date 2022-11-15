@@ -356,22 +356,27 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const aUser = await User.findById(req.params.id);
-  const theUser = await User.findById(req.user._id);
+  try {
+    const aUser = await User.findById(req.params.id);
+    const theUser = await User.findById(req.user._id);
+    if (aUser === null || theUser === null) {
+      res.send({ success: false });
+      return;
+    }
 
-  const isFriend = theUser.friends.reduce(
-    (acc, ele) => acc || ele.toString() === req.params.id,
-    false
-  );
+    const isFriend = theUser.friends.reduce(
+      (acc, ele) => acc || ele.toString() === req.params.id,
+      false
+    );
 
-  // const ans = {
-  //   _id: aUser._id,
-  //   username: aUser.username,
-  //   photo: aUser.photo,
-  //   bio: aUser.bio,
-  // };
+    console.log({ ...aUser, success: true });
 
-  res.send(aUser);
+    res.send({ ...aUser, success: true });
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false });
+    return;
+  }
 });
 
 module.exports = router;
