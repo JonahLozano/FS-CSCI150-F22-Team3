@@ -52,15 +52,20 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     res.send({ created1: false });
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      res.send({ created2: false });
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
-        typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
-        res.send({ created2: false });
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
+         typeof req.body.stocks[i]["quantity"] !== "number" ||
+         (req.body.stocks[i]["position"] !== "long" &&
+         req.body.stocks[i]["position"] !== "short") ||
+         req.body.stocks[i]["quantity"] > 10000) 
+      {
+        res.send({ created3: false });
         return;
       }
     }
@@ -147,14 +152,19 @@ router.patch("/join", jsonParser, async (req, res) => {
     console.log("join case 1 failed");
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      console.log("Can not join due to amount of stocks over 1000.");
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
         typeof req.body.stocks[i]["quantity"] !== "number" ||
         (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
+        req.body.stocks[i]["position"] !== "short") ||
+        req.body.stocks[i]["quantity"] > 10000) 
+      {
         console.log("join case 2 failed");
         return;
       }
