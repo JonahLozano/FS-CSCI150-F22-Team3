@@ -7,11 +7,9 @@ const Stock = require("../models/stock");
 const User = require("../models/user");
 var jsonParser = bodyParser.json();
 
-
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
 }
-
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
@@ -25,35 +23,40 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 
   // fixing the issue where the front-end sends quantity attribute of a stock as type 'string'
   // instead of type 'number'. Note: this only happens when selecting a quantity greater than 1
-  if(req.body.stocks.length !== 0){
-    for(let i = 0; i < req.body.stocks.length; i++){
-      if(typeof req.body.stocks[i]["quantity"] !== "number"){
-        req.body.stocks[i]["quantity"] = parseInt(req.body.stocks[i]["quantity"]);
+  if (req.body.stocks.length !== 0) {
+    for (let i = 0; i < req.body.stocks.length; i++) {
+      if (typeof req.body.stocks[i]["quantity"] !== "number") {
+        req.body.stocks[i]["quantity"] = parseInt(
+          req.body.stocks[i]["quantity"]
+        );
       }
     }
   }
 
   // main data validation done here
-  if((req.body.title === undefined || typeof req.body.title !== "string") ||
-    (req.body.stocks.length === 0) ||
+  if (
+    req.body.title === undefined ||
+    typeof req.body.title !== "string" ||
+    req.body.stocks.length === 0 ||
     (req.body.visibility !== "public" && req.body.visibility !== "private") ||
-    (req.body.start === undefined || typeof req.body.start !== "string") ||
-    (req.body.end === undefined || typeof req.body.end !== "string") ||
-    (start <= rightnow) ||
-    (start >= end)) 
-  {
+    req.body.start === undefined ||
+    typeof req.body.start !== "string" ||
+    req.body.end === undefined ||
+    typeof req.body.end !== "string" ||
+    start <= rightnow ||
+    start >= end
+  ) {
     res.send({ created1: false });
     return;
-  }
-  else{
+  } else {
     // now check the stocks input array (size can vary, need to check every possibility)
-    for(let i = 0; i < req.body.stocks.length; i++){
-      if(
+    for (let i = 0; i < req.body.stocks.length; i++) {
+      if (
         typeof req.body.stocks[i]["stock"] !== "string" ||
         typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
-        )
-      {
+        (req.body.stocks[i]["position"] !== "long" &&
+          req.body.stocks[i]["position"] !== "short")
+      ) {
         res.send({ created2: false });
         return;
       }
@@ -95,7 +98,6 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   res.send({ created: true, leagueID: aThing._id });
 });
 
-
 router.patch("/join", jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
 
@@ -108,37 +110,38 @@ router.patch("/join", jsonParser, async (req, res) => {
 
   // fixing the issue where the front-end sends quantity attribute of a stock as type 'string'
   // instead of type 'number'. Note: this only happens when selecting a quantity greater than 1
-  if(req.body.stocks.length !== 0){
-    for(let i = 0; i < req.body.stocks.length; i++){
-      if(typeof req.body.stocks[i]["quantity"] !== "number"){
-        req.body.stocks[i]["quantity"] = parseInt(req.body.stocks[i]["quantity"]);
+  if (req.body.stocks.length !== 0) {
+    for (let i = 0; i < req.body.stocks.length; i++) {
+      if (typeof req.body.stocks[i]["quantity"] !== "number") {
+        req.body.stocks[i]["quantity"] = parseInt(
+          req.body.stocks[i]["quantity"]
+        );
       }
     }
   }
 
-  // checking to make sure data is valid 
-  if(req.body.gameID === undefined ||
-     in_league ||
-     req.body.stocks.length === 0
-    )
-  {
+  // checking to make sure data is valid
+  if (
+    req.body.gameID === undefined ||
+    in_league ||
+    req.body.stocks.length === 0
+  ) {
     console.log("join case 1 failed");
     return;
-  }
-  else{
+  } else {
     // now check the stocks input array (size can vary, need to check every possibility)
-    for(let i = 0; i < req.body.stocks.length; i++){
-        if(
-          typeof req.body.stocks[i]["stock"] !== "string" ||
-          typeof req.body.stocks[i]["quantity"] !== "number" ||
-          (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")
-          )
-        {
-            console.log("join case 2 failed");
-            return;
-        }
+    for (let i = 0; i < req.body.stocks.length; i++) {
+      if (
+        typeof req.body.stocks[i]["stock"] !== "string" ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
+        (req.body.stocks[i]["position"] !== "long" &&
+          req.body.stocks[i]["position"] !== "short")
+      ) {
+        console.log("join case 2 failed");
+        return;
+      }
     }
-  } 
+  }
 
   const exists = League.exists({ _id: req.body.gameID });
 
@@ -167,25 +170,23 @@ router.patch("/join", jsonParser, async (req, res) => {
   }
 });
 
-
-// DOES NOT WORK
 router.get("/search", jsonParser, async (req, res) => {
-  /* DATA VALIDATION NOT COMPLETE */
+  if (
+    req.query.page === undefined ||
+    req.query.page < 1 ||
+    req.query.search === undefined
+  )
+    return;
 
-  if (req.query.page === undefined || req.query.page < 1) return;
-
-  // SEARCH_CRITERIA = { TITLE:contains(something), VISIBILITY: "public", START_DATE: tomorrow }
-  // const leagues = await league.find(SEARCH_CRITERIA);
-
-  const leagues = await League.find({});
+  const leagues = await League.find({
+    visibility: "public",
+    title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
+  });
 
   leagues.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
 
-  const ans = leagues.slice((req.query.page - 1) * 25, req.query.page * 24);
-
-  res.send(ans);
+  res.send(leagues);
 });
-
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
@@ -193,11 +194,11 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
 
   // data validation
-  if(req.body.gameID === undefined ||       // gameID must be defined
-     req.body.comment === undefined ||      // comment must be defined 
-     typeof req.body.comment !== "string"   // commment must be of type string
-    )
-  {
+  if (
+    req.body.gameID === undefined || // gameID must be defined
+    req.body.comment === undefined || // comment must be defined
+    typeof req.body.comment !== "string" // commment must be of type string
+  ) {
     console.log("post comment failed");
     return;
   }
@@ -225,17 +226,15 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   res.send({ created: false });
 });
 
-
 router.patch("/comment/edit", jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
 
   // check to make sure data is valid
-  if(req.body.gameID === undefined ||       // gameID must be defined
-     req.body.commentID === undefined ||    // commentID must be defined
-     typeof req.body.comment !== "string"   // comment must be of type string
-    )
-  {
-
+  if (
+    req.body.gameID === undefined || // gameID must be defined
+    req.body.commentID === undefined || // commentID must be defined
+    typeof req.body.comment !== "string" // comment must be of type string
+  ) {
     return;
   }
 
@@ -257,15 +256,16 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
   }
 });
 
-
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
 
   // check gameID & commentID are defined (means user can only delete their own comment)
-  if (req.body.gameID === undefined || req.body.commentID === undefined){
-    console.log("Can not delete comment because gameID or commentID is undefined.");
+  if (req.body.gameID === undefined || req.body.commentID === undefined) {
+    console.log(
+      "Can not delete comment because gameID or commentID is undefined."
+    );
     return;
-  } 
+  }
 
   const exists1 = League.exists({ _id: req.body.gameID });
 
@@ -282,17 +282,18 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
   res.send({ created: false });
 });
 
-
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
 
   // check to make sure data is valid
-  if(req.body.gameID === undefined ||
-     req.body.comment === undefined ||
-     typeof req.body.comment !== "string"
-    )
-  {
-    console.log("Can not reply to comment because gameID or comment is undefined or type of comment is not a string.");
+  if (
+    req.body.gameID === undefined ||
+    req.body.comment === undefined ||
+    typeof req.body.comment !== "string"
+  ) {
+    console.log(
+      "Can not reply to comment because gameID or comment is undefined or type of comment is not a string."
+    );
 
     return;
   }
@@ -324,7 +325,6 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   }
   res.send({ created: false });
 });
-
 
 router.get("/:id", async (req, res) => {
   /* NO DATA VALIDATION REQUIRED */
@@ -392,6 +392,5 @@ router.get("/:id", async (req, res) => {
     res.send(aGame);
   }
 });
-
 
 module.exports = router;
