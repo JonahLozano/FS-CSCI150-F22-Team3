@@ -58,7 +58,6 @@ function League() {
       .get(`/league/${id}`)
       .then((response) => {
         setShow(true);
-        console.log(response.data);
         let startDate = new Date(response.data.start);
         startDate = `${
           startDate.getUTCMonth() + 1

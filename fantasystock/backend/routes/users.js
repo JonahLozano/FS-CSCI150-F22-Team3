@@ -157,20 +157,20 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
-
   // input data validation
   if (
-    req.body.friendcode === undefined ||        // friendcode must be defined
-    req.body.friendcode.length > 32 ||          // friendcode input must be 32 chars or less
-    typeof req.body.friendcode !== "string" ||  // friendcode input must be a string
-    req.body.friendcode === req.user._id)       // user can not add him/herself as a friend
-  {
+    req.body.friendcode === undefined || // friendcode must be defined
+    req.body.friendcode.length > 32 || // friendcode input must be 32 chars or less
+    typeof req.body.friendcode !== "string" || // friendcode input must be a string
+    req.body.friendcode === req.user._id
+  ) {
+    // user can not add him/herself as a friend
     console.log("Invalid friend code");
     return;
   }
   // more input data validation
   const friend = await User.findById(req.body.friendcode);
-  if(friend.friendRequests.includes(req.user._id)){
+  if (friend.friendRequests.includes(req.user._id)) {
     console.log("You have already sent this user a friend request.");
     return;
   }
@@ -189,7 +189,6 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
 
     console.log("friend request sent");
   } catch {}
-
 });
 
 router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
