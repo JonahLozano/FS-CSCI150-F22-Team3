@@ -5,8 +5,11 @@ import InlineUser from "../../components/InlineUser/InlineUser";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./League.css";
+import { useNavigate } from "react-router-dom";
 
 function League() {
+  const navigate = useNavigate();
+
   const [stk, setStk] = useState("");
   const [qnt, setQnt] = useState(1);
   const [pos, setPos] = useState("Long");
@@ -57,6 +60,10 @@ function League() {
     axios
       .get(`/league/${id}`)
       .then((response) => {
+        if (!response.data.success) {
+          console.log(response.data);
+          navigate(`/league`);
+        }
         setShow(true);
         let startDate = new Date(response.data.start);
         startDate = `${
