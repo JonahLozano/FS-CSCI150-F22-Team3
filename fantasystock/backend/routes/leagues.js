@@ -347,69 +347,74 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  /* NO DATA VALIDATION REQUIRED */
+  try {
+    /* NO DATA VALIDATION REQUIRED */
 
-  const exists = League.exists({ _id: req.params.id });
+    const exists = League.exists({ _id: req.params.id });
 
-  if (exists) {
-    const game = await League.findById(req.params.id);
-    //console.log(game);
+    if (exists) {
+      const game = await League.findById(req.params.id);
+      //console.log(game);
 
-    const host = await User.findById({ _id: game.host });
+      const host = await User.findById({ _id: game.host });
 
-    const players = await Promise.all(
-      game.players.map(async (data) => {
-        return {
-          player: await User.findById(data.player),
-          stocks: data.stocks,
-        };
-      })
-    );
+      const players = await Promise.all(
+        game.players.map(async (data) => {
+          return {
+            player: await User.findById(data.player),
+            stocks: data.stocks,
+          };
+        })
+      );
 
-    const commentCollection = await Promise.all(
-      game.commentsection.map(async (data) => {
-        return {
-          comment: data.comment,
-          owner: await User.findById(data.owner),
-          likes: data.likes,
-          dislikes: data.dislikes,
-          replies: await Promise.all(
-            data.replies.map(async (ele) => {
-              const replyUser = await User.findById(ele.replyowner);
-              console.log(replyUser);
-              return {
-                reply: ele.reply,
-                replyowner: replyUser,
-                replylikes: ele.replylikes,
-                replydislikes: ele.replydislikes,
-                isOwner: ele.replyowner.toString() === req.user._id,
-              };
-            })
-          ),
-          isOwner: req.user._id === data.owner.toString(),
-          commentID: data._id,
-        };
-      })
-    );
+      const commentCollection = await Promise.all(
+        game.commentsection.map(async (data) => {
+          return {
+            comment: data.comment,
+            owner: await User.findById(data.owner),
+            likes: data.likes,
+            dislikes: data.dislikes,
+            replies: await Promise.all(
+              data.replies.map(async (ele) => {
+                const replyUser = await User.findById(ele.replyowner);
+                console.log(replyUser);
+                return {
+                  reply: ele.reply,
+                  replyowner: replyUser,
+                  replylikes: ele.replylikes,
+                  replydislikes: ele.replydislikes,
+                  isOwner: ele.replyowner.toString() === req.user._id,
+                };
+              })
+            ),
+            isOwner: req.user._id === data.owner.toString(),
+            commentID: data._id,
+          };
+        })
+      );
 
-    const userInLeague =
-      game.players.filter((ele) => ele.player.toString() === req.user._id)
-        .length === 1;
+      const userInLeague =
+        game.players.filter((ele) => ele.player.toString() === req.user._id)
+          .length === 1;
 
-    const aGame = {
-      title: game.title,
-      host,
-      visibility: game.visibility,
-      start: game.start,
-      end: game.end,
-      players,
-      commentsection: commentCollection,
-      userInLeague,
-    };
+      const aGame = {
+        title: game.title,
+        host,
+        visibility: game.visibility,
+        start: game.start,
+        end: game.end,
+        players,
+        commentsection: commentCollection,
+        userInLeague,
+      };
 
-    // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    // console.log(aGame.commentsection);
-    res.send(aGame);
+      // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      // console.log(aGame.commentsection);
+      res.send({ ...aGame, success: true });
+    }
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false });
   }
 });
 
