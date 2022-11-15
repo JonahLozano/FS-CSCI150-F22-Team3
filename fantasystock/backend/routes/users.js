@@ -199,26 +199,45 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
-  if (req.body.friendcode.length <= 32) {
-    try {
-      const user = await User.findById(req.user._id);
 
-      console.log(req.body.friendcode);
-      console.log(
-        user.friends.filter((ele) => ele.toString() !== req.body.friendcode)
-      );
+  // input data validation
+  if(req.body.friendcode === undefined ||        // friendcode must be defined
+     req.body.friendcode.length > 32 ||          // friendcode input must be 32 chars or less
+     typeof req.body.friendcode !== "string" ||  // friendcode input must be a string
+     req.body.friendcode === req.user._id)       // user can not delete him/herself as a friend
+  {
+    console.log("Invalid friend code");
+    return;
+  }
 
-      user.friends = user.friends.filter(
-        (ele) => ele.toString() !== req.body.friendcode
-      );
-      user.save();
-      res.send({ success: true });
-      return;
-    } catch (err) {
-      console.log(err);
-      res.send({ success: false });
-      return;
-    }
+  // data validation is successful
+  try {
+    const user = await User.findById(req.user._id);
+    const friend = await User.findById(req.body.friendcode);
+
+    console.log(req.body.friendcode);
+
+    console.log(
+      user.friends.filter((ele) => ele.toString() !== req.body.friendcode)
+    );
+
+    // deleting user's friend
+    user.friends = user.friends.filter(
+      (ele) => ele.toString() !== req.body.friendcode
+    );
+    user.save();
+    // deleting friend's friend
+    friend.friends = friend.friends.filter(
+      (ele) => ele.toString() !== req.user._id
+    );
+    friend.save();
+
+    res.send({ success: true });
+    return;
+  } catch (err) {
+    console.log(err);
+    res.send({ success: false });
+    return;
   }
   res.send({ success: false });
   return;
