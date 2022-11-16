@@ -131,6 +131,14 @@ router.patch("/join", jsonParser, async (req, res) => {
   // testing to see if user that is currently trying to join is already joined (hence can't join)
   const in_league = activeLeagues.includes(req.body.gameID);
 
+  // can not join a league that has already passed
+  const rightnow = new Date();
+  const game = await League.findById(req.body.gameID);
+  if(rightnow > game.end){
+    console.log("Can not join a league that has expired.");
+    return;
+  }
+
   // fixing the issue where the front-end sends quantity attribute of a stock as type 'string'
   // instead of type 'number'. Note: this only happens when selecting a quantity greater than 1
   if (req.body.stocks.length !== 0) {
@@ -206,9 +214,13 @@ router.get("/search", jsonParser, async (req, res) => {
   )
     return;
 
+  // grabbing the current date 
+  const rightnow = new Date();
+
   const leagues = await League.find({
     visibility: "public",
     title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
+    end: { $gte: rightnow},
   });
 
   leagues.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
