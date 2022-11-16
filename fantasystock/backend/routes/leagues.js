@@ -214,9 +214,13 @@ router.get("/search", jsonParser, async (req, res) => {
   )
     return;
 
+  // grabbing the current date 
+  const rightnow = new Date();
+
   const leagues = await League.find({
     visibility: "public",
     title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
+    end: { $gte: rightnow},
   });
 
   leagues.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
