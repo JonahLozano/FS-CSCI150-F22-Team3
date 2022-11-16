@@ -292,10 +292,11 @@ function League() {
                 <div className="LeagueCommentData">{data.comment}</div>
 
                 {data.isOwner && (
-                  <span>
+                  <span className="CommentEditBox">
                     {editableComment[index] && (
-                      <div>
+                      <div className="LeagueCommentEdit">
                         <textarea
+        
                           onChange={(e) => {
                             const tmpThing = editComment;
                             tmpThing[index] = e.target.value;
@@ -305,7 +306,7 @@ function League() {
                         />
                         <input
                           type="button"
-                          value="Post Edit"
+                          value="Edit Comment"
                           onClick={() =>
                             axios.patch("/league/comment/edit", {
                               gameID: id,
@@ -316,29 +317,31 @@ function League() {
                         />
                       </div>
                     )}
-                    <input
-                      type="button"
-                      value="Edit"
-                      onClick={() => {
-                        const tmpThing = editableComment;
-                        tmpThing[index] = !tmpThing[index];
-                        setEditableComment([...tmpThing]);
-                      }}
-                    />
-                    <input
-                      type="button"
-                      value="Delete"
-                      onClick={() =>
-                        axios
-                          .patch("/league/comment/delete", {
-                            gameID: id,
-                            commentID: data.commentID,
-                          })
-                          .then((e) => {
-                            updateData();
-                          })
-                      }
-                    />
+                    <div className="CommentUpdateButtonBox">
+                      <input
+                        type="button"
+                        value="Edit" 
+                        onClick={() => {
+                          const tmpThing = editableComment;
+                          tmpThing[index] = !tmpThing[index];
+                          setEditableComment([...tmpThing]);
+                        }}
+                      />
+                      <input
+                        type="button"
+                        value="Delete"
+                        onClick={() =>
+                          axios
+                            .patch("/league/comment/delete", {
+                              gameID: id,
+                              commentID: data.commentID,
+                            })
+                            .then((e) => {
+                              updateData();
+                            })
+                        }
+                      />
+                    </div>
                     <div>
                       <FontAwesomeIcon icon={faEdit} className="commentIcon" />
                     </div>

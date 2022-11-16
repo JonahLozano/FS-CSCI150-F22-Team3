@@ -9,6 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2rem;
+  margin: 1rem;
+  font-weight: bold;
 }
 
 .profilePic {
@@ -23,13 +26,21 @@
   display: flex;
 }
 
+
+#profileIDstring {
+  font-size: 1rem;
+  margin: 1rem;
+}
+
 .userIcon {
   width: 2.5rem;
   margin: 0 0.5rem;
 }
 
-#editProfile {
-
+#profileBio {
+  background-color: var(--main-navbar-color);
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 #editProfile {

@@ -52,15 +52,20 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     res.send({ created1: false });
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      res.send({ created2: false });
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
-        typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
-        res.send({ created2: false });
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
+         typeof req.body.stocks[i]["quantity"] !== "number" ||
+         (req.body.stocks[i]["position"] !== "long" &&
+         req.body.stocks[i]["position"] !== "short") ||
+         req.body.stocks[i]["quantity"] > 10000) 
+      {
+        res.send({ created3: false });
         return;
       }
     }
@@ -126,6 +131,14 @@ router.patch("/join", jsonParser, async (req, res) => {
   // testing to see if user that is currently trying to join is already joined (hence can't join)
   const in_league = activeLeagues.includes(req.body.gameID);
 
+  // can not join a league that has already passed
+  const rightnow = new Date();
+  const game = await League.findById(req.body.gameID);
+  if(rightnow > game.end){
+    console.log("Can not join a league that has expired.");
+    return;
+  }
+
   // fixing the issue where the front-end sends quantity attribute of a stock as type 'string'
   // instead of type 'number'. Note: this only happens when selecting a quantity greater than 1
   if (req.body.stocks.length !== 0) {
@@ -148,14 +161,19 @@ router.patch("/join", jsonParser, async (req, res) => {
     res.send({ success: false });
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      console.log("Can not join due to amount of stocks over 1000.");
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
         typeof req.body.stocks[i]["quantity"] !== "number" ||
         (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
+        req.body.stocks[i]["position"] !== "short") ||
+        req.body.stocks[i]["quantity"] > 10000) 
+      {
         console.log("join case 2 failed");
         res.send({ success: false });
         return;
@@ -199,9 +217,13 @@ router.get("/search", jsonParser, async (req, res) => {
   )
     return;
 
+  // grabbing the current date 
+  const rightnow = new Date();
+
   const leagues = await League.find({
     visibility: "public",
     title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
+    end: { $gte: rightnow},
   });
 
   leagues.sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
@@ -216,10 +238,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
   // data validation
   if (
-    req.body.gameID === undefined || // gameID must be defined
-    req.body.comment === undefined || // comment must be defined
+    req.body.gameID === undefined ||        // gameID must be defined
+    req.body.comment === undefined ||       // comment must be defined
     typeof req.body.comment !== "string" || // comment must be of type string
-    req.body.comment === ""
+    req.body.comment === ""                 // comment must not be empty
   ) {
     // comment can not be blank
     console.log("post comment failed");
@@ -254,9 +276,10 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 
   // check to make sure data is valid
   if (
-    req.body.gameID === undefined || // gameID must be defined
-    req.body.commentID === undefined || // commentID must be defined
-    typeof req.body.comment !== "string" // comment must be of type string
+    req.body.gameID === undefined ||        // gameID must be defined
+    req.body.commentID === undefined ||     // commentID must be defined
+    typeof req.body.comment !== "string" || // comment must be of type string
+    req.body.comment === ""                 // comment edit must not be empty
   ) {
     return;
   }
@@ -312,7 +335,8 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   if (
     req.body.gameID === undefined ||
     req.body.comment === undefined ||
-    typeof req.body.comment !== "string"
+    typeof req.body.comment !== "string" ||
+    req.body.comment === ""
   ) {
     console.log(
       "Can not reply to comment because gameID or comment is undefined or type of comment is not a string."
