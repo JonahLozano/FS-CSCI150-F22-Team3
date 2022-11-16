@@ -52,15 +52,20 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     res.send({ created1: false });
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      res.send({ created2: false });
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
-        typeof req.body.stocks[i]["quantity"] !== "number" ||
-        (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
-        res.send({ created2: false });
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
+         typeof req.body.stocks[i]["quantity"] !== "number" ||
+         (req.body.stocks[i]["position"] !== "long" &&
+         req.body.stocks[i]["position"] !== "short") ||
+         req.body.stocks[i]["quantity"] > 10000) 
+      {
+        res.send({ created3: false });
         return;
       }
     }
@@ -147,14 +152,19 @@ router.patch("/join", jsonParser, async (req, res) => {
     console.log("join case 1 failed");
     return;
   } else {
+    // if the length of the stocks is over 1000 => not allowed
+    if(req.body.stocks.length > 1000){
+      console.log("Can not join due to amount of stocks over 1000.");
+      return;
+    }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (
-        typeof req.body.stocks[i]["stock"] !== "string" ||
+      if(typeof req.body.stocks[i]["stock"] !== "string" ||
         typeof req.body.stocks[i]["quantity"] !== "number" ||
         (req.body.stocks[i]["position"] !== "long" &&
-          req.body.stocks[i]["position"] !== "short")
-      ) {
+        req.body.stocks[i]["position"] !== "short") ||
+        req.body.stocks[i]["quantity"] > 10000) 
+      {
         console.log("join case 2 failed");
         return;
       }
@@ -213,10 +223,10 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 
   // data validation
   if (
-    req.body.gameID === undefined || // gameID must be defined
-    req.body.comment === undefined || // comment must be defined
+    req.body.gameID === undefined ||        // gameID must be defined
+    req.body.comment === undefined ||       // comment must be defined
     typeof req.body.comment !== "string" || // comment must be of type string
-    req.body.comment === ""
+    req.body.comment === ""                 // comment must not be empty
   ) {
     // comment can not be blank
     console.log("post comment failed");
@@ -251,9 +261,10 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 
   // check to make sure data is valid
   if (
-    req.body.gameID === undefined || // gameID must be defined
-    req.body.commentID === undefined || // commentID must be defined
-    typeof req.body.comment !== "string" // comment must be of type string
+    req.body.gameID === undefined ||        // gameID must be defined
+    req.body.commentID === undefined ||     // commentID must be defined
+    typeof req.body.comment !== "string" || // comment must be of type string
+    req.body.comment === ""                 // comment edit must not be empty
   ) {
     return;
   }
@@ -309,7 +320,8 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
   if (
     req.body.gameID === undefined ||
     req.body.comment === undefined ||
-    typeof req.body.comment !== "string"
+    typeof req.body.comment !== "string" ||
+    req.body.comment === ""
   ) {
     console.log(
       "Can not reply to comment because gameID or comment is undefined or type of comment is not a string."
