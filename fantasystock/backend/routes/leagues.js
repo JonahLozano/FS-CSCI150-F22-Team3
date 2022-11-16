@@ -248,7 +248,8 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
     req.body.gameID === undefined || // gameID must be defined
     req.body.comment === undefined || // comment must be defined
     typeof req.body.comment !== "string" || // comment must be of type string
-    req.body.comment === "" // comment must not be empty
+    req.body.comment === "" || // comment must not be empty
+    req.body.comment.length > 200 // comment chars must be less than or equal to 200
   ) {
     // comment can not be blank
     console.log("post comment failed");
@@ -287,7 +288,8 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
     req.body.gameID === undefined || // gameID must be defined
     req.body.commentID === undefined || // commentID must be defined
     typeof req.body.comment !== "string" || // comment must be of type string
-    req.body.comment === "" // comment edit must not be empty
+    req.body.comment === "" || // comment edit must not be empty
+    req.body.comment.length > 200 // comment chars must be less than or equal to 200
   ) {
     res.send({ created: false });
     return;
@@ -346,7 +348,8 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
     req.body.gameID === undefined ||
     req.body.comment === undefined ||
     typeof req.body.comment !== "string" ||
-    req.body.comment === ""
+    req.body.comment === "" ||
+    req.body.comment.length > 200
   ) {
     console.log(
       "Can not reply to comment because gameID or comment is undefined or type of comment is not a string."
