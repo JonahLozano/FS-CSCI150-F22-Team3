@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import InlineUser from "../../components/InlineUser/InlineUser";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./League.css";
 import { useNavigate } from "react-router-dom";
@@ -132,6 +131,8 @@ function League() {
   };
 
   const postComment = () => {
+    if (comment === "") return;
+
     axios.patch("/league/comment", { gameID: id, comment }).then((e) => {
       updateData();
       setComment("");
@@ -296,13 +297,12 @@ function League() {
                     {editableComment[index] && (
                       <div className="LeagueCommentEdit">
                         <textarea
-        
                           onChange={(e) => {
                             const tmpThing = editComment;
                             tmpThing[index] = e.target.value;
                             setEditComment([...tmpThing]);
                           }}
-                          value={editComment[index]}
+                          value={data.comment}
                         />
                         <input
                           type="button"
@@ -320,7 +320,7 @@ function League() {
                     <div className="CommentUpdateButtonBox">
                       <input
                         type="button"
-                        value="Edit" 
+                        value="Edit"
                         onClick={() => {
                           const tmpThing = editableComment;
                           tmpThing[index] = !tmpThing[index];
@@ -341,12 +341,6 @@ function League() {
                             })
                         }
                       />
-                    </div>
-                    <div>
-                      <FontAwesomeIcon icon={faEdit} className="commentIcon" />
-                    </div>
-                    <div>
-                      <FontAwesomeIcon icon={faTrash} className="commentIcon" />
                     </div>
                   </span>
                 )}
@@ -372,14 +366,6 @@ function League() {
                           <span>
                             {editableComment[index] && (
                               <div>
-                                <textarea
-                                  onChange={(e) => {
-                                    const tmpThing = editComment;
-                                    tmpThing[index] = e.target.value;
-                                    setEditComment([...tmpThing]);
-                                  }}
-                                  value={editComment[index]}
-                                />
                                 <input
                                   type="button"
                                   value="Post Edit"
@@ -413,6 +399,8 @@ function League() {
                     type="button"
                     value="Post Reply"
                     onClick={() => {
+                      if (reply[index] === "") return;
+
                       axios
                         .patch("/league/comment/reply", {
                           gameID: id,
