@@ -82,6 +82,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     }
     if (count === 0) {
       console.log("Your requested stock is not allowed.");
+      res.send({ created: false });
       return;
     }
   }
@@ -137,6 +138,7 @@ router.patch("/join", jsonParser, async (req, res) => {
   const game = await League.findById(req.body.gameID);
   if (rightnow > game.end) {
     console.log("Can not join a league that has expired.");
+    res.send({ created: false });
     return;
   }
 
@@ -165,6 +167,7 @@ router.patch("/join", jsonParser, async (req, res) => {
     // if the length of the stocks is over 1000 => not allowed
     if (req.body.stocks.length > 1000) {
       console.log("Can not join due to amount of stocks over 1000.");
+      res.send({ created: false });
       return;
     }
     // now check the stocks input array (size can vary, need to check every possibility)
@@ -216,8 +219,10 @@ router.get("/search", jsonParser, async (req, res) => {
     req.query.page === undefined ||
     req.query.page < 1 ||
     req.query.search === undefined
-  )
+  ) {
+    res.send({ created: false });
     return;
+  }
 
   // grabbing the current date
   const rightnow = new Date();
@@ -284,6 +289,7 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
     typeof req.body.comment !== "string" || // comment must be of type string
     req.body.comment === "" // comment edit must not be empty
   ) {
+    res.send({ created: false });
     return;
   }
 
@@ -313,6 +319,7 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
     console.log(
       "Can not delete comment because gameID or commentID is undefined."
     );
+    res.send({ created: false });
     return;
   }
 

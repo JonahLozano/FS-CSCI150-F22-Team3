@@ -119,6 +119,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   ) {
     // activeIcon requested to switch must be owned by user already
     console.log("Edit failed due to input errors");
+    res.send({ created: false });
     return;
   }
 
@@ -145,6 +146,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
         req.logout(function (err) {
           if (err) {
             console.log(err);
+            res.send({ created: false });
             return;
           }
           return res.redirect("/");
@@ -166,6 +168,7 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
   ) {
     // user can not add him/herself as a friend
     console.log("Invalid friend code");
+    res.send({ created: false });
     return;
   }
 
@@ -173,10 +176,12 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
   const friend = await User.findById(req.body.friendcode);
   if (friend.friendRequests.includes(req.user._id)) {
     console.log("You have already sent this user a friend request.");
+    res.send({ created: false });
     return;
   }
   if (friend.friends.includes(req.user._id)) {
     console.log("This user is already your friend.");
+    res.send({ created: false });
     return;
   }
 
@@ -206,6 +211,7 @@ router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
   ) {
     // user can not delete him/herself as a friend
     console.log("Invalid friend code");
+    res.send({ created: false });
     return;
   }
 
@@ -360,6 +366,7 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
     req.body.friendcode.length > 32 // friendcode must be 32 or less chars
   ) {
     console.log("Could not accept friend request.");
+    res.send({ created: false });
     return;
   }
 
