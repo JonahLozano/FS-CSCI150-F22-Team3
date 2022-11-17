@@ -89,7 +89,7 @@ function League() {
           new Array(response.data.commentsection.length).fill(false, 0)
         );
         setEditComment(
-          new Array(response.data.commentsection.length).fill("", 0)
+          response.data.commentsection.reverse().map((ele) => ele.comment)
         );
         setReply(new Array(response.data.commentsection.length).fill("", 0));
 
@@ -298,22 +298,29 @@ function League() {
                       <div className="LeagueCommentEdit">
                         <textarea
                           onChange={(e) => {
+                            editComment[index] = data.comment;
                             const tmpThing = editComment;
                             tmpThing[index] = e.target.value;
                             setEditComment([...tmpThing]);
                           }}
-                          value={data.comment}
+                          value={editComment[index]}
                         />
                         <input
                           type="button"
                           value="Edit Comment"
-                          onClick={() =>
-                            axios.patch("/league/comment/edit", {
-                              gameID: id,
-                              commentID: data.commentID,
-                              comment: editComment[index],
-                            })
-                          }
+                          onClick={() => {
+                            if (editComment[index] === "") return;
+
+                            axios
+                              .patch("/league/comment/edit", {
+                                gameID: id,
+                                commentID: data.commentID,
+                                comment: editComment[index],
+                              })
+                              .then((e) => {
+                                updateData();
+                              });
+                          }}
                         />
                       </div>
                     )}
@@ -336,9 +343,7 @@ function League() {
                               gameID: id,
                               commentID: data.commentID,
                             })
-                            .then((e) => {
-                              updateData();
-                            })
+                            .then((e) => updateData())
                         }
                       />
                     </div>
