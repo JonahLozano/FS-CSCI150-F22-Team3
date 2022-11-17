@@ -309,6 +309,7 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
     game.commentsection = aComment;
     game.save();
   }
+  res.send({ created: true });
 });
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
