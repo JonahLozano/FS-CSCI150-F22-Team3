@@ -137,6 +137,8 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
       }
     );
   }
+  res.send({ created: false });
+  return;
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
@@ -156,6 +158,8 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+  res.send({ created: false });
+  return;
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
