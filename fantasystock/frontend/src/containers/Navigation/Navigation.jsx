@@ -40,7 +40,7 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/stocks"
+            to="/league"
             icon={faFootball}
             name="League"
             design="VerticalNavbarIcons1"
