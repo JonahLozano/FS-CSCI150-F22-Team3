@@ -5,9 +5,11 @@ const user = require("../models/user");
 
 module.exports = async () => {
   const right_now = new Date();
+  console.log(right_now); // outputs in UTC format
+  console.log(right_now.toLocaleDateString()); // outputs in our actual timezone just month/day/year
 
   const updatable_leagues = await League.find({
-    start: { $lte: right_now },
+    start: { $lte: right_now.toLocaleDateString() },
     active: true,
   });
 
