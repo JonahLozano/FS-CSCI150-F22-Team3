@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   height: 2rem;
-  display: inline;
+  display: inline-flex;
 }
 
 .NavbarForm input {
@@ -12,13 +12,13 @@
   margin: 0;
   padding-left: 2rem;
   border-style: none;
-  animation: 1s forwards searchbarShrink;
+  /* animation: 1s forwards searchbarShrink; */
 }
 
 .NavbarForm input:focus {
-  width: 28rem;
+  /* width: 28rem; */
   outline: none;
-  animation: 1s forwards searchbarGrow;
+  /* animation: 1s forwards searchbarGrow; */
 }
 
 .NavbarForm input::placeholder {
