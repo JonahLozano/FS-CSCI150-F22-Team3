@@ -107,10 +107,12 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
-    req.body.username.length > 32 || // username must be less than or equal to 32 chars
     req.body.username === undefined || // username must be defined
+    req.body.username.length > 32 || // username must be less than or equal to 32 chars
+    req.body.username.length < 1 || // username must be more than or equal to 1 char
     typeof req.body.username !== "string" || // username must be a string
     req.body.bio.length > 300 || // bio must be less than or equal to 300 chars
+    req.body.bio.length < 1 || // bio must be more than or equal to 1 char
     req.body.bio === undefined || // bio must be defined
     typeof req.body.bio !== "string" || // bio must be a string
     req.body.activeIcon === undefined || // activeIcon must be defined
@@ -142,12 +144,11 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
-
   // before deleting account grab the current user
   const user = await User.findById(req.user._id);
-  if(user.friends.length !== 0){
+  if (user.friends.length !== 0) {
     // now loop through the user's friend's account
-    for(let i = 0; i < user.friends.length; i++){
+    for (let i = 0; i < user.friends.length; i++) {
       // grab the friend
       const friend = await User.findById(user.friends[i]);
       // now remove current user from friend's friend list
@@ -155,7 +156,9 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
         (ele) => ele.toString() !== req.user._id
       );
       friend.save();
-      console.log("user has been deleted from " + friend._id + "'s friends list");
+      console.log(
+        "user has been deleted from " + friend._id + "'s friends list"
+      );
     }
   }
 
@@ -181,9 +184,10 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
   // input data validation
+
   if (
     req.body.friendcode === undefined || // friendcode must be defined
-    req.body.friendcode.length > 32 || // friendcode input must be 32 chars or less
+    req.body.friendcode.length !== 32 || // friendcode input must be 32 chars
     typeof req.body.friendcode !== "string" || // friendcode input must be a string
     req.body.friendcode === req.user._id
   ) {
@@ -193,15 +197,21 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
     return;
   }
 
-  // more input data validation
-  const friend = await User.findById(req.body.friendcode);
-  if (friend.friendRequests.includes(req.user._id)) {
-    console.log("You have already sent this user a friend request.");
-    res.send({ created: false });
-    return;
-  }
-  if (friend.friends.includes(req.user._id)) {
-    console.log("This user is already your friend.");
+  try {
+    // more input data validation
+    const friend = await User.findById(req.body.friendcode);
+    if (friend.friendRequests.includes(req.user._id)) {
+      console.log("You have already sent this user a friend request.");
+      res.send({ created: false });
+      return;
+    }
+    if (friend.friends.includes(req.user._id)) {
+      console.log("This user is already your friend.");
+      res.send({ created: false });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
     res.send({ created: false });
     return;
   }
@@ -432,7 +442,7 @@ router.get("/:id", async (req, res) => {
 
     // console.log({ ...aUser, success: true });
 
-    res.send({ ...aUser, success: true });
+    res.send({ ...aUser, success: true, isFriend });
   } catch (e) {
     console.log(e);
     res.send({ success: false });
