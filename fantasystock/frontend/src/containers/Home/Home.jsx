@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Home.css";
+import moment from "moment";
 
 function Home() {
   const [articles, setArticles] = useState([]);
@@ -9,8 +10,8 @@ function Home() {
     axios
       .get(`/news`)
       .then((response) => {
-        setArticles(response.data);
-        // console.log(response.data);
+        setArticles(response.data.reverse());
+        console.log(response.data);
       })
       .catch((error) => {});
   }, []);
@@ -24,10 +25,12 @@ function Home() {
             src={article.urlToImage}
             alt="Article"
           />{" "}
-          <div className="articleHeader">
-            {article.title}
+          <div className="articleBody">
+            <div className="articleHeader">{article.title}</div>
+            <div className="articleCreatedAt">
+              {moment(article.publishedAt).fromNow()}
+            </div>
           </div>
-          <div className="articleCreatedAt">{article.createdAt}</div>
         </div>
       ))}
     </div>
