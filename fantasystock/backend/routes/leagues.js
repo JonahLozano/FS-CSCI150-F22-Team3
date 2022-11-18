@@ -16,6 +16,34 @@ function isLoggedIn(req, res, next) {
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
+  console.log(req.body);
+
+  if (
+    req.body.title === undefined ||
+    req.body.title === "" ||
+    typeof req.body.title !== "string" ||
+    req.body.stocks.length === 0 ||
+    (req.body.visibility !== "public" && req.body.visibility !== "private") ||
+    req.body.start === undefined ||
+    req.body.start === "" ||
+    typeof req.body.start !== "string" ||
+    req.body.end === "" ||
+    req.body.end === undefined ||
+    typeof req.body.end !== "string"
+  ) {
+    res.send({ created1: false });
+    return;
+  }
+
+  try {
+    const rightnow = new Date();
+    const start = new Date(req.body.start);
+    const end = new Date(req.body.end);
+  } catch (e) {
+    console.log(e);
+    res.send({ created1: false });
+    return;
+  }
 
   const rightnow = new Date();
   const start = new Date(req.body.start);
@@ -195,20 +223,25 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
     const game = await League.findById(req.body.gameID);
 
-    game.players.push({
-      player: req.user._id,
-      stocks: await Promise.all(
-        req.body.stocks.map(async (stockData) => {
-          const price = await Stock.findOne({ ticker: stockData.stock });
-          return {
-            ticker: stockData.stock,
-            quantity: stockData.quantity,
-            position: stockData.position,
-            priceAtTime: price.price,
-          };
-        })
-      ),
-    });
+    try {
+      game.players.push({
+        player: req.user._id,
+        stocks: await Promise.all(
+          req.body.stocks.map(async (stockData) => {
+            const price = await Stock.findOne({ ticker: stockData.stock });
+            return {
+              ticker: stockData.stock,
+              quantity: stockData.quantity,
+              position: stockData.position,
+              priceAtTime: price.price,
+            };
+          })
+        ),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
     game.save();
     res.send({ success: true });
   }
