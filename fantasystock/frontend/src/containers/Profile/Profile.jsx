@@ -13,6 +13,7 @@ import { ReactComponent as Meta } from "../../assets/meta.svg";
 import { ReactComponent as Microsoft } from "../../assets/microsoft.svg";
 import { ReactComponent as Nvidia } from "../../assets/nvidia.svg";
 import { ReactComponent as Tesla } from "../../assets/tesla.svg";
+import InlineUser from "../../components/InlineUser/InlineUser";
 
 function Profile(props) {
   const [data, setData] = useState({
@@ -48,7 +49,7 @@ function Profile(props) {
         setData({
           displayName: response.data.displayName,
           photo: response.data.photo,
-          id: `#${response.data._id}`,
+          id: response.data._id,
           bio: response.data.bio,
           username: response.data.username,
           activeIcon: response.data.activeIcon,
@@ -62,7 +63,12 @@ function Profile(props) {
   }, []);
 
   const sendPatch = () => {
-    if (data.username.length <= 32 && data.bio.length <= 300) {
+    if (
+      data.username.length <= 32 &&
+      data.bio.length <= 300 &&
+      data.username.length > 1 &&
+      data.bio.length > 1
+    ) {
       axios.patch("/register/edit", {
         username: data.username,
         bio: data.bio,
@@ -102,7 +108,7 @@ function Profile(props) {
           </div>
           {editable ? (
             <form id="editProfile">
-            <span id="namelmt">Edit Name (32 characters max)</span>
+              <span id="namelmt">Edit Name (32 characters max)</span>
               <div id="editProfileName">
                 <input
                   type="textbox"
@@ -118,7 +124,7 @@ function Profile(props) {
                 <textarea
                   rows="4"
                   cols="50"
-                  placeholder="Bio" 
+                  placeholder="Bio"
                   maxlength="300"
                   onChange={editBio}
                   text={data.bio}
@@ -150,13 +156,14 @@ function Profile(props) {
             </form>
           ) : (
             <div>
-              <h1 id="profileTitle">
-                {
-                  iconCollection.find((ele) => ele.name === data.activeIcon)
-                    .item
-                }
-                {data.username}
-              </h1>
+              <InlineUser
+                user={data.id}
+                to={`/user/${data.id}`}
+                aAlt={`${data.username}'s Profile`}
+                design="circlePic"
+                aSrc={data.photo}
+                username={data.username}
+              />
               <h3 id="profileIDstring">ID: {data.id}</h3>
               <p id="profileBio">{data.bio}</p>
             </div>
