@@ -25,13 +25,16 @@ function Home() {
 
     if (
       title === undefined ||
+      title === "" ||
       typeof title !== "string" ||
       stkList.length === 0 ||
       (visibility.toLowerCase() !== "public" &&
         visibility.toLowerCase() !== "private") ||
       start === undefined ||
+      start === "" ||
       typeof start !== "string" ||
       end === undefined ||
+      end === "" ||
       typeof end !== "string" ||
       start1 <= rightnow ||
       start1 >= end1
