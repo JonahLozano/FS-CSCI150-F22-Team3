@@ -175,7 +175,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.send({ created: false });
+  //res.send({ created: false });
   return;
 });
 
