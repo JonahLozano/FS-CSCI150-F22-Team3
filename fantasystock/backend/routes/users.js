@@ -435,10 +435,12 @@ router.get("/:id", async (req, res) => {
       return;
     }
 
-    const isFriend = theUser.friends.reduce(
+    let isFriend = theUser.friends.reduce(
       (acc, ele) => acc || ele.toString() === req.params.id,
       false
     );
+
+    isFriend |= req.user._id === req.params.id;
 
     // console.log({ ...aUser, success: true });
 
