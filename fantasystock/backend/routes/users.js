@@ -108,7 +108,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
     req.body.username === undefined || // username must be defined
-    req.body.username.length > 32 || // username must be less than or equal to 32 chars
+    req.body.username.length !== 24 || // username must be equal to 24 chars
     req.body.username.length < 1 || // username must be more than or equal to 1 char
     typeof req.body.username !== "string" || // username must be a string
     req.body.bio.length > 300 || // bio must be less than or equal to 300 chars
@@ -125,20 +125,15 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
     return;
   }
 
-  if (
-    req.body.username.length <= 32 &&
-    req.body.bio.length <= 300 &&
-    user.icons.includes(req.body.activeIcon)
-  ) {
-    await User.findByIdAndUpdate(
-      { _id: req.user._id },
-      {
-        username: req.body.username,
-        bio: req.body.bio,
-        activeIcon: req.body.activeIcon,
-      }
-    );
-  }
+  // data validation is successful so go update
+  await User.findByIdAndUpdate(
+    { _id: req.user._id },
+    {
+      username: req.body.username,
+      bio: req.body.bio,
+      activeIcon: req.body.activeIcon,
+    }
+  );
   res.send({ created: false });
   return;
 });
@@ -184,10 +179,9 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
   // input data validation
-
   if (
     req.body.friendcode === undefined || // friendcode must be defined
-    req.body.friendcode.length !== 32 || // friendcode input must be 32 chars
+    req.body.friendcode.length !== 24 || // friendcode input must be 24 chars
     typeof req.body.friendcode !== "string" || // friendcode input must be a string
     req.body.friendcode === req.user._id
   ) {
@@ -236,7 +230,7 @@ router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
   // input data validation
   if (
     req.body.friendcode === undefined || // friendcode must be defined
-    req.body.friendcode.length > 32 || // friendcode input must be 32 chars or less
+    req.body.friendcode.length !== 24 || // friendcode input must be 24 chars
     typeof req.body.friendcode !== "string" || // friendcode input must be a string
     req.body.friendcode === req.user._id
   ) {
@@ -346,7 +340,7 @@ router.patch(
     if (
       req.body.friendcode === undefined || // friendcode must be defined
       typeof req.body.friendcode !== "string" || // friendcode must be of type string
-      req.body.friendcode.length > 32 // friendcode must be 32 or less chars
+      req.body.friendcode.length !== 24 // friendcode must be 24 chars
     ) {
       console.log("Could not accept friend request.");
       return;
@@ -394,7 +388,7 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
   if (
     req.body.friendcode === undefined || // friendcode must be defined
     typeof req.body.friendcode !== "string" || // friendcode must be of type string
-    req.body.friendcode.length > 32 // friendcode must be 32 or less chars
+    req.body.friendcode.length !== 24 // friendcode must be 24 chars
   ) {
     console.log("Could not accept friend request.");
     res.send({ created: false });
