@@ -86,24 +86,24 @@ function Profile(props) {
   const editBio = (e) => setData((prev) => ({ ...prev, bio: e.target.value }));
 
   return (
-    <div>
+    <div className="mainProfileContainer">
       {show && (
         <div>
-          <span className="editBtn">
-            <BtnIcons
-              icon={faPencil}
-              name=""
-              design="VerticalNavbarIcons2"
-              onClick={toggleEdit}
-            />
-          </span>
-          <div>
+          <div className="profilePicContainer">
             <div className="profilePic">
               <img
                 src={data.photo}
                 referrerPolicy="no-referrer"
                 alt="profile"
               />
+              <span className="editBtn">
+                <BtnIcons
+                  icon={faPencil}
+                  name=""
+                  design="VerticalNavbarIcons2"
+                  onClick={toggleEdit}
+                />
+              </span>
             </div>
           </div>
           {editable ? (
