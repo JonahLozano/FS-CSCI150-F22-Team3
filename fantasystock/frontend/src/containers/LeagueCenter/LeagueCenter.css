@@ -28,6 +28,7 @@
 }
 .LeagueCenterLeague:hover {
   background-color: var(--main-navbar-color);
+  transform: scale(1.0125);
 }
 .aLeagueCenterLeague {
   text-decoration: none;
@@ -37,6 +38,10 @@
 .aLeagueCenterLeagueLink {
   text-decoration: none;
   color: var(--main-font-color);
+}
+.aLeagueCenterLeagueLink:hover .LeagueCenterLeague {
+  background-color: var(--main-navbar-color);
+  transform: scale(1.0125);
 }
 
 .LeagueCenterLeaguesHeader {

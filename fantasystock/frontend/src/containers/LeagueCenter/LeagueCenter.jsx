@@ -26,14 +26,14 @@ function LeagueCenter() {
         <h1 className="LeagueCenterLeaguesHeader">Active Leagues</h1>
         {show &&
           leagues.activeLeagues.map((league, index) => (
-            <div key={index} className="LeagueCenterLeague">
-              <Link
-                className="aLeagueCenterLeagueLink"
-                to={`/league/${league._id}`}
-              >
+            <Link
+              className="aLeagueCenterLeagueLink"
+              to={`/league/${league._id}`}
+            >
+              <div key={index} className="LeagueCenterLeague">
                 <div className="aLeagueCenterLeague">{league.title}</div>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
       </div>
 
@@ -41,14 +41,14 @@ function LeagueCenter() {
         <h1 className="LeagueCenterLeaguesHeader">Passed Leagues</h1>
         {show &&
           leagues.passedLeagues.map((league, index) => (
-            <div key={index} className="LeagueCenterLeague">
-              <Link
-                className="aLeagueCenterLeagueLink"
-                to={`/league/${league._id}`}
-              >
+            <Link
+              className="aLeagueCenterLeagueLink"
+              to={`/league/${league._id}`}
+            >
+              <div key={index} className="LeagueCenterLeague">
                 <div className="aLeagueCenterLeague">{league.title}</div>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
       </div>
     </div>
