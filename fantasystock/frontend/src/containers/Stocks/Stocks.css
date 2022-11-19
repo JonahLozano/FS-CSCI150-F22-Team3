@@ -71,3 +71,14 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+@media (max-width: 600px) {
+  .StockPriceRow > td:nth-child(2),
+  .StockPriceRow > td:nth-child(3) {
+    display: none;
+  }
+
+  #StockPrices {
+    padding: 0 3rem;
+  }
+}
