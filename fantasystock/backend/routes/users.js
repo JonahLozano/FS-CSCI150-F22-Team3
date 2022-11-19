@@ -108,7 +108,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
     req.body.username === undefined || // username must be defined
-    req.body.username.length > 24 || // username must be equal to 24 chars
+    req.body.username.length > 30 || // username must be less than or equal to 30 chars
     req.body.username.length < 1 || // username must be more than or equal to 1 char
     typeof req.body.username !== "string" || // username must be a string
     req.body.bio.length > 300 || // bio must be less than or equal to 300 chars
@@ -184,22 +184,29 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
     req.body.friendcode === undefined || // friendcode must be defined
     req.body.friendcode.length !== 24 || // friendcode input must be 24 chars
     typeof req.body.friendcode !== "string" || // friendcode input must be a string
-    req.body.friendcode === req.user._id
+    req.body.friendcode === req.user._id // user can not add him/herself as a friend
   ) {
-    // user can not add him/herself as a friend
-    console.log("Invalid friend code");
+    console.log("Could not send friend request because friendcode is invalid.");
     res.send({ created: false });
     return;
   }
 
+  // more input data validation
   try {
-    // more input data validation
+    // user1 can not send a friend request to user2 if user2 has already sent a friend request to user1
+    if (req.user.friendRequests.includes(req.body.friendcode)) {
+      console.log("You can not send this user a friend request because they already sent you one.");
+      res.send({ created: false});
+      return;
+    }
     const friend = await User.findById(req.body.friendcode);
+    // user1 can not send a friend request to user2 if user1 has already sent a friend request to user2
     if (friend.friendRequests.includes(req.user._id)) {
       console.log("You have already sent this user a friend request.");
       res.send({ created: false });
       return;
     }
+    // user1 can not send a friend request to user2 if user1 is already friends with user2
     if (friend.friends.includes(req.user._id)) {
       console.log("This user is already your friend.");
       res.send({ created: false });
