@@ -263,6 +263,7 @@ body.dark {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .App-link {
