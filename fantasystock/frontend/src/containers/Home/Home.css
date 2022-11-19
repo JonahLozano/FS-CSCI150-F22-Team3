@@ -1,7 +1,8 @@
 .articleCard {
   border: 0.25rem solid black;
   border-radius: 1rem;
-  width: 20rem;
+  /* width: 18.4515rem; */
+  height: 15.875rem;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
@@ -13,10 +14,20 @@
 
 .articleCard:hover .articleCardImage {
   transform: scale(1.05);
-  border-radius: 0;
+  z-index: -1000;
+  /* border-radius: 0; */
 }
 .articleCard:hover .articleBody {
   background-color: var(--main-bg-color);
+}
+
+.articleCardA {
+  width: 100%;
+  height: 20rem;
+  overflow: hidden;
+  border-radius: 0.75rem 0.75rem 0 0;
+  display: flex;
+  justify-content: center;
 }
 
 .articleCardImage {

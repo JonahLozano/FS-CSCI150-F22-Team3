@@ -20,11 +20,13 @@ function Home() {
     <div id="homePage">
       {articles.map((article, index) => (
         <div className="articleCard" key={`uniqueId${index}`}>
-          <img
-            className="articleCardImage"
-            src={article.urlToImage}
-            alt="Article"
-          />{" "}
+          <a className="articleCardA" href={article.url}>
+            <img
+              className="articleCardImage"
+              src={article.urlToImage}
+              alt="Article"
+            />{" "}
+          </a>
           <div className="articleBody">
             <div className="articleHeader">{article.title}</div>
             <div className="articleCreatedAt">
