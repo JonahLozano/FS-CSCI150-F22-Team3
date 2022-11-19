@@ -108,7 +108,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
     req.body.username === undefined || // username must be defined
-    req.body.username.length !== 24 || // username must be equal to 24 chars
+    req.body.username.length > 24 || // username must be equal to 24 chars
     req.body.username.length < 1 || // username must be more than or equal to 1 char
     typeof req.body.username !== "string" || // username must be a string
     req.body.bio.length > 300 || // bio must be less than or equal to 300 chars
@@ -120,6 +120,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
     !user.icons.includes(req.body.activeIcon)
   ) {
     // activeIcon requested to switch must be owned by user already
+
     console.log("Edit failed due to input errors");
     res.send({ created: false });
     return;
