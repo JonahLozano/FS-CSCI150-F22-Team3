@@ -163,9 +163,17 @@ router.patch("/join", jsonParser, async (req, res) => {
 
   // can not join a league that has already passed
   const rightnow = new Date();
+  //console.log(rightnow);
+  //console.log(rightnow.toLocaleDateString());
   const game = await League.findById(req.body.gameID);
-  if (rightnow > game.end) {
-    console.log("Can not join a league that has expired.");
+  //console.log(game.start);
+  const game_year = game.start.getFullYear();
+  const game_month = game.start.getMonth() + 1;
+  const game_day = game.start.getDate() + 1;
+  const game_full = [game_month, game_day, game_year].join('/');
+  //console.log(game_full);
+  if (rightnow.toLocaleDateString() >= game_full) {  // current datetime must be less than the gamestart datetime in order to join a league
+    console.log("Can not join a league that has already started.");
     res.send({ created: false });
     return;
   }
@@ -229,7 +237,6 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
   }
 
-
   // if all data validation passed, then proceed to join the league
   const exists = League.exists({ _id: req.body.gameID });
 
@@ -259,6 +266,7 @@ router.patch("/join", jsonParser, async (req, res) => {
       console.log(e);
     }
 
+    console.log("Joined league successfully");
     game.save();
     res.send({ success: true });
   }
