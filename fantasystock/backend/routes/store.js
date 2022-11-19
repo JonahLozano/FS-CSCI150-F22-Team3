@@ -39,12 +39,13 @@ router.patch("/buy", jsonParser, async (req, res) => {
   host.currency = host.currency - itemThing.price;
   host.icons.push(itemThing.name);
   host.save();
+  res.send({ created: true });
 });
 
 router.get("/", async (req, res) => {
   const host = await User.findById({ _id: req.user._id });
   const yourInv = Inventory.filter((ele) => !host.icons.includes(ele.name));
-  res.send(yourInv);
+  res.send({ yourInv, currency: host.currency });
 });
 
 module.exports = router;
