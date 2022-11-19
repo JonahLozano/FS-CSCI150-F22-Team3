@@ -214,6 +214,23 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
   }
 
+  // now checking that all input stock tickers are actually in our ../data/stocks.js
+  for (let i = 0; i < req.body.stocks.length; i++) {
+    let count = 0;
+    for (let j = 0; j < stocks.length; j++) {
+      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+        count++;
+      }
+    }
+    if (count === 0) {
+      console.log("Your requested stock is not allowed.");
+      res.send({ created: false });
+      return;
+    }
+  }
+
+
+  // if all data validation passed, then proceed to join the league
   const exists = League.exists({ _id: req.body.gameID });
 
   if (exists) {
