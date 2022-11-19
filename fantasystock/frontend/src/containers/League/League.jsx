@@ -373,7 +373,8 @@ function League() {
                         }}
                       >
                         {data.replies.length}{" "}
-                        {data.replies.length === 1 ? "reply" : "replies"}
+                        {data.replies.length === 1 ? "reply" : "replies"}{" "}
+                        <span class="dropdown-caret"></span>
                       </div>
                       {toggleReplies[index] && (
                         <>
