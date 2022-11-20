@@ -452,3 +452,18 @@
   border-bottom-color: transparent;
   border-left-color: transparent;
 }
+
+.dropup-caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  content: "";
+  border-style: solid;
+  border-width: 0.4rem 0.4rem 0;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+
+  transform: rotate(180deg);
+}

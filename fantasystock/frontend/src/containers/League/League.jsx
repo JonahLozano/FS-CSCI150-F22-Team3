@@ -372,9 +372,13 @@ function League() {
                           setToggleReplies([...tmpThing]);
                         }}
                       >
+                        {toggleReplies[index] ? (
+                          <span class="dropup-caret"></span>
+                        ) : (
+                          <span class="dropdown-caret"></span>
+                        )}{" "}
                         {data.replies.length}{" "}
                         {data.replies.length === 1 ? "reply" : "replies"}{" "}
-                        <span class="dropdown-caret"></span>
                       </div>
                       {toggleReplies[index] && (
                         <>
