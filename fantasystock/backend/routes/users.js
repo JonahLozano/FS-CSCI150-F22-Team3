@@ -140,10 +140,13 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
-  // before deleting account grab the current user
+
+  // before deleting account
+  // grab current user trying to delete their account
   const user = await User.findById(req.user._id);
+  // proceed if the current user has friends
   if (user.friends.length !== 0) {
-    // now loop through the user's friend's account
+    // now loop through the user's friends
     for (let i = 0; i < user.friends.length; i++) {
       // grab the friend
       const friend = await User.findById(user.friends[i]);
@@ -151,13 +154,192 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
       friend.friends = friend.friends.filter(
         (ele) => ele.toString() !== req.user._id
       );
+      // save the friend's account
       friend.save();
-      console.log(
-        "user has been deleted from " + friend._id + "'s friends list"
-      );
+      console.log(req.user._id + " has been deleted from " + friend._id + "'s friends list");
     }
   }
 
+
+  // pathway to modify activeLeagues only if current user was in an activeLeague
+  if(user.activeLeagues.length !== 0){
+
+    // loop through the activeLeagues
+    for(let i = 0; i < user.activeLeagues.length; i++){
+
+      // grab activeLeague id
+      let leagueID = user.activeLeagues[i];
+      //console.log(leagueID);
+      // grab league
+      const userLeague = await League.findById({ _id: leagueID });
+
+      let userLeagueHost = JSON.stringify(userLeague.host);
+      //console.log(userLeagueHost);
+      userLeagueHost = userLeagueHost.replaceAll("\"", "");
+      //console.log(userLeagueHost);
+      //console.log(req.user._id);
+
+      // if current user is the host of a league proceed
+      if(userLeagueHost === req.user._id){
+  
+        console.log("User being deleted is a host of a league");
+        //console.log(userLeague.players.length);
+
+        // before league deletion remove the activeLeague from all of the profiles of all of the users that were in that league
+        if(userLeague.players.length > 1){
+          // loop
+          for(let j = 1; j < userLeague.players.length; j++){
+            let temp_user = JSON.stringify(userLeague.players[j].player);
+            temp_user = temp_user.replaceAll("\"", "");
+            console.log("non member: " + temp_user);
+            try{
+              // grab the user
+              const player = await User.findById({ _id: temp_user});
+              //console.log(player.activeLeagues[0]);
+              //console.log(leagueID);
+
+              // update the user's activeLeagues
+              player.activeLeagues = player.activeLeagues.filter(
+                (ele) => ele.toString() === leagueID
+              );
+              // save player
+              player.save();
+              console.log("activeLeague was removed from a member's activeLeagues list");
+            } 
+            catch(error) {
+              console.log(error);
+            }
+          }
+        }
+        
+        // perform league deletion now
+        try{
+          await League.findByIdAndDelete({ _id: leagueID})
+            .then((req1, res1) => {
+              console.log("host league deleted");
+              //return res.redirect("/");
+            });
+        } catch (error){
+          console.log(error);
+        }
+
+      }
+      // if user is not a host, then they are a member of the league
+      // and must be removed from the players array of the activeleague
+      else{
+
+        console.log("User being deleted is a member of a league");
+        // perform league modification
+        try{
+          // update the userLeague players to not include the user that is currently deleting their account
+          userLeague.players = userLeague.players.filter(function(p){
+            return p.player.toString() !== req.user._id;
+          });
+          // save the userLeague
+          userLeague.save();
+          console.log("Removed the user from the league");
+        } 
+        catch (error){
+          console.log(error);
+        }
+
+      }
+
+    }
+
+  }
+
+
+  // pathway to modify passedLeagues only if current user was in a passedLeague
+  if(user.passedLeagues.length !== 0){
+
+    // loop through the passedLeagues
+    for(let i = 0; i < user.passedLeagues.length; i++){
+
+      // grab activeLeague id
+      let leagueID = user.passedLeagues[i];
+      //console.log(leagueID);
+      // grab league
+      const userLeague = await League.findById({ _id: leagueID });
+
+      let userLeagueHost = JSON.stringify(userLeague.host);
+      //console.log(userLeagueHost);
+      userLeagueHost = userLeagueHost.replaceAll("\"", "");
+      //console.log(userLeagueHost);
+      //console.log(req.user._id);
+
+      // if current user is the host of a league proceed
+      if(userLeagueHost === req.user._id){
+  
+        console.log("User being deleted is a host of a league");
+        //console.log(userLeague.players.length);
+
+        // before league deletion remove the activeLeague from all of the profiles of all of the users that were in that league
+        if(userLeague.players.length > 1){
+          // loop
+          for(let j = 1; j < userLeague.players.length; j++){
+            let temp_user = JSON.stringify(userLeague.players[j].player);
+            temp_user = temp_user.replaceAll("\"", "");
+            console.log("non member: " + temp_user);
+            try{
+              // grab the user
+              const player = await User.findById({ _id: temp_user});
+              //console.log(player.passedLeagues[0]);
+              //console.log(leagueID);
+
+              // update the user's passedLeagues
+              player.passedLeagues = player.passedLeagues.filter(
+                (ele) => ele.toString() === leagueID
+              );
+              // save player
+              player.save();
+              console.log("activeLeague was removed from a member's passedLeagues list");
+            } 
+            catch(error) {
+              console.log(error);
+            }
+          }
+        }
+        
+        // perform league deletion now
+        try{
+          await League.findByIdAndDelete({ _id: leagueID})
+            .then((req1, res1) => {
+              console.log("host league deleted");
+              //return res.redirect("/");
+            });
+        } catch (error){
+          console.log(error);
+        }
+
+      }
+      // if user is not a host, then they are a member of the league
+      // and must be removed from the players array of the activeleague
+      else{
+
+        console.log("User being deleted is a member of a league");
+        // perform league modification
+        try{
+          // update the userLeague players to not include the user that is currently deleting their account
+          userLeague.players = userLeague.players.filter(function(p){
+            return p.player.toString() !== req.user._id;
+          });
+          // save the userLeague
+          userLeague.save();
+          console.log("Removed the user from the league");
+        } 
+        catch (error){
+          console.log(error);
+        }
+
+      }
+
+    }
+
+  }
+
+  
+  // main delete performed here
   try {
     await User.findByIdAndDelete({ _id: req.user._id })
       .then((req1, res1) => {
@@ -176,6 +358,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   }
   //res.send({ created: false });
   return;
+  
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
