@@ -142,6 +142,28 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 router.delete("/delete", isLoggedIn, async (req, res) => {
 
   // before deleting account
+
+  // get all users in db
+  const users = await User.find();
+  // loop through the users
+  for(let i = 0; i < users.length; i++){
+    let u = JSON.stringify(users[i]._id);
+    u = u.replaceAll("\"", "");
+    //console.log(u);
+    //console.log(req.user._id);
+    // only try to modify users that are not the current user logged in
+    if(u !== req.user._id){
+      // filter out the current user from user2's friendRequests
+      users[i].friendRequests = users[i].friendRequests.filter(
+        (ele) => ele.toString() !== req.user._id
+      )
+      // save user
+      users[i].save();
+      console.log("modified friend requests on other user");
+    }
+  }
+  
+  
   // grab current user trying to delete their account
   const user = await User.findById(req.user._id);
   // proceed if the current user has friends
@@ -358,7 +380,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   }
   //res.send({ created: false });
   return;
-  
+
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
