@@ -66,8 +66,8 @@ function Profile(props) {
     if (
       data.username.length <= 32 &&
       data.bio.length <= 300 &&
-      data.username.length > 1 &&
-      data.bio.length > 1
+      data.username.length >= 1 &&
+      data.bio.length >= 1
     ) {
       axios.patch("/register/edit", {
         username: data.username,
