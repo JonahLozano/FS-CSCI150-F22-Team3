@@ -269,3 +269,25 @@ body.dark {
 .App-link {
   color: var(--sign-in-btn-color);
 }
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: 0.5rem;
+  scrollbar-color: var(--main-navbar-color) var(--main-constrast-line-color);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--main-navbar-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-constrast-line-color);
+  border-radius: 1rem;
+  border: 0.125rem solid var(--main-navbar-color);
+}
