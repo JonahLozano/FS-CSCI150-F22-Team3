@@ -281,9 +281,11 @@ function League() {
             placeholder="Leave a Comment"
             className="leagueCommentTextBox"
           />
-          <div className="postCommentContainer">
-            <input type="button" value="Comment" onClick={postComment} />
-          </div>
+          {comment !== "" && (
+            <div className="postCommentContainer">
+              <input type="button" value="Comment" onClick={postComment} />
+            </div>
+          )}
         </div>
         <div className="leagueCommentWrapper">
           {show &&
@@ -435,31 +437,33 @@ function League() {
                               placeholder="Leave a Reply"
                               className="leagueReplyTextBox"
                             />
-                            <div className="postReplyContainer">
-                              <input
-                                type="button"
-                                value="Reply"
-                                onClick={() => {
-                                  if (reply[index] === "") return;
+                            {reply[index] !== "" && (
+                              <div className="postReplyContainer">
+                                <input
+                                  type="button"
+                                  value="Reply"
+                                  onClick={() => {
+                                    if (reply[index] === "") return;
 
-                                  axios
-                                    .patch("/league/comment/reply", {
-                                      gameID: id,
-                                      commentID: data.commentID,
-                                      comment: reply[index],
-                                    })
-                                    .then((e) => {
-                                      const tmpThing = reply;
-                                      tmpThing[index] = "";
-                                      setReply([...tmpThing]);
-                                      updateData();
-                                      const tmpThing1 = toggleReplies;
-                                      tmpThing1[index] = true;
-                                      setToggleReplies([...tmpThing1]);
-                                    });
-                                }}
-                              />
-                            </div>
+                                    axios
+                                      .patch("/league/comment/reply", {
+                                        gameID: id,
+                                        commentID: data.commentID,
+                                        comment: reply[index],
+                                      })
+                                      .then((e) => {
+                                        const tmpThing = reply;
+                                        tmpThing[index] = "";
+                                        setReply([...tmpThing]);
+                                        updateData();
+                                        const tmpThing1 = toggleReplies;
+                                        tmpThing1[index] = true;
+                                        setToggleReplies([...tmpThing1]);
+                                      });
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
                         </>
                       )}
