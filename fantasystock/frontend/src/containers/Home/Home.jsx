@@ -20,7 +20,7 @@ function Home() {
     <div id="homePage">
       {articles.map((article, index) => (
         <div className="articleCard" key={`uniqueId${index}`}>
-          <a className="articleCardA" href={article.url}>
+          <a className="articleCardA" href={article.url} target="_blank">
             <img
               className="articleCardImage"
               src={article.urlToImage}
