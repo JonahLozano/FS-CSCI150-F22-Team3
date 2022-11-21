@@ -68,7 +68,7 @@ function Profile(props) {
   };
 
   return (
-    <div>
+    <div className="FriendMainContainer">
       <div className="FriendInput">
         <input
           type="textbox"
