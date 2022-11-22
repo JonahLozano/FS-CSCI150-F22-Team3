@@ -1,19 +1,14 @@
 .iconCard {
   border: 0.25rem solid black;
   border-radius: 1rem;
-  width: 20rem;
+  min-width: 15rem;
   font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  margin: 0.5rem;
-  display: inline-flex;
+  margin: 1rem;
   padding: 1rem;
-  background-color: rgba(128, 128, 128, 0.125);
+  background-color: var(--main-navbar-color);
 }
 .iconCard:hover {
-  background-color: hsla(0, 0%, 50%, 0.5);
+  background-color: var(--main-bg-color);
 }
 
 .iconCard:hover > .iconShow {
@@ -27,20 +22,25 @@
 }
 
 .iconName {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   padding: 0.5rem;
 }
 
 .iconPrice {
-  font-size: 1rem;
+  font-size: 1.5rem;
   padding: 0.5rem;
 }
 
 .iconContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-gap: 1rem;
+  width: 90%;
+  /*  display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+*/
 }
 
 #iconContainerContainer {
@@ -60,9 +60,12 @@
   transform: scale(1.05);
 }
 
-@media screen and (max-width:600px) {
-  .iconContainer {
-    width: ;
+.storeCurrency {
+  margin: 2rem;
 }
 
+@media screen and (max-width: 600px) {
+  .iconContainer {
+    width: ;
+  }
 }

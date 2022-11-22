@@ -11,11 +11,11 @@ const LeagueSchema = new Schema(
       ref: "User",
       required: true,
     },
-    title: { type: String, required: true },
+    title: { type: String, required: true, text: true },
     players: [
       {
         type: {
-          player: { type: Schema.Types.ObjectId, ref: "User", unqiue: true },
+          player: { type: Schema.Types.ObjectId, ref: "User" },
           stocks: [
             {
               ticker: { type: String },

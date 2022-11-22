@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateLeague.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [visibility, setVisibility] = useState("Public");
@@ -15,7 +16,33 @@ function Home() {
   const [stkList, setstkList] = useState([]);
   const [tickers, setTickers] = useState([]);
 
+  const navigate = useNavigate();
+
   const createLeague = () => {
+    const rightnow = new Date();
+    const start1 = new Date(start);
+    const end1 = new Date(end);
+
+    if (
+      title === undefined ||
+      title === "" ||
+      typeof title !== "string" ||
+      stkList.length === 0 ||
+      (visibility.toLowerCase() !== "public" &&
+        visibility.toLowerCase() !== "private") ||
+      start === undefined ||
+      start === "" ||
+      typeof start !== "string" ||
+      end === undefined ||
+      end === "" ||
+      typeof end !== "string" ||
+      start1 <= rightnow ||
+      start1 >= end1
+    ) {
+      console.log("fill everything out");
+
+      return;
+    }
     axios
       .post("/league/create", {
         start,
@@ -32,6 +59,7 @@ function Home() {
       })
       .then((e) => {
         console.log(e.data);
+        navigate(`/league/${e.data.leagueID}`);
       });
   };
 
