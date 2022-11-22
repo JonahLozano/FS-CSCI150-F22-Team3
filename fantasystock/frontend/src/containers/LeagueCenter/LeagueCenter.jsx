@@ -29,6 +29,7 @@ function LeagueCenter() {
             <Link
               className="aLeagueCenterLeagueLink"
               to={`/league/${league._id}`}
+              key={index}
             >
               <div key={index} className="LeagueCenterLeague">
                 <div className="aLeagueCenterLeague">{league.title}</div>
@@ -44,8 +45,9 @@ function LeagueCenter() {
             <Link
               className="aLeagueCenterLeagueLink"
               to={`/league/${league._id}`}
+              key={index}
             >
-              <div key={index} className="LeagueCenterLeague">
+              <div className="LeagueCenterLeague">
                 <div className="aLeagueCenterLeague">{league.title}</div>
               </div>
             </Link>
