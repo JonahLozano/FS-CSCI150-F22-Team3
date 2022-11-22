@@ -141,29 +141,34 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
 
-  // before deleting account
+  // before deleting the user account:
 
+  // 1
   // get all users in db
   const users = await User.find();
-  // loop through the users
-  for(let i = 0; i < users.length; i++){
-    let u = JSON.stringify(users[i]._id);
-    u = u.replaceAll("\"", "");
-    //console.log(u);
-    //console.log(req.user._id);
-    // only try to modify users that are not the current user logged in
-    if(u !== req.user._id){
-      // filter out the current user from user2's friendRequests
-      users[i].friendRequests = users[i].friendRequests.filter(
-        (ele) => ele.toString() !== req.user._id
-      )
-      // save user
-      users[i].save();
-      console.log("modified friend requests on other user");
+  // only perform modification if more than 1 user exists
+  if(users.length > 1){
+    // loop through the users
+    for(let i = 0; i < users.length; i++){
+      // grab _id of the user
+      let u = JSON.stringify(users[i]._id);
+      u = u.replaceAll("\"", "");
+      //console.log(u);
+      //console.log(req.user._id);
+      // only try to modify users that are not the current user logged in
+      if(u !== req.user._id){
+        // filter out the current user from user2's friendRequests
+        users[i].friendRequests = users[i].friendRequests.filter(
+          (ele) => ele.toString() !== req.user._id
+        )
+        // save user
+        users[i].save();
+        console.log("Removed user being deleted from friendRequests list of all other users in db.");
+      }
     }
   }
-  
-  
+
+  // 2
   // grab current user trying to delete their account
   const user = await User.findById(req.user._id);
   // proceed if the current user has friends
@@ -172,21 +177,21 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
     for (let i = 0; i < user.friends.length; i++) {
       // grab the friend
       const friend = await User.findById(user.friends[i]);
-      // now remove current user from friend's friend list
+      // filter out the current user from friend's friend list
       friend.friends = friend.friends.filter(
         (ele) => ele.toString() !== req.user._id
       );
       // save the friend's account
       friend.save();
-      console.log(req.user._id + " has been deleted from " + friend._id + "'s friends list");
+      console.log("Removed user being deleted from friends list of the user's friends.");
     }
   }
 
-
+  // 3
   // pathway to modify activeLeagues only if current user was in an activeLeague
   if(user.activeLeagues.length !== 0){
 
-    // loop through the activeLeagues
+    // loop through each activeLeagues pertaining to the user whose account will be deleted
     for(let i = 0; i < user.activeLeagues.length; i++){
 
       // grab activeLeague id
@@ -247,38 +252,63 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 
       }
       // if user is not a host, then they are a member of the league
-      // and must be removed from the players array of the activeleague
       else{
-
         console.log("User being deleted is a member of a league");
+
         // perform league modification
         try{
-          // update the userLeague players to not include the user that is currently deleting their account
+
+          // if comments exist in the league proceed
+          if(userLeague.commentsection.length !== 0){
+
+            // filtering out comments in the league that belong to the user whose account will be deleted
+            userLeague.commentsection = userLeague.commentsection.filter(function(c){
+              return c.owner.toString() !== req.user._id;
+            });
+            console.log("Removing comments made by the user that will be deleted.");
+
+            // loop through each comment to check the replies
+            for(let j = 0; j < userLeague.commentsection.length; j++){
+
+              // only proceed if replies exist in that comment
+              if(userLeague.commentsection[j].replies.length !== 0){
+
+                // filtering out replies in the commentsection that belong to the user whose account will be deleted
+                userLeague.commentsection[j].replies = userLeague.commentsection[j].replies.filter(function(r){
+                  return r.replyowner.toString() !== req.user._id;
+                });
+                console.log("Removing replies made by the user that will be deleted.");
+
+              }
+            }
+          }
+
+          // filtering out the user whose account will be deleted from the players array in the league
           userLeague.players = userLeague.players.filter(function(p){
             return p.player.toString() !== req.user._id;
           });
-          // save the userLeague
-          userLeague.save();
           console.log("Removed the user from the league");
+
+          // save changes to the league
+          userLeague.save();
+          console.log("Saving changes made to the league.");
+
         } 
         catch (error){
           console.log(error);
         }
-
       }
-
     }
-
   }
 
-
+  // 4
   // pathway to modify passedLeagues only if current user was in a passedLeague
   if(user.passedLeagues.length !== 0){
 
-    // loop through the passedLeagues
+    // loop through each passedLeagues pertaining to the user whose account will be deleted
     for(let i = 0; i < user.passedLeagues.length; i++){
 
-      // grab activeLeague id
+      // grab passedLeague id
       let leagueID = user.passedLeagues[i];
       //console.log(leagueID);
       // grab league
@@ -296,7 +326,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
         console.log("User being deleted is a host of a league");
         //console.log(userLeague.players.length);
 
-        // before league deletion remove the activeLeague from all of the profiles of all of the users that were in that league
+        // before league deletion remove the passedLeague from all of the profiles of all of the users that were in that league
         if(userLeague.players.length > 1){
           // loop
           for(let j = 1; j < userLeague.players.length; j++){
@@ -315,7 +345,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
               );
               // save player
               player.save();
-              console.log("activeLeague was removed from a member's passedLeagues list");
+              console.log("passedLeague was removed from a member's passedLeagues list");
             } 
             catch(error) {
               console.log(error);
@@ -336,32 +366,56 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
 
       }
       // if user is not a host, then they are a member of the league
-      // and must be removed from the players array of the activeleague
       else{
-
         console.log("User being deleted is a member of a league");
+
         // perform league modification
         try{
-          // update the userLeague players to not include the user that is currently deleting their account
+
+          // if comments exist in the league proceed
+          if(userLeague.commentsection.length !== 0){
+
+            // filtering out comments in the league that belong to the user whose account will be deleted
+            userLeague.commentsection = userLeague.commentsection.filter(function(c){
+              return c.owner.toString() !== req.user._id;
+            });
+            console.log("Removing comments made by the user that will be deleted.");
+
+            // loop through each comment to check the replies
+            for(let j = 0; j < userLeague.commentsection.length; j++){
+
+              // only proceed if replies exist in that comment
+              if(userLeague.commentsection[j].replies.length !== 0){
+
+                // filtering out replies in the commentsection that belong to the user whose account will be deleted
+                userLeague.commentsection[j].replies = userLeague.commentsection[j].replies.filter(function(r){
+                  return r.replyowner.toString() !== req.user._id;
+                });
+                console.log("Removing replies made by the user that will be deleted.");
+
+              }
+            }
+          }
+
+          // filtering out the user whose account will be deleted from the players array in the league
           userLeague.players = userLeague.players.filter(function(p){
             return p.player.toString() !== req.user._id;
           });
-          // save the userLeague
-          userLeague.save();
           console.log("Removed the user from the league");
+
+          // save changes to the league
+          userLeague.save();
+          console.log("Saving changes made to the league.");
+
         } 
         catch (error){
           console.log(error);
         }
-
       }
-
     }
-
   }
 
-  
-  // main delete performed here
+  // finally delete user's account here
   try {
     await User.findByIdAndDelete({ _id: req.user._id })
       .then((req1, res1) => {
