@@ -62,7 +62,7 @@ function League() {
       .get(`/league/${id}`)
       .then((response) => {
         if (!response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           navigate(`/league`);
         }
         setShow(true);
@@ -375,9 +375,9 @@ function League() {
                         }}
                       >
                         {toggleReplies[index] ? (
-                          <span class="dropup-caret"></span>
+                          <span className="dropup-caret"></span>
                         ) : (
-                          <span class="dropdown-caret"></span>
+                          <span className="dropdown-caret"></span>
                         )}{" "}
                         {data.replies.length}{" "}
                         {data.replies.length === 1 ? "reply" : "replies"}{" "}

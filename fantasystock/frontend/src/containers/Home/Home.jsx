@@ -11,7 +11,7 @@ function Home() {
       .get(`/news`)
       .then((response) => {
         setArticles(response.data.reverse());
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {});
   }, []);
