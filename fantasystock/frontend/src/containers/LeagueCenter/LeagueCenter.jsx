@@ -11,7 +11,7 @@ function LeagueCenter() {
     axios
       .get(`/register/view/leagues`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setLeagues(response.data);
         setShow(true);
       })

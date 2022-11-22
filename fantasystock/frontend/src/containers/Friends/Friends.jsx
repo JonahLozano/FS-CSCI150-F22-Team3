@@ -47,7 +47,7 @@ function Profile(props) {
   }, []);
 
   const addFriend = () => {
-    console.log(friendcode);
+    // console.log(friendcode);
     axios.patch("/register/addfriend", {
       friendcode: friendcode,
     });
@@ -103,7 +103,7 @@ function Profile(props) {
                   className="msgfriend"
                   value="Accept"
                   onClick={() => {
-                    console.log(ele._id);
+                    // console.log(ele._id);
 
                     axios
                       .patch("/register/friend/request/accept", {

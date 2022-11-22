@@ -39,7 +39,7 @@ function Home() {
       start1 <= rightnow ||
       start1 >= end1
     ) {
-      console.log("fill everything out");
+      // console.log("fill everything out");
 
       return;
     }
@@ -58,7 +58,7 @@ function Home() {
         }),
       })
       .then((e) => {
-        console.log(e.data);
+        // console.log(e.data);
         navigate(`/league/${e.data.leagueID}`);
       });
   };

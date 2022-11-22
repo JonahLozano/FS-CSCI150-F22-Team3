@@ -78,7 +78,7 @@ function Store() {
                 setCurrencyMsg(currency);
               }}
               onClick={() => {
-                console.log(data.name);
+                // console.log(data.name);
 
                 axios
                   .patch("/store/buy", {
