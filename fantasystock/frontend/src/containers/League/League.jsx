@@ -62,7 +62,7 @@ function League() {
       .get(`/league/${id}`)
       .then((response) => {
         if (!response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           navigate(`/league`);
         }
         setShow(true);

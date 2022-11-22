@@ -45,7 +45,7 @@ function Profile(props) {
     axios
       .get(`/register/profile`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData({
           displayName: response.data.displayName,
           photo: response.data.photo,
