@@ -375,9 +375,9 @@ function League() {
                         }}
                       >
                         {toggleReplies[index] ? (
-                          <span class="dropup-caret"></span>
+                          <span className="dropup-caret"></span>
                         ) : (
-                          <span class="dropdown-caret"></span>
+                          <span className="dropdown-caret"></span>
                         )}{" "}
                         {data.replies.length}{" "}
                         {data.replies.length === 1 ? "reply" : "replies"}{" "}
