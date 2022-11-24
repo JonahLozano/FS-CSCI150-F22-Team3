@@ -305,18 +305,34 @@ router.get("/search", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
 
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
+  //console.log(req.body);
+
+  // grab the current league
+  const league = await League.findById(req.body.gameID);
+  // grab the current user
+  const user = await User.findById(req.user._id);
+  // check if the current user is in the league
+  $in_league = false;
+  for(let i = 0; i < league.players.length; i++){
+    if(JSON.stringify(league.players[i].player) === JSON.stringify(user._id)){
+      $in_league = true;
+    }
+  }
+  if(!$in_league){
+    console.log("You are not in the league so you can't comment.");
+    res.send({ created: false });
+    return;
+  }
 
   // data validation
-  if (
-    req.body.gameID === undefined || // gameID must be defined
-    req.body.comment === undefined || // comment must be defined
-    typeof req.body.comment !== "string" || // comment must be of type string
-    req.body.comment === "" || // comment must not be empty
-    req.body.comment.length > 200 // comment chars must be less than or equal to 200
-  ) {
+  if (req.body.gameID === undefined || // gameID must be defined
+      req.body.comment === undefined || // comment must be defined
+      typeof req.body.comment !== "string" || // comment must be of type string
+      req.body.comment === "" || // comment must not be empty
+      req.body.comment.length > 200) // comment chars must be less than or equal to 200
+ {
     // comment can not be blank
     console.log("post comment failed");
     res.send({ created: false });
@@ -408,7 +424,23 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
+
+  // grab the current league
+  const league = await League.findById(req.body.gameID);
+  // grab the current user
+  const user = await User.findById(req.user._id);
+  // check if the current user is in the league
+  $in_league = false;
+  for(let i = 0; i < league.players.length; i++){
+    if(JSON.stringify(league.players[i].player) === JSON.stringify(user._id)){
+      $in_league = true;
+    }
+  }
+  if(!$in_league){
+    console.log("You are not in the league so you can't reply.");
+    res.send({ created: false });
+    return;
+  }
 
   // check to make sure data is valid
   if (
