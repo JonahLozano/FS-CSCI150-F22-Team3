@@ -6,8 +6,6 @@ const League = require("../models/league");
 const Stock = require("../models/stock");
 const User = require("../models/user");
 var jsonParser = bodyParser.json();
-
-// used in create route
 const stocks = require("../data/stocks");
 
 function isLoggedIn(req, res, next) {
@@ -15,8 +13,6 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
-
-  console.log(req.body);
 
   // basic data validation
   if (req.body.title === undefined ||
@@ -104,7 +100,8 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   for (let i = 0; i < req.body.stocks.length; i++){
     let count = 0;
     for (let j = 0; j < stocks.length; j++) {
-      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+      if (req.body.stocks[i]["stock"].toUpperCase() === stocks[j]["ticker"]) {
+        req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].toUpperCase();
         count++;
       }
     }
@@ -234,7 +231,8 @@ router.patch("/join", jsonParser, async (req, res) => {
   for (let i = 0; i < req.body.stocks.length; i++){
     let count = 0;
     for (let j = 0; j < stocks.length; j++) {
-      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+      if (req.body.stocks[i]["stock"].toUpperCase() === stocks[j]["ticker"]) {
+        req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].toUpperCase();
         count++;
       }
     }
