@@ -14,6 +14,9 @@ function isLoggedIn(req, res, next) {
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 
+  // first trim the title for whitespace
+  req.body.title = req.body.title.trim();
+
   // basic data validation
   if (req.body.title === undefined ||
       req.body.title === "" ||
@@ -81,6 +84,8 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
+      // next trim each stock name for whitespace
+      req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].trim();
       if (typeof req.body.stocks[i]["stock"] !== "string" ||
           req.body.stocks[i]["stock"] === "" ||
           req.body.stocks[i]["stock"] === undefined ||
@@ -212,6 +217,8 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
+      // next trim each stock name for whitespace
+      req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].trim();
       if (typeof req.body.stocks[i]["stock"] !== "string" ||
           req.body.stocks[i]["stock"] === "" ||
           req.body.stocks[i]["stock"] === undefined ||
@@ -303,7 +310,6 @@ router.get("/search", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
-
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
   //console.log(req.body);
 
@@ -323,6 +329,9 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
     res.send({ created: false });
     return;
   }
+
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
 
   // data validation
   if (req.body.gameID === undefined || // gameID must be defined
@@ -361,7 +370,8 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/edit", jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
 
   // check to make sure data is valid
   if (
@@ -395,8 +405,6 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
-
   // check gameID & commentID are defined (means user can only delete their own comment)
   if (req.body.gameID === undefined || req.body.commentID === undefined) {
     console.log(
@@ -439,6 +447,9 @@ router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
     res.send({ created: false });
     return;
   }
+
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
 
   // check to make sure data is valid
   if (
